@@ -103,6 +103,7 @@
 
 /* ═══ BASE ═══ */
 *{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{font-family:var(--font-sans);font-size:var(--fs-base);line-height:var(--lh);
   color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -242,6 +243,38 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .cls-copy{justify-self:end;text-align:left}
 }
 @media(max-width:600px){.cls-arr{display:none}}
+
+/* ═══ FIND YOUR CLASS — smart batch finder ═══ */
+.finder-fallback{display:block}
+.finder-tool{display:none}
+html.js .finder-fallback{display:none}
+html.js .finder-tool{display:block}
+.finder-fallback p{color:var(--muted);font-size:var(--fs-md);margin-bottom:var(--s-6);max-width:44ch}
+.fstep{margin-bottom:var(--s-2)}
+.fstep .fq{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--faint);font-weight:600;margin-bottom:var(--s-6)}
+.fopts{display:flex;flex-wrap:wrap;gap:var(--s-3)}
+.fopt{font-family:var(--font-display);font-weight:600;font-size:var(--fs-lg);letter-spacing:-.02em;
+  padding:16px 30px;min-height:64px;border:1px solid var(--line-2);border-radius:var(--r-md);
+  background:var(--surface);color:var(--ink);
+  transition:transform var(--t) var(--ease),border-color var(--t-fast),background var(--t-fast),color var(--t-fast)}
+.fopt:hover{border-color:var(--ink);transform:translateY(-2px)}
+.fopt.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+.fback{margin-top:var(--s-6);font-size:var(--fs-sm);color:var(--faint);font-weight:600;
+  display:inline-flex;align-items:center;gap:6px;min-height:44px}
+.fback:hover{color:var(--ink)}
+.fresult{border-radius:var(--radius);padding:var(--s-10) var(--s-8);margin-top:var(--s-2);
+  display:grid;grid-template-columns:1fr;gap:var(--s-6);align-items:center}
+.fr-num{font-family:var(--font-display);font-weight:600;font-size:clamp(72px,17vw,150px);
+  line-height:.88;letter-spacing:-.04em;color:var(--ink);white-space:nowrap}
+.fr-label{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--faint);font-weight:600;margin-bottom:var(--s-3)}
+.fr-body h3{font-size:var(--fs-xl);margin-bottom:var(--s-3)}
+.fr-body p{color:var(--muted);margin-bottom:var(--s-6);max-width:42ch}
+.fr-cta{display:flex;gap:var(--s-5);align-items:center;flex-wrap:wrap}
+@media(min-width:720px){
+  .fresult{grid-template-columns:auto 1fr;gap:var(--s-12);padding:var(--s-12)}
+}
 
 /* ═══ WHY LEON — black band ═══ */
 .why{overflow:hidden}
@@ -403,11 +436,65 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <p class="sub">The 2027 and 2028 theory batches and the exam-year Crash Course. In person at Nugegoda and Kiribathgoda, or online from anywhere.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="#enquire">Enrol now</a>
-        <a class="btn btn-ghost btn-lg" href="#classes">See the classes</a>
+        <a class="btn btn-ghost btn-lg" href="#finder">Find your class</a>
       </div>
     </div>
     <div class="scroll-pill" aria-hidden="true">Scroll
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v16m0 0-6-6m6 6 6-6"/></svg>
+    </div>
+  </section>
+
+  <!-- ══════════ FIND YOUR CLASS — smart batch finder ══════════ -->
+  <section class="section finder" id="finder" aria-label="Find your class">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">Find your class</span>
+        <h2>Which class is yours?</h2>
+        <p>Two taps and you'll know exactly which batch to join.</p>
+      </div>
+
+      <!-- fallback shown when JS is off: the full class list still works below -->
+      <div class="finder-fallback">
+        <p>Pick the batch that matches your A/L exam year from the classes below, and enrol.</p>
+        <a class="btn btn-ghost" href="#classes">See all classes</a>
+      </div>
+
+      <!-- interactive tool -->
+      <div class="finder-tool" aria-live="polite">
+        <div class="fstep" data-step="1">
+          <span class="fq">Step 01 — When do you sit your A/L?</span>
+          <div class="fopts">
+            <button class="fopt" type="button" data-year="2027">2027</button>
+            <button class="fopt" type="button" data-year="2028">2028</button>
+            <button class="fopt" type="button" data-year="crash">This year</button>
+            <button class="fopt" type="button" data-year="unsure">Not sure</button>
+          </div>
+        </div>
+        <div class="fstep" data-step="2" hidden>
+          <span class="fq">Step 02 — Where do you want to study?</span>
+          <div class="fopts">
+            <button class="fopt" type="button" data-loc="Nugegoda">Nugegoda</button>
+            <button class="fopt" type="button" data-loc="Kiribathgoda">Kiribathgoda</button>
+            <button class="fopt" type="button" data-loc="Online">Online</button>
+          </div>
+          <button class="fback" type="button" data-back>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 6-6m-6 6 6 6"/></svg>
+            Back
+          </button>
+        </div>
+        <div class="fresult dark" hidden role="status">
+          <div class="fr-num"><span>2027</span></div>
+          <div class="fr-body">
+            <span class="fr-label">Your batch</span>
+            <h3 class="fr-title">The 2027 batch</h3>
+            <p class="fr-text">Theory taught properly.</p>
+            <div class="fr-cta">
+              <button class="btn btn-primary fr-enrol" type="button">Enrol for the 2027 batch</button>
+              <button class="fback fr-restart" type="button">Start over</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -681,6 +768,70 @@ document.querySelectorAll('[data-batch]').forEach(a => {
     if (sel) sel.value = a.dataset.batch;
   });
 });
+
+/* ── SMART FEATURE: Batch & Path Finder (vanilla, works without GSAP) ── */
+document.documentElement.classList.add('js');
+(function(){
+  const tool = document.querySelector('.finder-tool');
+  if (!tool) return;
+  const step1 = tool.querySelector('[data-step="1"]');
+  const step2 = tool.querySelector('[data-step="2"]');
+  const result = tool.querySelector('.fresult');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let year = null, loc = null;
+
+  const PLAN = {
+    '2027':  {num:'2027',  batch:'2027 batch', enrol:'Enrol for the 2027 batch',
+              title:'The 2027 batch',  line:'Theory taught properly, building towards your 2027 A/L.'},
+    '2028':  {num:'2028',  batch:'2028 batch', enrol:'Enrol for the 2028 batch',
+              title:'The 2028 batch',  line:'The head start. Learn without exam-season pressure and walk in ahead.'},
+    'crash': {num:'CRASH', batch:'Crash Course', enrol:'Enrol for the Crash Course',
+              title:'The Crash Course', line:'Rapid, focused revision for the final stretch before your paper.'},
+    'unsure':{num:'?',     batch:null, enrol:'Enquire and get placed',
+              title:"Let's place you",  line:'Send your details and Leon will put you in the right batch.'}
+  };
+
+  function reveal(el){
+    el.hidden = false;
+    if (reduce || !el.animate) return;
+    el.animate([{opacity:0, transform:'translateY(16px)'}, {opacity:1, transform:'none'}],
+      {duration:450, easing:'cubic-bezier(.16,1,.3,1)'});
+  }
+  function locLine(){ return loc === 'Online' ? 'Live online classes, join from anywhere.' : 'In person at ' + loc + '.'; }
+
+  step1.querySelectorAll('[data-year]').forEach(b => b.addEventListener('click', () => {
+    year = b.dataset.year;
+    step1.querySelectorAll('.fopt').forEach(o => o.classList.toggle('sel', o === b));
+    step1.hidden = true; result.hidden = true;
+    reveal(step2);
+  }));
+  step2.querySelectorAll('[data-loc]').forEach(b => b.addEventListener('click', () => {
+    loc = b.dataset.loc;
+    step2.querySelectorAll('.fopt').forEach(o => o.classList.toggle('sel', o === b));
+    const p = PLAN[year];
+    result.querySelector('.fr-num span').textContent = p.num;
+    result.querySelector('.fr-label').textContent = p.batch ? 'Your batch' : 'Your next step';
+    result.querySelector('.fr-title').textContent = p.title;
+    result.querySelector('.fr-text').textContent = p.line + ' ' + locLine();
+    result.querySelector('.fr-enrol').textContent = p.enrol;
+    step2.hidden = true;
+    reveal(result);
+  }));
+  tool.querySelector('[data-back]').addEventListener('click', () => { step2.hidden = true; reveal(step1); });
+  result.querySelector('.fr-enrol').addEventListener('click', () => {
+    const p = PLAN[year];
+    const s = document.getElementById('inBatch'); if (s) s.value = p.batch || '';  // '' = leave "Choose a batch" for unsure
+    const l = document.getElementById('inLoc'); if (l && loc) l.value = loc;
+    location.hash = '#enquire';
+    setTimeout(() => { const n = document.getElementById('inName'); if (n) n.focus({preventScroll:true}); }, 600);
+  });
+  result.querySelector('.fr-restart').addEventListener('click', () => {
+    year = null; loc = null;
+    tool.querySelectorAll('.fopt').forEach(o => o.classList.remove('sel'));
+    result.hidden = true; step2.hidden = true;
+    reveal(step1);
+  });
+})();
 
 /* ── enquiry form → prefilled WhatsApp + real success state ── */
 const SL_PHONE = /^(0\d{9}|(\+?94)\d{9})$/;
