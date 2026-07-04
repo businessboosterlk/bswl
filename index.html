@@ -220,6 +220,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .scroll-pill{bottom:calc(92px + env(safe-area-inset-bottom))}
 }
 @media(prefers-reduced-motion:reduce){.scroll-pill svg{animation:none}}
+/* hero content hugs the left edge on larger screens (editorial break-out) */
+@media(min-width:768px){
+  .hero .wrap{max-width:none;padding-left:clamp(24px,4vw,60px)}
+  .hero-notes{max-width:1180px}
+}
 
 /* ═══ CLASSES — giant numeral stack, scrub-focused ═══ */
 .cls-note{font-size:var(--fs-sm);color:var(--faint);margin-top:var(--s-3)}
@@ -303,6 +308,47 @@ html.js .finder-tool{display:block}
   .why-item:first-child{border-left:none;padding-left:0}
 }
 
+/* ═══ STUDENTS — WALL OF ACHIEVERS ═══ */
+.ach-filter{display:flex;flex-wrap:wrap;gap:var(--s-3);margin-bottom:var(--s-10)}
+.ach-chip{font-family:var(--font-display);font-weight:600;font-size:var(--fs-sm);
+  padding:9px 18px;min-height:44px;border:1px solid var(--line-2);border-radius:var(--r-pill);
+  color:var(--muted);background:var(--surface);
+  transition:color var(--t-fast),border-color var(--t-fast),background var(--t-fast)}
+.ach-chip:hover{border-color:var(--ink);color:var(--ink)}
+.ach-chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.ach-fallback{color:var(--muted);font-size:var(--fs-md)}
+.ach-track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(180px,72%);gap:var(--s-5);
+  overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:var(--s-4);scrollbar-width:none}
+.ach-track::-webkit-scrollbar{display:none}
+@media(min-width:900px){
+  .ach-track{grid-auto-flow:row;grid-template-columns:repeat(4,1fr);overflow:visible;scroll-snap-type:none}
+}
+.ach{position:relative;scroll-snap-align:start;aspect-ratio:3/4;background:#141417;
+  border-radius:130px 130px var(--radius) var(--radius);overflow:hidden;
+  transition:transform var(--t) var(--ease)}
+.ach:hover{transform:translateY(-6px)}
+@media(min-width:900px){
+  .ach:nth-child(even){transform:translateY(26px)}
+  .ach:nth-child(even):hover{transform:translateY(20px)}
+}
+.ach-art{position:absolute;inset:0;
+  background:radial-gradient(120% 85% at 40% 8%, #2c2d33, #131316 62%),
+             repeating-linear-gradient(135deg, rgba(255,255,255,.045) 0 2px, transparent 2px 10px)}
+.ach:nth-child(3n) .ach-art{background:radial-gradient(120% 90% at 68% 0%, #34353b, #0f1013 66%),
+             repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 2px, transparent 2px 11px)}
+.ach:nth-child(3n+2) .ach-art{background:radial-gradient(100% 80% at 50% 0%, #26272c, #101013 72%)}
+.ach img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.04)}
+.ach-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 38%,rgba(0,0,0,.86))}
+.ach-badge{position:absolute;top:14px;left:14px;z-index:2;width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.15);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.ach-badge svg{width:18px;height:18px}
+.ach-cap{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;color:#fff}
+.ach-cap .t{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.72);font-weight:600;margin-bottom:5px}
+.ach-cap .n{font-family:var(--font-display);font-weight:600;font-size:var(--fs-md);line-height:1.12;letter-spacing:-.02em}
+.ach-cap .a{display:block;font-size:var(--fs-xs);color:rgba(255,255,255,.78);margin-top:3px}
+
 /* ═══ LOCATIONS ═══ */
 .loc-grid{display:grid;grid-template-columns:1fr;border-top:1px solid var(--hair)}
 .loc{padding:var(--s-8) 0;border-bottom:1px solid var(--hair)}
@@ -370,6 +416,46 @@ html.js .finder-tool{display:block}
   display:flex;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap;
   font-size:var(--fs-xs);color:var(--faint)}
 
+/* ═══ TRUST STRIP ═══ */
+.trust{border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.trust-row{display:grid;grid-template-columns:1fr;gap:var(--s-6);padding:var(--s-10) 0}
+.trust-item{display:flex;flex-direction:column;gap:8px}
+.trust-item b{font-family:var(--font-display);font-weight:600;font-size:var(--fs-2xl);
+  letter-spacing:-.03em;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
+.trust-item span{font-size:var(--fs-sm);color:var(--muted);max-width:30ch}
+@media(min-width:760px){
+  .trust-row{grid-template-columns:repeat(3,1fr);gap:var(--s-10)}
+  .trust-item{padding-left:var(--s-8);border-left:1px solid var(--hair)}
+  .trust-item:first-child{padding-left:0;border-left:none}
+}
+
+/* ═══ HOW TO ENROL — steps ═══ */
+.steps{display:grid;grid-template-columns:1fr;border-top:1px solid var(--hair)}
+.step{padding:var(--s-8) 0;border-bottom:1px solid var(--hair)}
+.step .no{font-family:var(--font-display);font-weight:600;font-size:var(--fs-2xl);
+  letter-spacing:-.03em;color:var(--ink);display:block;margin-bottom:var(--s-3);line-height:1}
+.step h3{font-size:var(--fs-md);margin-bottom:var(--s-2)}
+.step p{color:var(--muted);font-size:var(--fs-sm);max-width:34ch}
+@media(min-width:820px){
+  .steps{grid-template-columns:repeat(3,1fr);border-top:none}
+  .step{padding:var(--s-1) var(--s-8) var(--s-8);border-bottom:none;border-left:1px solid var(--hair)}
+  .step:first-child{border-left:none;padding-left:0}
+}
+
+/* ═══ FAQ ═══ */
+.faq{max-width:760px}
+.faq details{border-bottom:1px solid var(--hair)}
+.faq summary{list-style:none;cursor:pointer;padding:var(--s-6) 0;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-5);
+  font-family:var(--font-display);font-weight:600;font-size:var(--fs-md);color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .ic{flex:none;width:22px;height:22px;position:relative}
+.faq summary .ic::before,.faq summary .ic::after{content:"";position:absolute;background:var(--ink);border-radius:2px}
+.faq summary .ic::before{top:10px;left:1px;right:1px;height:2px}
+.faq summary .ic::after{left:10px;top:1px;bottom:1px;width:2px;transition:opacity var(--t) var(--ease)}
+.faq details[open] summary .ic::after{opacity:0}
+.faq .ans{padding:0 0 var(--s-6);color:var(--muted);max-width:62ch}
+
 /* ═══ STICKY MOBILE ENROL BAR ═══ */
 .mbar{display:none}
 @media(max-width:600px){
@@ -394,6 +480,7 @@ html.js .finder-tool{display:block}
     <nav class="nav-links" aria-label="Primary">
       <a href="#classes">Classes</a>
       <a href="#why">Why Leon</a>
+      <a href="#students">Students</a>
       <a href="#locations">Locations</a>
     </nav>
     <a class="btn btn-primary" href="#enquire">Enrol now</a>
@@ -414,6 +501,7 @@ html.js .finder-tool{display:block}
   <nav>
     <a href="#classes" onclick="closeDrawer()">Classes</a>
     <a href="#why" onclick="closeDrawer()">Why Leon</a>
+    <a href="#students" onclick="closeDrawer()">Students</a>
     <a href="#locations" onclick="closeDrawer()">Locations</a>
     <a href="#enquire" onclick="closeDrawer()">Enquire</a>
   </nav>
@@ -441,6 +529,15 @@ html.js .finder-tool{display:block}
     </div>
     <div class="scroll-pill" aria-hidden="true">Scroll
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v16m0 0-6-6m6 6 6-6"/></svg>
+    </div>
+  </section>
+
+  <!-- ══════════ TRUST STRIP — real confirmed facts only ══════════ -->
+  <section class="trust" aria-label="At a glance">
+    <div class="wrap trust-row" data-sr>
+      <div class="trust-item"><b>100%</b><span>Pass record. Not one student has ever failed.</span></div>
+      <div class="trust-item"><b>Island rank</b><span>Country-top A/L Business Studies results.</span></div>
+      <div class="trust-item"><b>3 ways</b><span>Nugegoda, Kiribathgoda and live online.</span></div>
     </div>
   </section>
 
@@ -598,6 +695,29 @@ html.js .finder-tool{display:block}
     </div>
   </section>
 
+  <!-- ══════════ STUDENTS — WALL OF ACHIEVERS ══════════ -->
+  <!-- NEEDS LEON: real achievers (photo + name + academic result and/or sport, WITH CONSENT).
+       Fill the ACHIEVERS array in the script. Until then the tiles are honest placeholders,
+       no fabricated names or results. Photos go in assets/students/. -->
+  <section class="section students" id="students" aria-label="Our students">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">Our students</span>
+        <h2>Proof, not promises.</h2>
+        <p>Leon's students don't just pass. They rank, and many carry that same discipline onto the field as much as into the exam hall.</p>
+      </div>
+      <div class="ach-filter" aria-label="Filter students">
+        <button class="ach-chip on" type="button" data-filter="all">All</button>
+        <button class="ach-chip" type="button" data-filter="academics">Academics</button>
+        <button class="ach-chip" type="button" data-filter="sports">Sports</button>
+        <button class="ach-chip" type="button" data-filter="allround">All-rounders</button>
+      </div>
+      <div class="ach-track" id="achTrack">
+        <p class="ach-fallback">Meet Leon's students by category. Enquire to hear the full results.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ══════════ LOCATIONS ══════════ -->
   <section class="section" id="locations" aria-label="Locations">
     <div class="wrap">
@@ -627,6 +747,65 @@ html.js .finder-tool{display:block}
           <!-- NEEDS LEON: online platform + class days and times -->
           <a href="#enquire">Enquire to join online <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg></a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ HOW TO ENROL ══════════ -->
+  <section class="section" id="how" aria-label="How to enrol">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">How to enrol</span>
+        <h2>Three steps in.</h2>
+      </div>
+      <div class="steps" data-sr>
+        <div class="step">
+          <span class="no">01</span>
+          <h3>Send your details</h3>
+          <p>Fill the short form below, or message Leon on WhatsApp.</p>
+        </div>
+        <div class="step">
+          <span class="no">02</span>
+          <h3>Talk to Leon</h3>
+          <p>He confirms your batch, answers your questions, and shares the timetable and fees.</p>
+        </div>
+        <div class="step">
+          <span class="no">03</span>
+          <h3>Join your class</h3>
+          <p>Start in person at Nugegoda or Kiribathgoda, or online from anywhere.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ FAQ ══════════ (native details = works with no JS) -->
+  <section class="section" id="faq" aria-label="Questions">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">Questions</span>
+        <h2>Good to know.</h2>
+      </div>
+      <div class="faq" data-sr>
+        <details>
+          <summary>Which batch should I join?<span class="ic" aria-hidden="true"></span></summary>
+          <p class="ans">Join the batch for the year you sit your A/L: the 2027 batch or the 2028 batch. If you're already in your exam year, the Crash Course is built for final revision. Not sure? Use "Find your class" above, or just ask Leon.</p>
+        </details>
+        <details>
+          <summary>Do you teach online?<span class="ic" aria-hidden="true"></span></summary>
+          <p class="ans">Yes. Every batch runs live online alongside the in-person classes at Nugegoda and Kiribathgoda, so you can join from anywhere.</p>
+        </details>
+        <details>
+          <summary>What are the fees?<span class="ic" aria-hidden="true"></span></summary>
+          <p class="ans">Fees depend on the batch. Send an enquiry and Leon will share the current fees and everything you need to get started.</p>
+        </details>
+        <details>
+          <summary>I'm just starting out. Can I still join?<span class="ic" aria-hidden="true"></span></summary>
+          <p class="ans">Absolutely. The 2028 batch is ideal for a head start, and the Crash Course is there for exam-year students who need focused revision.</p>
+        </details>
+        <details>
+          <summary>Where are the classes held?<span class="ic" aria-hidden="true"></span></summary>
+          <p class="ans">In person at Nugegoda and Kiribathgoda, plus live online. Enquire for the current class days and times at each location.</p>
+        </details>
       </div>
     </div>
   </section>
@@ -868,6 +1047,48 @@ document.getElementById('enqReset').addEventListener('click', function(e){
   f.style.display = '';
   f.reset();
 });
+
+/* ── STUDENTS: wall of achievers. Leon fills ACHIEVERS with real, consented students ── */
+(function(){
+  const track = document.getElementById('achTrack');
+  if (!track) return;
+  /* NEEDS LEON: real achievers. Each entry:
+     {name:'Full Name', type:'academics'|'sports'|'allround', line:'Their result / sport', img:'assets/students/x.jpg'}
+     No fabricated names or results ship until this array is filled. */
+  const ACHIEVERS = [];
+  const LABEL = {academics:'Academics', sports:'Sports', allround:'All-rounder'};
+  const ICON = {
+    academics:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5"/></svg>',
+    sports:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="6"/><path d="M9 8.5 7 2m10 6.5L19 2M9 2h6"/></svg>',
+    allround:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 18l-5.8 3 1.1-6.5L2.6 10.7l6.5-.9L12 3Z"/></svg>'
+  };
+  /* honest placeholder frame until real students arrive: category only, no invented names/results */
+  const PLACEHOLDER = [
+    {type:'academics'},{type:'sports'},{type:'allround'},{type:'academics'},
+    {type:'sports'},{type:'academics'},{type:'allround'},{type:'sports'}
+  ];
+  const DATA = ACHIEVERS.length ? ACHIEVERS : PLACEHOLDER;
+
+  function tile(s){
+    const type = s.type || 'academics';
+    const media = s.img ? '<img src="' + s.img + '" alt="' + (s.name||'') + '" loading="lazy">' : '<div class="ach-art"></div>';
+    const name = s.name || 'Student achiever';
+    const line = s.line || 'Photo &amp; result from Leon';
+    return '<article class="ach" data-type="' + type + '">' + media + '<div class="ach-scrim"></div>'
+      + '<div class="ach-badge" aria-hidden="true">' + ICON[type] + '</div>'
+      + '<div class="ach-cap"><span class="t">' + LABEL[type] + '</span>'
+      + '<span class="n">' + name + '</span><span class="a">' + line + '</span></div></article>';
+  }
+  function render(filter){
+    const rows = DATA.filter(s => !filter || filter === 'all' || (s.type||'academics') === filter);
+    track.innerHTML = rows.length ? rows.map(tile).join('') : '<p class="ach-fallback">No students in this category yet.</p>';
+  }
+  render('all');
+  document.querySelectorAll('.ach-chip').forEach(c => c.addEventListener('click', () => {
+    document.querySelectorAll('.ach-chip').forEach(x => x.classList.toggle('on', x === c));
+    render(c.dataset.filter);
+  }));
+})();
 
 /* ── word splitter (descender-safe mask lives in CSS .w/.wi) ── */
 function splitWords(el){
