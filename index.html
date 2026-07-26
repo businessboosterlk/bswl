@@ -456,6 +456,71 @@ html.js .finder-tool{display:block}
 .faq details[open] summary .ic::after{opacity:0}
 .faq .ans{padding:0 0 var(--s-6);color:var(--muted);max-width:62ch}
 
+/* ═══ THE TUTES — pinned scroll showcase (paper page on a black stage) ═══ */
+.tutes{position:relative;height:100vh;overflow:hidden;background:#0a0b0d;color:#f2efe9;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  padding:clamp(80px,10vh,104px) 24px clamp(30px,5vh,44px)}
+.tutes .t-grid{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(0deg,rgba(242,239,233,.03) 0 1px,transparent 1px 48px),
+             repeating-linear-gradient(90deg,rgba(242,239,233,.03) 0 1px,transparent 1px 48px);
+  mask-image:radial-gradient(120% 100% at 50% 45%,#000 40%,transparent 88%)}
+.tutes .sq{position:absolute;border:1px solid rgba(242,239,233,.14);border-radius:6px;
+  width:var(--sz);height:var(--sz);transform:rotate(var(--rot));opacity:.5;pointer-events:none}
+.tutes .t-glow{position:absolute;top:46%;left:50%;width:720px;height:500px;transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side,rgba(242,239,233,.15),transparent 72%);filter:blur(20px);pointer-events:none}
+.tutes .big{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:1}
+.tutes .word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--font-display);font-weight:700;letter-spacing:-.04em;line-height:1;
+  font-size:clamp(80px,17vw,240px);color:#f2efe9;white-space:nowrap;opacity:.16}
+.tutes .word#tW2{opacity:0}                          /* decorative second word: JS animates it in */
+.tutes .t-eyebrow{position:relative;z-index:5;display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(242,239,233,.6);border:1px solid rgba(242,239,233,.14);border-radius:999px;padding:8px 16px}
+.tutes .t-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:#f2efe9}
+.tutes .stage{position:relative;z-index:3;perspective:1600px;display:grid;place-items:center;flex:1;width:100%}
+.tute{width:min(84vw,470px);aspect-ratio:1/1.32;background:#f5f3ec;color:#16161a;border-radius:14px;
+  padding:clamp(20px,2.6vw,34px);box-shadow:0 40px 120px rgba(0,0,0,.6);transform-style:preserve-3d;
+  display:flex;flex-direction:column}
+.tute .th{display:flex;align-items:center;justify-content:space-between;font-family:var(--font-display);
+  font-weight:600;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#c9c6bd;
+  padding-bottom:13px;border-bottom:1px solid rgba(0,0,0,.1)}
+.tute .th b{color:#16161a}
+.tute .tt{font-family:var(--font-display);font-weight:600;font-size:clamp(20px,2.6vw,28px);letter-spacing:-.02em;margin:16px 0 4px}
+.tute .ts{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#c9c6bd;margin-bottom:15px}
+.tute .tbars{display:flex;flex-direction:column;gap:9px;margin-bottom:15px}
+.tute .tbar{height:7px;border-radius:4px;background:rgba(20,20,26,.1)}
+.tute .tbar:nth-child(2){width:92%}.tute .tbar:nth-child(3){width:74%}.tute .tbar:nth-child(4){width:85%}
+.tute .tdia{flex:1;min-height:96px;border:1px solid rgba(0,0,0,.12);border-radius:10px;margin-bottom:15px;
+  display:grid;place-items:center;background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0 1px,transparent 1px 22px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.03) 0 1px,transparent 1px 22px)}
+.tute .tdia svg{width:72%;height:68%;color:#16161a}
+.tute .tkey{display:flex;border-left:3px solid #16161a;padding:5px 0 5px 12px;margin-bottom:13px}
+.tute .tkey .kl{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:#c9c6bd;display:block;margin-bottom:3px}
+.tute .tkey .kv{font-family:var(--font-display);font-weight:600;font-size:14px}
+.tute .tf{display:flex;align-items:center;justify-content:space-between;margin-top:auto;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#c9c6bd}
+.tute .tstamp{font-family:var(--font-display);font-weight:700;color:#16161a;border:1.5px solid #16161a;
+  border-radius:6px;padding:3px 9px;transform:rotate(-4deg);letter-spacing:.14em}
+.tutes .t-foot{position:relative;z-index:5;width:min(90vw,470px);display:flex;flex-direction:column;
+  align-items:center;gap:18px}
+.tutes .t-cap{position:relative;text-align:center;min-height:2.6em;width:100%}
+.tutes .t-cap .line{display:block;font-size:clamp(14px,1.4vw,17px);color:rgba(242,239,233,.6);line-height:1.5}
+.tutes .t-cap #tCapB{position:absolute;top:0;left:0;right:0;opacity:0}
+.tutes .t-prog{width:100%;display:flex;align-items:center;gap:14px;font-family:var(--font-display);
+  font-weight:600;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,239,233,.34)}
+.tutes .t-prog .track{flex:1;height:2px;background:rgba(242,239,233,.14);border-radius:2px;overflow:hidden}
+.tutes .t-prog .fill{height:100%;width:8%;background:#f2efe9}
+/* mobile: no pin, clean stacked section */
+@media(max-width:900px){
+  .tutes{height:auto;min-height:auto;justify-content:flex-start;padding:72px 22px 64px}
+  .tutes .big{display:none}
+  .tutes .t-glow{width:110%;height:60%}
+  .tutes .t-eyebrow{margin-bottom:30px}
+  .tutes .stage{flex:none;margin-bottom:30px}
+  .tutes .t-cap #tCapB{display:none}
+}
+
 /* ═══ STICKY MOBILE ENROL BAR ═══ */
 .mbar{display:none}
 @media(max-width:600px){
@@ -692,6 +757,43 @@ html.js .finder-tool{display:block}
         </div>
       </div>
       <!-- NEEDS LEON: 2-3 real student/parent testimonials (name + batch, with consent) -->
+    </div>
+  </section>
+
+  <!-- ══════════ THE TUTES — pinned scroll showcase ══════════ -->
+  <!-- NEEDS LEON: scans/photos of his real tute pages. Replace the TUTES array in the script;
+       the flip cycles through his actual notes. Placeholder pages until then (no faked content). -->
+  <section class="tutes" id="tutes" aria-label="The tutes">
+    <div class="t-grid" aria-hidden="true"></div>
+    <div class="sq" style="top:20%;left:14%;--sz:90px;--rot:12deg" aria-hidden="true"></div>
+    <div class="sq" style="top:64%;left:17%;--sz:120px;--rot:-8deg" aria-hidden="true"></div>
+    <div class="sq" style="top:22%;right:16%;--sz:64px;--rot:-14deg" aria-hidden="true"></div>
+    <div class="sq" style="top:68%;right:12%;--sz:100px;--rot:7deg" aria-hidden="true"></div>
+    <div class="t-glow" aria-hidden="true"></div>
+    <div class="big" aria-hidden="true"><span class="word" id="tW1">Free.</span><span class="word" id="tW2">Yours.</span></div>
+
+    <span class="t-eyebrow"><span class="dot"></span> The tutes</span>
+
+    <div class="stage">
+      <article class="tute" id="tuteCard">
+        <div class="th"><span id="tuteUnit">A/L Business Studies &middot; Unit 01</span><b>Fambeck</b></div>
+        <div class="tt" id="tuteTitle">The Business Environment</div>
+        <div class="ts">Theory notes &middot; worked examples</div>
+        <div class="tbars"><div class="tbar"></div><div class="tbar"></div><div class="tbar"></div><div class="tbar"></div></div>
+        <div class="tdia" aria-hidden="true">
+          <svg viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 100 V20 M20 100 H180"/><path d="M30 90 C 80 30, 120 30, 175 34"/><path d="M30 34 C 90 90, 130 90, 175 96"/></svg>
+        </div>
+        <div class="tkey"><div><span class="kl">Key term</span><span class="kv" id="tuteKey">Opportunity cost</span></div></div>
+        <div class="tf"><span id="tutePage">Page 01</span><span class="tstamp">TUTE</span></div>
+      </article>
+    </div>
+
+    <div class="t-foot">
+      <div class="t-cap">
+        <span class="line" id="tCapA">Every student gets Leon's complete set of tutes. Free, from day one.</span>
+        <span class="line" id="tCapB">The same notes his students used on the way to island rank. Yours to keep.</span>
+      </div>
+      <div class="t-prog"><span>Free</span><span class="track"><span class="fill" id="tuteFill"></span></span><span>Yours</span></div>
     </div>
   </section>
 
@@ -1168,6 +1270,38 @@ function initMotion(){
   gsap.set('.foot-mark', {yPercent:26, opacity:0});
   gsap.to('.foot-mark', {yPercent:0, opacity:1, duration:1.2, ease:'expo.out',
     scrollTrigger:{trigger:'.footer', start:'top 82%', once:true}});
+
+  /* ── SCENE 6: THE TUTES — pinned scroll (desktop only; no pin on mobile/iOS) ── */
+  if (!mob && document.getElementById('tutes')){
+    const tW1=document.getElementById('tW1'), tW2=document.getElementById('tW2'),
+          tStage=document.querySelector('.tutes .stage'), tCard=document.getElementById('tuteCard'),
+          tCapA=document.getElementById('tCapA'), tCapB=document.getElementById('tCapB'),
+          tFill=document.getElementById('tuteFill');
+    gsap.set(tW1, {x:0, opacity:.16});
+    gsap.set(tW2, {x:'60vw', opacity:0});
+    gsap.set(tStage, {scale:.72, opacity:0, rotationZ:-7});
+    const tutTl = gsap.timeline({scrollTrigger:{
+      trigger:'#tutes', start:'top top', end:'+=260%', scrub:1, pin:true, anticipatePin:1,
+      onUpdate:self => { tFill.style.width = (8 + self.progress*92) + '%'; }
+    }});
+    tutTl.to(tStage, {scale:1, opacity:1, rotationZ:0, duration:1, ease:'power2.out'}, 0)
+      .to(tW1, {x:'-7vw', duration:1.5, ease:'none'}, 1)
+      .to(tW2, {x:'52vw', duration:1.5, ease:'none'}, 1)
+      .to(tW1, {x:'-90vw', opacity:0, duration:1, ease:'power2.inOut'}, 2.5)
+      .to(tW2, {x:0, opacity:.16, duration:1, ease:'power2.inOut'}, 2.5)
+      .to(tCard, {rotationY:14, rotationZ:3, duration:.5, ease:'power2.inOut'}, 2.5)
+      .add(() => {
+        const fwd = tutTl.scrollTrigger && tutTl.scrollTrigger.direction === 1;
+        document.getElementById('tuteUnit').textContent = fwd ? 'A/L Business Studies · Unit 02' : 'A/L Business Studies · Unit 01';
+        document.getElementById('tuteTitle').textContent = fwd ? 'Marketing' : 'The Business Environment';
+        document.getElementById('tuteKey').textContent  = fwd ? 'The marketing mix' : 'Opportunity cost';
+        document.getElementById('tutePage').textContent = fwd ? 'Page 02' : 'Page 01';
+      }, 2.75)
+      .to(tCard, {rotationY:0, rotationZ:0, duration:.5, ease:'power2.inOut'}, 3)
+      .to(tCapA, {opacity:0, duration:.3}, 2.6)
+      .to(tCapB, {opacity:1, duration:.3}, 3.1)
+      .to(tW2, {x:'7vw', duration:1.5, ease:'none'}, 3.5);
+  }
 }
 </script>
 </body>
