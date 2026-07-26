@@ -1311,7 +1311,7 @@ function initMotion(){
     // xPercent/yPercent centre the words behind the card; x adds the drift.
     // Rest slightly LEFT so leading letters (Fre… / Tut…) read; the SWAP sweeps each word
     // straight through the MIDDLE of the tute (behind it) like a conveyor moving left.
-    gsap.set(tW1, {xPercent:-50, yPercent:-50, x:'-6vw', opacity:0, scale:.92});
+    gsap.set(tW1, {xPercent:-50, yPercent:-50, x:0, opacity:0, scale:.92});     // "Free" starts dead-centre (middle of the tute)
     gsap.set(tW2, {xPercent:-50, yPercent:-50, x:'80vw', opacity:0, scale:.92});
     gsap.set(tStage, {scale:.72, opacity:0, rotationZ:-7});
     const tutTl = gsap.timeline({defaults:{ease:'sine.inOut'}, scrollTrigger:{
@@ -1319,8 +1319,8 @@ function initMotion(){
       onUpdate:self => { tFill.style.width = (8 + self.progress*92) + '%'; }
     }});
     tutTl.to(tStage, {scale:1, opacity:1, rotationZ:0, duration:1, ease:'power2.out'}, 0)
-      .to(tW1, {opacity:.6, scale:1, duration:1, ease:'power2.out'}, 0)        // "Free" flows in (Fre… readable)
-      .to(tW1, {x:'3vw', duration:1.4}, 1)                                      // drifts to centre, ready to sweep
+      .to(tW1, {opacity:.6, scale:1, duration:1, ease:'power2.out'}, 0)        // "Free" flows in, centred (kept in the middle)
+      .to(tW1, {x:'-10vw', duration:1.6}, 1)                                    // then glides LEFT
       // ── THE SWAP: both words pass straight THROUGH THE MIDDLE of the tute, moving left ──
       .to(tW1, {x:'-84vw', opacity:0, duration:1.9}, 2.7)                       // Free sweeps through centre and off left
       .to(tW2, {x:'-6vw', opacity:.6, scale:1, duration:1.9}, 2.7)             // Tutes sweeps in from right THROUGH centre
