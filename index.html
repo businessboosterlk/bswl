@@ -483,7 +483,7 @@ html.js .finder-tool{display:block}
   font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
   color:rgba(242,239,233,.6);border:1px solid rgba(242,239,233,.14);border-radius:999px;padding:8px 16px}
 .tutes .t-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:#f2efe9}
-.tutes .stage{position:relative;z-index:3;perspective:1600px;display:grid;place-items:center;flex:1;width:100%}
+.tutes .stage{position:relative;z-index:3;perspective:1300px;display:grid;place-items:center;flex:1;width:100%}
 .tute{width:min(86vw,410px);aspect-ratio:1/1.32;background:#f5f3ec;color:#16161a;border-radius:14px;
   padding:clamp(20px,2.6vw,32px);box-shadow:0 40px 120px rgba(0,0,0,.6);transform-style:preserve-3d;
   display:flex;flex-direction:column}
@@ -1308,33 +1308,35 @@ function initMotion(){
           tStage=document.querySelector('.tutes .stage'), tCard=document.getElementById('tuteCard'),
           tCapA=document.getElementById('tCapA'), tCapB=document.getElementById('tCapB'),
           tFill=document.getElementById('tuteFill');
-    // xPercent/yPercent keep the words centred behind the card; x adds the drift.
-    // Both words rest drifted LEFT so their LEADING letters (Fre… / Tut…) show beside the card = readable.
-    gsap.set(tW1, {xPercent:-50, yPercent:-50, x:'-8vw', opacity:0, scale:.9});
-    gsap.set(tW2, {xPercent:-50, yPercent:-50, x:'72vw', opacity:0, scale:.9});
+    // xPercent/yPercent centre the words behind the card; x adds the drift.
+    // Rest slightly LEFT so leading letters (Fre… / Tut…) read; the SWAP sweeps each word
+    // straight through the MIDDLE of the tute (behind it) like a conveyor moving left.
+    gsap.set(tW1, {xPercent:-50, yPercent:-50, x:'-6vw', opacity:0, scale:.92});
+    gsap.set(tW2, {xPercent:-50, yPercent:-50, x:'80vw', opacity:0, scale:.92});
     gsap.set(tStage, {scale:.72, opacity:0, rotationZ:-7});
     const tutTl = gsap.timeline({defaults:{ease:'sine.inOut'}, scrollTrigger:{
-      trigger:'#tutes', start:'top top', end:'+=320%', scrub:1, pin:true, anticipatePin:1,
+      trigger:'#tutes', start:'top top', end:'+=340%', scrub:1, pin:true, anticipatePin:1,
       onUpdate:self => { tFill.style.width = (8 + self.progress*92) + '%'; }
     }});
     tutTl.to(tStage, {scale:1, opacity:1, rotationZ:0, duration:1, ease:'power2.out'}, 0)
-      .to(tW1, {opacity:.6, scale:1, duration:1, ease:'power2.out'}, 0)       // "Free" flows in, rests showing "Fre"
-      .to(tW1, {x:'-11vw', duration:1.4}, 1)                                   // gentle hold-drift
-      // ── THE SWAP: matched window + matched easing so Free out and Tutes in move as one ──
-      .to(tW1, {x:'-80vw', opacity:0, duration:1.6}, 2.7)                      // Free sweeps off left
-      .to(tW2, {x:'-11vw', opacity:.6, scale:1, duration:1.6}, 2.7)           // Tutes sweeps in from right, rests LEFT showing "Tut"
-      .to(tCard, {rotationY:12, duration:.8}, 2.8)
+      .to(tW1, {opacity:.6, scale:1, duration:1, ease:'power2.out'}, 0)        // "Free" flows in (Fre… readable)
+      .to(tW1, {x:'3vw', duration:1.4}, 1)                                      // drifts to centre, ready to sweep
+      // ── THE SWAP: both words pass straight THROUGH THE MIDDLE of the tute, moving left ──
+      .to(tW1, {x:'-84vw', opacity:0, duration:1.9}, 2.7)                       // Free sweeps through centre and off left
+      .to(tW2, {x:'-6vw', opacity:.6, scale:1, duration:1.9}, 2.7)             // Tutes sweeps in from right THROUGH centre
+      // ── the beautiful tilt: a real page-turn (bigger, with a scale dip + depth) ──
+      .to(tCard, {rotationY:26, scale:.955, duration:1, ease:'power3.inOut'}, 2.85)
       .add(() => {
         const fwd = tutTl.scrollTrigger && tutTl.scrollTrigger.direction === 1;
         document.getElementById('tuteUnit').textContent = fwd ? 'A/L Business Studies · Unit 02' : 'A/L Business Studies · Unit 01';
         document.getElementById('tuteTitle').textContent = fwd ? 'Marketing' : 'The Business Environment';
         document.getElementById('tuteKey').textContent  = fwd ? 'The marketing mix' : 'Opportunity cost';
         document.getElementById('tutePage').textContent = fwd ? 'Page 02' : 'Page 01';
-      }, 3.2)
-      .to(tCard, {rotationY:0, duration:.8}, 3.6)
-      .to(tCapA, {opacity:0, duration:.5}, 2.9)
-      .to(tCapB, {opacity:1, duration:.5}, 3.7)
-      .to(tW2, {x:'-14vw', duration:1.4}, 4.6);                                // gentle hold-drift
+      }, 3.45)
+      .to(tCard, {rotationY:0, scale:1, duration:1, ease:'power3.inOut'}, 3.85)
+      .to(tCapA, {opacity:0, duration:.5}, 3.0)
+      .to(tCapB, {opacity:1, duration:.5}, 3.9)
+      .to(tW2, {x:'-11vw', duration:1.4}, 4.9);                                 // whisper hold-drift
   }
 }
 </script>
