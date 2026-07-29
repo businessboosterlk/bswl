@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BSWL — Smart Board Hero Concept</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-display:'Poppins',system-ui,sans-serif;
+  --font-sans:'Inter',system-ui,sans-serif;
+  --ink:#f2efe9;              /* warm off-white marker */
+  --muted:rgba(242,239,233,.62);
+  --faint:rgba(242,239,233,.4);
+  --board:#111317;
+  --board-2:#0b0c0f;
+  --leon-bg:#08080a;
+  --line:rgba(242,239,233,.14);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font-sans);background:#000;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:clip}
+svg{display:block}
+
+/* ── top nav over the stage ── */
+.nav{position:absolute;top:0;left:0;right:0;z-index:20;height:76px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 clamp(20px,4vw,48px)}
+.nav .brand{display:flex;align-items:center;gap:12px}
+.nav .brand img{height:34px;width:34px;filter:brightness(0) invert(1)}
+.nav .brand b{font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:.14em;color:var(--ink)}
+.nav .links{display:flex;gap:34px}
+.nav .links a{font-size:13.5px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav .links a:hover{color:var(--ink)}
+.nav .menu{width:44px;height:44px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.nav .menu svg{width:18px;height:18px}
+@media(max-width:880px){.nav .links{display:none}}
+
+/* ── the stage: Leon (left) + smart board (right) ── */
+.stage{position:relative;min-height:100vh;display:grid;grid-template-columns:40% 60%;background:var(--leon-bg)}
+
+/* Leon panel (placeholder until the real duotone photo lands) */
+.leon{position:relative;overflow:hidden;background:
+  radial-gradient(120% 90% at 30% 20%, #202227, #08080a 70%)}
+.leon .ph{position:absolute;inset:0;display:grid;place-items:end center;filter:grayscale(1) contrast(1.05)}
+.leon .ph svg{width:90%;height:92%;opacity:.5}
+.leon .grain{position:absolute;inset:0;opacity:.5;mix-blend-mode:overlay;
+  background:repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px)}
+.leon .tag{position:absolute;left:clamp(20px,3vw,40px);bottom:34px;z-index:3}
+.leon .tag .n{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.02em;color:var(--ink)}
+.leon .tag .r{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-top:4px}
+.leon .slot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;
+  border:1px dashed var(--line);border-radius:10px;padding:8px 12px;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--faint);white-space:nowrap;background:rgba(0,0,0,.25)}
+
+/* the smart board */
+.board{position:relative;background:
+  radial-gradient(140% 90% at 78% 8%, #1a1c22 0%, var(--board) 42%, var(--board-2) 100%);
+  display:flex;flex-direction:column;padding:clamp(24px,3vw,44px);
+  box-shadow:inset 44px 0 80px -60px rgba(0,0,0,.9), inset 0 0 160px rgba(0,0,0,.55)}
+/* faint whiteboard grid */
+.board::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:
+    repeating-linear-gradient(0deg, rgba(242,239,233,.035) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(90deg, rgba(242,239,233,.035) 0 1px, transparent 1px 46px);
+  mask-image:radial-gradient(120% 100% at 70% 40%, #000 40%, transparent 90%)}
+/* soft screen glow at top */
+.board::after{content:"";position:absolute;top:-30%;right:-10%;width:70%;height:70%;pointer-events:none;
+  background:radial-gradient(closest-side, rgba(242,239,233,.06), transparent 70%)}
+
+/* toolbar */
+.bar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;
+  padding-top:56px}
+.bar .live{display:inline-flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);font-weight:600}
+.bar .live .dot{width:7px;height:7px;border-radius:50%;background:var(--ink);
+  box-shadow:0 0 0 0 rgba(242,239,233,.5);animation:pulse 2.4s var(--ease) infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,239,233,.45)}70%{box-shadow:0 0 0 8px rgba(242,239,233,0)}100%{box-shadow:0 0 0 0 rgba(242,239,233,0)}}
+.bar .pen{width:16px;height:16px;color:var(--muted)}
+.bar .unit{font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:.2em;color:var(--faint)}
+
+/* board body — the lesson */
+.body{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;
+  max-width:640px}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-display);font-weight:600;
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
+.eyebrow::before{content:"";width:28px;height:1px;background:currentColor}
+h1{font-family:var(--font-display);font-weight:600;line-height:1.02;letter-spacing:-.03em;
+  font-size:clamp(38px,4.6vw,72px);color:var(--ink)}
+h1 .mark{position:relative;white-space:nowrap}
+h1 .mark .ul{position:absolute;left:-2%;right:-2%;bottom:-.16em;width:104%;height:.28em;overflow:visible}
+h1 .mark .ul path{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round}
+.note{margin:26px 0 34px;max-width:44ch;font-size:clamp(15px,1.2vw,18px);color:var(--muted);line-height:1.6}
+.cta{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:600;
+  font-size:14px;padding:14px 26px;border-radius:999px;min-height:48px;text-decoration:none;transition:all .2s var(--ease)}
+.btn-p{background:var(--ink);color:#111}
+.btn-p:hover{transform:translateY(-1px)}
+.btn-g{color:var(--ink);border:1px solid var(--line)}
+.btn-g:hover{border-color:var(--ink)}
+.btn svg{width:17px;height:17px}
+
+/* board footer — marker tray + counter + scroll */
+.foot{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:space-between}
+.tray{display:flex;gap:8px;align-items:center}
+.tray i{width:34px;height:6px;border-radius:3px;background:rgba(242,239,233,.22)}
+.tray i:nth-child(2){width:24px;background:rgba(242,239,233,.14)}
+.tray i:nth-child(3){width:18px;background:rgba(242,239,233,.1)}
+.foot .scroll{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--faint)}
+.foot .scroll svg{width:12px;height:12px;color:var(--faint)}
+.foot .pageno{font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:.14em;color:var(--faint)}
+.foot .pageno b{color:var(--ink)}
+
+/* seam: Leon bridges into the board */
+.leon::after{content:"";position:absolute;top:0;bottom:0;right:0;width:1px;background:var(--line);z-index:4}
+
+/* ── MOBILE: stack. Leon becomes the backdrop, board content in front ── */
+@media(max-width:880px){
+  .stage{grid-template-columns:1fr;grid-template-rows:1fr}
+  .leon{position:absolute;inset:0;z-index:0}
+  .leon .tag,.leon .slot{z-index:1}
+  .leon .tag{bottom:auto;top:96px;left:24px}
+  .board{position:relative;z-index:2;background:
+    linear-gradient(180deg, rgba(8,8,10,.35) 0%, rgba(11,12,15,.86) 46%, #0b0c0f 100%);
+    box-shadow:none;justify-content:flex-end;min-height:100vh;padding:24px 22px 30px}
+  .board::before{opacity:.28}
+  .bar{padding-top:150px}
+  .body{flex:none;max-width:none;justify-content:flex-end}
+  h1{font-size:clamp(40px,11vw,58px)}
+  .foot{margin-top:26px}
+  .leon .slot{top:44%}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><img src="assets/favicon.png" alt=""><b>ACADEMY OF BUSINESS STUDIES</b></div>
+  <div class="links"><a href="#">Classes</a><a href="#">Why Leon</a><a href="#">Students</a><a href="#">Locations</a></div>
+  <div class="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg></div>
+</nav>
+
+<section class="stage">
+
+  <!-- LEON (placeholder until the real duotone photo of him at the board arrives) -->
+  <div class="leon">
+    <div class="ph" aria-hidden="true">
+      <svg viewBox="0 0 200 260" fill="none">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#4a4d55"/><stop offset="1" stop-color="#17181c"/></linearGradient></defs>
+        <circle cx="100" cy="66" r="40" fill="url(#g)"/>
+        <path d="M28 260 C 28 176, 60 132, 100 132 C 140 132, 172 176, 172 260 Z" fill="url(#g)"/>
+      </svg>
+    </div>
+    <div class="grain"></div>
+    <div class="slot">Leon — real photo goes here</div>
+    <div class="tag"><div class="n">Leon Fambeck</div><div class="r">Your teacher</div></div>
+  </div>
+
+  <!-- THE SMART BOARD = the interface -->
+  <div class="board">
+    <div class="bar">
+      <span class="live">
+        <svg class="pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+        Live lesson
+      </span>
+      <span class="unit">2027 &middot; 2028 &middot; CRASH</span>
+    </div>
+
+    <div class="body">
+      <span class="eyebrow">A/L Business Studies</span>
+      <h1>Taught the way<br>it should be
+        <span class="mark">taught.<svg class="ul" viewBox="0 0 300 20" preserveAspectRatio="none"><path d="M4 13 C 70 5, 150 6, 210 10 S 288 15, 296 7"/></svg></span>
+      </h1>
+      <p class="note">Theory, top-quality tutes and revision that turn into island-rank results. In person at Nugegoda and Kiribathgoda, or live online.</p>
+      <div class="cta">
+        <a class="btn btn-p" href="#">Enrol now</a>
+        <a class="btn btn-g" href="#">See the classes
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg></a>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="tray" aria-hidden="true"><i></i><i></i><i></i></div>
+      <span class="scroll">Scroll
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14m0 0-6-6m6 6 6-6"/></svg>
+      </span>
+      <span class="pageno"><b>01</b> / 04</span>
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>

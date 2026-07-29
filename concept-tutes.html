@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BSWL — Tutes pinned-scroll concept</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-display:'Poppins',system-ui,sans-serif;
+  --font-sans:'Inter',system-ui,sans-serif;
+  --bg:#0a0b0d;
+  --ink:#f2efe9;
+  --muted:rgba(242,239,233,.6);
+  --faint:rgba(242,239,233,.34);
+  --line:rgba(242,239,233,.14);
+  --paper:#f5f3ec;          /* the tute page */
+  --paper-ink:#16161a;
+  --paper-faint:#c9c6bd;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:clip}
+svg{display:block}
+
+.pre-spacer,.post-spacer{height:70vh;display:grid;place-items:center;
+  font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--faint)}
+
+/* ── pinned stage ── */
+.tutes{position:relative;height:100vh;overflow:hidden;display:grid;place-items:center;background:var(--bg)}
+/* faint grid */
+.tutes .grid{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(0deg,rgba(242,239,233,.03) 0 1px,transparent 1px 48px),
+             repeating-linear-gradient(90deg,rgba(242,239,233,.03) 0 1px,transparent 1px 48px);
+  mask-image:radial-gradient(120% 100% at 50% 45%,#000 40%,transparent 88%)}
+/* floating squares */
+.sq{position:absolute;border:1px solid var(--line);border-radius:6px;
+  width:var(--sz);height:var(--sz);transform:rotate(var(--rot));opacity:.5}
+/* paper glow behind the page */
+.glow{position:absolute;top:50%;left:50%;width:760px;height:520px;transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side,rgba(242,239,233,.16),transparent 72%);
+  filter:blur(20px);pointer-events:none}
+
+.eyebrow{position:absolute;top:36px;left:50%;transform:translateX(-50%);z-index:5;
+  display:inline-flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:600;
+  font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:8px 16px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--ink)}
+
+/* giant words behind the page */
+.big{position:absolute;top:50%;left:50%;width:100%;text-align:center;pointer-events:none;z-index:1}
+.big .word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--font-display);font-weight:700;letter-spacing:-.04em;line-height:1;
+  font-size:clamp(80px,18vw,260px);color:var(--ink);white-space:nowrap}
+
+/* the tute page (the star) */
+.stage{position:relative;z-index:3;perspective:1600px}
+.tute{width:min(88vw,560px);aspect-ratio:1/1.32;background:var(--paper);color:var(--paper-ink);
+  border-radius:14px;padding:clamp(22px,3.4vw,40px);box-shadow:0 40px 120px rgba(0,0,0,.6);
+  transform-style:preserve-3d;position:relative;display:flex;flex-direction:column}
+.tute .t-head{display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--font-display);font-weight:600;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--paper-faint);padding-bottom:14px;border-bottom:1px solid rgba(0,0,0,.1)}
+.tute .t-head b{color:var(--paper-ink)}
+.tute .t-unit{font-variant-numeric:tabular-nums}
+.tute .t-title{font-family:var(--font-display);font-weight:600;font-size:clamp(20px,3vw,30px);
+  letter-spacing:-.02em;margin:18px 0 4px}
+.tute .t-sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-faint);margin-bottom:16px}
+.tute .bars{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.tute .bar{height:7px;border-radius:4px;background:rgba(20,20,26,.1)}
+.tute .bar:nth-child(2){width:92%}.tute .bar:nth-child(3){width:74%}.tute .bar:nth-child(4){width:85%}
+.tute .diagram{flex:1;min-height:110px;border:1px solid rgba(0,0,0,.12);border-radius:10px;
+  margin-bottom:16px;display:grid;place-items:center;background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0 1px,transparent 1px 22px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.03) 0 1px,transparent 1px 22px)}
+.tute .diagram svg{width:74%;height:70%;color:var(--paper-ink)}
+.tute .key{display:flex;gap:10px;align-items:flex-start;border-left:3px solid var(--paper-ink);
+  padding:6px 0 6px 12px;margin-bottom:14px}
+.tute .key .k-l{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper-faint);display:block;margin-bottom:3px}
+.tute .key .k-v{font-family:var(--font-display);font-weight:600;font-size:14px}
+.tute .t-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-faint)}
+.tute .stamp{font-family:var(--font-display);font-weight:700;color:var(--paper-ink);
+  border:1.5px solid var(--paper-ink);border-radius:6px;padding:3px 9px;transform:rotate(-4deg);letter-spacing:.14em}
+
+/* captions */
+.cap{position:absolute;bottom:118px;left:50%;transform:translateX(-50%);width:min(90vw,560px);
+  text-align:center;z-index:5}
+.cap .line{display:block;font-size:clamp(14px,1.4vw,17px);color:var(--muted);line-height:1.5}
+.cap #capB{position:absolute;top:0;left:0;right:0;opacity:0}
+
+/* progress */
+.prog{position:absolute;bottom:52px;left:50%;transform:translateX(-50%);z-index:5;
+  width:min(80vw,420px);display:flex;align-items:center;gap:14px;
+  font-family:var(--font-display);font-weight:600;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+.prog .track{flex:1;height:2px;background:var(--line);border-radius:2px;overflow:hidden}
+.prog .fill{height:100%;width:8%;background:var(--ink)}
+
+@media(max-width:900px){
+  .big .word{font-size:24vw}
+  .cap{bottom:104px}
+}
+</style>
+</head>
+<body>
+
+<div class="pre-spacer">Scroll ↓</div>
+
+<section class="tutes" id="tutes">
+  <div class="grid"></div>
+  <div class="sq" style="top:20%;left:14%;--sz:90px;--rot:12deg"></div>
+  <div class="sq" style="top:64%;left:17%;--sz:120px;--rot:-8deg"></div>
+  <div class="sq" style="top:22%;right:16%;--sz:64px;--rot:-14deg"></div>
+  <div class="sq" style="top:68%;right:12%;--sz:100px;--rot:7deg"></div>
+  <div class="glow"></div>
+
+  <div class="eyebrow"><span class="dot"></span> The tutes</div>
+
+  <div class="big">
+    <span class="word" id="w1">Free.</span>
+    <span class="word" id="w2">Yours.</span>
+  </div>
+
+  <div class="stage">
+    <article class="tute" id="tute">
+      <div class="t-head"><span class="t-unit" id="tUnit">A/L Business Studies · Unit 01</span><b>Fambeck</b></div>
+      <div class="t-title" id="tTitle">The Business Environment</div>
+      <div class="t-sub" id="tSub">Theory notes · worked examples</div>
+      <div class="bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+      <div class="diagram" id="tDiagram">
+        <svg viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 100 V20 M20 100 H180"/><path d="M30 90 C 80 30, 120 30, 175 34"/><path d="M30 34 C 90 90, 130 90, 175 96"/>
+        </svg>
+      </div>
+      <div class="key"><div><span class="k-l" id="kLabel">Key term</span><span class="k-v" id="kValue">Opportunity cost</span></div></div>
+      <div class="t-foot"><span id="tPage">Page 01</span><span class="stamp">TUTE</span></div>
+    </article>
+  </div>
+
+  <div class="cap">
+    <span class="line" id="capA">Every student gets Leon's complete set of tutes. Free, from day one.</span>
+    <span class="line" id="capB">The same notes his students used on the way to island rank. Yours to keep.</span>
+  </div>
+
+  <div class="prog"><span>Free</span><span class="track"><span class="fill" id="fill"></span></span><span>Yours</span></div>
+</section>
+
+<div class="post-spacer">↓ next section</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+'use strict';
+window.addEventListener('load', () => {
+  const w1=document.getElementById('w1'), w2=document.getElementById('w2'),
+        stage=document.querySelector('.stage'), tute=document.getElementById('tute'),
+        capA=document.getElementById('capA'), capB=document.getElementById('capB'),
+        fill=document.getElementById('fill');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mobile = matchMedia('(max-width:900px)').matches;
+
+  // static fallback: page settled, both words faint, unit-2 content hidden. Fully readable, no JS needed either.
+  if (!window.gsap || !window.ScrollTrigger || reduce || mobile){
+    gsap && gsap.set && gsap.set(w2,{opacity:.14});
+    w1.style.opacity='.14'; w2.style.opacity='.14';
+    return;
+  }
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.set(w1,{x:0,opacity:.16});
+  gsap.set(w2,{x:'60vw',opacity:0});
+  gsap.set(stage,{scale:.72,opacity:0,rotationZ:-7});
+
+  const tl = gsap.timeline({scrollTrigger:{
+    trigger:'#tutes', start:'top top', end:'+=260%', scrub:1, pin:true, anticipatePin:1,
+    onUpdate:self=>{ fill.style.width = (8 + self.progress*92) + '%'; }
+  }});
+
+  // 1 — page scales in and settles
+  tl.to(stage,{scale:1,opacity:1,rotationZ:0,duration:1,ease:'power2.out'},0);
+  // 2 — hold "Free", gentle drift
+  tl.to(w1,{x:'-7vw',duration:1.5,ease:'none'},1)
+    .to(w2,{x:'52vw',duration:1.5,ease:'none'},1);
+  // 3 — swap words: Free off left, Yours in from right
+  tl.to(w1,{x:'-90vw',opacity:0,duration:1,ease:'power2.inOut'},2.5)
+    .to(w2,{x:0,opacity:.16,duration:1,ease:'power2.inOut'},2.5);
+  // page flips and turns to Unit 02 at the midpoint
+  tl.to(tute,{rotationY:14,rotationZ:3,duration:.5,ease:'power2.inOut'},2.5)
+    .add(()=>{ // swap page content at the flip's edge
+      const back = tl.scrollTrigger && tl.scrollTrigger.direction === 1;
+      document.getElementById('tUnit').textContent = back ? 'A/L Business Studies · Unit 02' : 'A/L Business Studies · Unit 01';
+      document.getElementById('tTitle').textContent = back ? 'Marketing' : 'The Business Environment';
+      document.getElementById('kValue').textContent = back ? 'The marketing mix' : 'Opportunity cost';
+      document.getElementById('tPage').textContent = back ? 'Page 02' : 'Page 01';
+    },2.75)
+    .to(tute,{rotationY:0,rotationZ:0,duration:.5,ease:'power2.inOut'},3);
+  // caption swap
+  tl.to(capA,{opacity:0,duration:.3},2.6).to(capB,{opacity:1,duration:.3},3.1);
+  // 4 — hold "Yours", drift
+  tl.to(w2,{x:'7vw',duration:1.5,ease:'none'},3.5);
+
+  document.fonts && document.fonts.ready && document.fonts.ready.then(()=>ScrollTrigger.refresh());
+});
+</script>
+</body>
+</html>
