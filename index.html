@@ -282,8 +282,52 @@ html.js .finder-tool{display:block}
 }
 
 /* ═══ WHY LEON — black band ═══ */
-.why{overflow:hidden}
-.why .wrap{position:relative}
+.why{overflow:hidden;position:relative;isolation:isolate}
+.why .wrap{position:relative;z-index:1}
+
+/* ── THE CORRIDOR: a receding room of ruled lines behind the black band ──────
+   Pure CSS, no JS at all. Gated behind @supports so a browser without container
+   query units or 3D transforms gets the plain black band it always had, rather
+   than a broken layout. Beams default to RUNNING; the observer only ever pauses
+   them, same rule as the exercise-book page. */
+/* hidden by DEFAULT so an unsupported browser gets the plain black band it always
+   had. Without this the .warp divs fall into normal flow instead of vanishing. */
+.warp{display:none}
+@supports (height:100cqmax) and (transform-style:preserve-3d){
+  .warp{display:block;position:absolute;inset:0;z-index:0;pointer-events:none;
+    overflow:hidden;clip-path:inset(0);
+    /* a deep perspective on purpose: at ~260px the lines fan out as a starburst
+       behind the headline, which is the glow-behind-a-header tell in disguise.
+       Deeper reads as a room you are standing in. */
+    container-type:size;perspective:var(--wp-persp,700px);transform-style:preserve-3d;
+    --gc:rgba(255,255,255,.085);   /* the ruled lines */
+    --bs:6%}                        /* cell + beam width */
+  .wp{position:absolute;transform-style:preserve-3d;container-type:inline-size;
+    background:
+      linear-gradient(var(--gc) 0 1px, transparent 1px var(--bs)) 50% -0.5px/var(--bs) var(--bs),
+      linear-gradient(90deg, var(--gc) 0 1px, transparent 1px var(--bs)) 50% 50%/var(--bs) var(--bs)}
+  .wp-t{top:0;left:0;width:100cqi;height:100cqmax;transform-origin:50% 0%;transform:rotateX(-90deg)}
+  .wp-b{top:100%;left:0;width:100cqi;height:100cqmax;transform-origin:50% 0%;transform:rotateX(-90deg)}
+  .wp-l{top:0;left:0;width:100cqh;height:100cqmax;transform-origin:0% 0%;transform:rotate(90deg) rotateX(-90deg)}
+  .wp-r{top:0;right:0;width:100cqh;height:100cqmax;transform-origin:100% 0%;transform:rotate(-90deg) rotateX(-90deg)}
+  /* a beam of light travelling down the corridor. White only, never a hue. */
+  .wp i{position:absolute;left:var(--x);top:0;width:var(--bs);
+    aspect-ratio:1/var(--ar,6);
+    /* one number to tune if you want it louder or quieter */
+    background:linear-gradient(rgba(255,255,255,.32),transparent);
+    will-change:transform;
+    animation:wpBeam var(--dur,10s) linear var(--d,0s) infinite}
+  @keyframes wpBeam{
+    from{transform:translate(-50%,100cqmax)}
+    to{transform:translate(-50%,-100%)}
+  }
+  /* off screen: stop paying for it */
+  .warp.rest i{animation-play-state:paused}
+  /* phones carry half the beams */
+  @media(max-width:760px){.wp i:nth-child(2){display:none}}
+  /* reduced motion keeps the room, drops the movement */
+  @media(prefers-reduced-motion:reduce){.wp i{display:none}}
+}
 .echo{position:relative;margin:var(--s-4) 0 var(--s-6)}
 .echo .e{display:block;font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;
   line-height:1.02;font-size:var(--fs-4xl);color:var(--ink)}
@@ -416,17 +460,25 @@ html.js .finder-tool{display:block}
   display:flex;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap;
   font-size:var(--fs-xs);color:var(--faint)}
 
-/* ═══ TRUST STRIP ═══ */
-.trust{border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
-.trust-row{display:grid;grid-template-columns:1fr;gap:var(--s-6);padding:var(--s-10) 0}
+/* ═══ TRUST STRIP — the exercise-book page ═══ */
+.trust{position:relative;isolation:isolate;overflow:hidden;background:#fbfaf7;
+  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+/* the squared page. Decoration only: no JS and no canvas still leaves the facts on paper. */
+.trust>canvas.page{position:absolute;inset:0;display:block;width:100%;height:100%;
+  z-index:0;pointer-events:none}
+/* padding-top/bottom LONGHAND, never the `padding` shorthand: .wrap sets its
+   gutter with padding-left/right, and a shorthand here resets all four sides and
+   drops the text flush against the screen edge. That was live. */
+.trust-row{position:relative;z-index:1;display:grid;grid-template-columns:1fr;
+  gap:var(--s-6);padding-top:var(--s-16);padding-bottom:var(--s-16)}
 .trust-item{display:flex;flex-direction:column;gap:8px}
 .trust-item b{font-family:var(--font-display);font-weight:600;font-size:var(--fs-2xl);
   letter-spacing:-.03em;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
 .trust-item span{font-size:var(--fs-sm);color:var(--muted);max-width:30ch}
 @media(min-width:760px){
-  .trust-row{grid-template-columns:repeat(3,1fr);gap:var(--s-10)}
-  .trust-item{padding-left:var(--s-8);border-left:1px solid var(--hair)}
-  .trust-item:first-child{padding-left:0;border-left:none}
+  /* no divider rules here: the squares of the page already separate the three facts */
+  .trust-row{grid-template-columns:repeat(3,1fr);gap:var(--s-12);
+    padding-top:var(--s-20);padding-bottom:var(--s-20)}
 }
 
 /* ═══ HOW TO ENROL — steps ═══ */
@@ -630,8 +682,12 @@ html.js .finder-tool{display:block}
     </div>
   </section>
 
-  <!-- ══════════ TRUST STRIP — real confirmed facts only ══════════ -->
+  <!-- ══════════ TRUST STRIP — real confirmed facts only.
+       Sits on the kinetic exercise-book page (canvas.page). The canvas is pure
+       decoration: with JS dead or canvas unsupported the three facts still read
+       on plain paper, which is the whole point of this section. ══════════ -->
   <section class="trust" aria-label="At a glance">
+    <canvas class="page" aria-hidden="true"></canvas>
     <div class="wrap trust-row" data-sr>
       <div class="trust-item"><b>100%</b><span>Pass record. Not one student has ever failed.</span></div>
       <div class="trust-item"><b>Island rank</b><span>Country-top A/L Business Studies results.</span></div>
@@ -778,6 +834,14 @@ html.js .finder-tool{display:block}
 
   <!-- ══════════ WHY LEON — black band. REAL confirmed facts only. ══════════ -->
   <section class="section dark why" id="why" aria-label="Why Leon">
+    <!-- The corridor. Decoration only, aria-hidden, pure CSS. Negative delays so
+         the beams are already mid-flight on load instead of starting empty. -->
+    <div class="warp" aria-hidden="true">
+      <div class="wp wp-t"><i style="--x:18%;--d:-1.2s;--dur:9s;--ar:7"></i><i style="--x:64%;--d:-5.4s;--dur:11s;--ar:5"></i></div>
+      <div class="wp wp-b"><i style="--x:30%;--d:-3.1s;--dur:10s;--ar:6"></i><i style="--x:76%;--d:-7.8s;--dur:8.5s;--ar:8"></i></div>
+      <div class="wp wp-l"><i style="--x:24%;--d:-2.4s;--dur:10.5s;--ar:6"></i><i style="--x:70%;--d:-6.6s;--dur:9.5s;--ar:7"></i></div>
+      <div class="wp wp-r"><i style="--x:14%;--d:-4.7s;--dur:8s;--ar:5"></i><i style="--x:58%;--d:-9.1s;--dur:11.5s;--ar:6"></i></div>
+    </div>
     <div class="wrap">
       <span class="eyebrow">Why Leon</span>
       <div class="echo" aria-label="A perfect record.">
@@ -1390,6 +1454,247 @@ function initMotion(){
       .to(tW2, {x:'-11vw', duration:1.4}, 4.9);                                 // whisper hold-drift
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   THE PAGE — kinetic exercise-book grid behind the trust strip.
+
+   Squared paper with a red margin rule, the way an A/L exercise book looks.
+   The sheet presses in toward the pointer and dents where you click.
+
+   Three rules it obeys:
+     1. ENHANCEMENT ONLY. The canvas is aria-hidden decoration. Dead JS, an old
+        browser or no canvas support leaves the three facts on plain paper.
+     2. IT SLEEPS. The loop runs only while the section is on screen AND the
+        pointer has touched it in the last couple of seconds. A phone scrolling
+        past pays for one static frame, not a running animation.
+     3. NO GLOW. Ink and paper. The only colour is the margin rule, which is a
+        real thing off a real book, not decoration.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function(){
+  var sec = document.querySelector('.trust');
+  if (!sec) return;
+  var cv = sec.querySelector('canvas.page');
+  /* the first stat, NOT the .wrap: the wrap's gutter is padding, so its own box
+     starts at 0 and measuring it puts the margin rule through the text */
+  var row = sec.querySelector('.trust-item');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  if (!ctx) return;
+
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var CELL      = 34;    // squared-paper cell, about a 5mm square on screen
+  var REACH     = 200;   // how far from the pointer the press is felt
+  var MAX_PRESS = 14;    // paper gives a little. It is not rubber
+  var EASE      = 0.10;  // how fast the sheet catches up to the pointer
+
+  var W = 0, H = 0, dpr = 1;
+  var mx = -9999, my = -9999, tx = -9999, ty = -9999;
+  /* inView starts TRUE on purpose. IntersectionObserver is only ever allowed to
+     PAUSE this loop, never to permit it. Gating the other way round means one
+     silent IO failure (in-app browsers do this) kills the effect with nothing to
+     show for it, and the auto-sleep below already stops the loop when idle. */
+  var raf = 0, live = false, inView = true, lastMove = -1e9;
+  var dents = [];
+
+  /* where one grid point ends up once the sheet is pressed */
+  function press(gx, gy, col, row, cols, rows){
+    /* the sheet is held at its edges, so the outer rows and columns barely move */
+    var m  = 1.5;
+    var pc = Math.min(col / m, (cols - 1 - col) / m, 1);
+    var pr = Math.min(row / m, (rows - 1 - row) / m, 1);
+    var pin = pc * pc * pr * pr;
+
+    var dx = gx - mx, dy = gy - my;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    var near = Math.max(0, 1 - dist / REACH) * pin;
+
+    var ox = 0, oy = 0, i, d, ddx, ddy, dd, off, s, a;
+    for (i = 0; i < dents.length; i++){
+      d = dents[i];
+      ddx = gx - d.x; ddy = gy - d.y;
+      dd  = Math.sqrt(ddx * ddx + ddy * ddy);
+      off = dd - d.r;
+      if (Math.abs(off) < 58){
+        s = (1 - Math.abs(off) / 58) * d.life * 11 * pin;
+        a = Math.atan2(ddy, ddx);
+        ox += Math.cos(a) * s * (off < 0 ? 1 : -1);
+        oy += Math.sin(a) * s * (off < 0 ? 1 : -1);
+      }
+    }
+
+    if (dist < REACH && dist > 0 && pin > 0){
+      var t   = dist / REACH;
+      var amt = (1 - t) * (1 - t) * Math.min(1, dist / 56) * MAX_PRESS * pin;
+      var ang = Math.atan2(dy, dx);
+      return { x: gx - Math.cos(ang) * amt + ox, y: gy - Math.sin(ang) * amt + oy, n: near };
+    }
+    return { x: gx + ox, y: gy + oy, n: near };
+  }
+
+  function draw(now){
+    if (!W || !H) return;
+    ctx.clearRect(0, 0, W, H);
+
+    /* dents spread out and fade */
+    for (var i = dents.length - 1; i >= 0; i--){
+      var age = (now - dents[i].born) / 1000;
+      dents[i].r    = Math.max(0, age * 260);
+      dents[i].life = Math.max(0, 1 - age * 1.35);
+      if (dents[i].life <= 0) dents.splice(i, 1);
+    }
+
+    var cols = Math.max(2, Math.ceil(W / CELL)) + 1;
+    var rows = Math.max(2, Math.ceil(H / CELL)) + 1;
+    var cw = W / (cols - 1), ch = H / (rows - 1);
+
+    var P = [], r, c;
+    for (r = 0; r < rows; r++){
+      P[r] = [];
+      for (c = 0; c < cols; c++) P[r][c] = press(c * cw, r * ch, c, r, cols, rows);
+    }
+
+    /* the squares */
+    function seg(a, b){
+      var n = (a.n + b.n) / 2;
+      var t = n * n * (3 - 2 * n);                       // smoothstep
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = 'rgba(20,20,23,' + (0.085 + t * 0.26).toFixed(3) + ')';
+      ctx.lineWidth = 0.75 + t * 0.5;
+      ctx.stroke();
+    }
+    for (r = 0; r < rows; r++) for (c = 0; c < cols - 1; c++) seg(P[r][c], P[r][c + 1]);
+    for (c = 0; c < cols; c++) for (r = 0; r < rows - 1; r++) seg(P[r][c], P[r + 1][c]);
+
+    /* pencil dots. Invisible at rest, they surface only where the page is pressed */
+    for (r = 0; r < rows; r++){
+      for (c = 0; c < cols; c++){
+        var p = P[r][c];
+        var t = p.n * p.n * (3 - 2 * p.n);
+        if (t < 0.02) continue;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 0.9 + t * 1.1, 0, 6.2832);
+        ctx.fillStyle = 'rgba(20,20,23,' + (t * 0.42).toFixed(3) + ')';
+        ctx.fill();
+      }
+    }
+
+    /* The margin rule, printed on the sheet so it bends with it. It is measured
+       OFF the text column, never a percentage of the width: on a real page the
+       margin sits beside what you write, and a percentage put it straight
+       through the "100%". */
+    var mX  = 24;
+    if (row){
+      var gap = row.getBoundingClientRect().left - sec.getBoundingClientRect().left;
+      mX = Math.max(11, gap - 16);
+    }
+    var mc  = mX / cw;
+    var c0  = Math.max(0, Math.min(cols - 2, Math.floor(mc)));
+    var f   = mc - c0;
+    ctx.beginPath();
+    for (r = 0; r < rows; r++){
+      var a = P[r][c0], b = P[r][c0 + 1];
+      var x = a.x + (b.x - a.x) * f, y = a.y + (b.y - a.y) * f;
+      if (r) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(178,58,58,.30)';
+    ctx.lineWidth = 1.1;
+    ctx.stroke();
+
+    /* the dent ring itself, a thumb pressed into the page */
+    for (i = 0; i < dents.length; i++){
+      ctx.beginPath();
+      ctx.arc(dents[i].x, dents[i].y, Math.max(0, dents[i].r), 0, 6.2832);
+      ctx.strokeStyle = 'rgba(20,20,23,' + (dents[i].life * 0.16).toFixed(3) + ')';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  }
+
+  function frame(now){
+    mx += (tx - mx) * EASE;
+    my += (ty - my) * EASE;
+    draw(now);
+    var settled = Math.abs(mx - tx) < 0.5 && Math.abs(my - ty) < 0.5;
+    if (!inView || (now - lastMove > 2200 && !dents.length && settled)){
+      live = false; raf = 0; return;                     /* sleep until touched again */
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function wake(){
+    lastMove = performance.now();
+    if (!live && inView && !reduce){ live = true; raf = requestAnimationFrame(frame); }
+  }
+
+  function size(){
+    var r = sec.getBoundingClientRect();
+    if (!r.width || !r.height) return false;
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = Math.round(r.width); H = Math.round(r.height);
+    cv.width  = Math.round(W * dpr);
+    cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw(performance.now());                             /* a static frame always exists */
+    return true;
+  }
+
+  function at(e){
+    var r = sec.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+
+  sec.addEventListener('pointermove', function(e){
+    var p = at(e); tx = p.x; ty = p.y; wake();
+  }, { passive: true });
+
+  sec.addEventListener('pointerleave', function(){
+    tx = -9999; ty = -9999; wake();
+  }, { passive: true });
+
+  sec.addEventListener('pointerdown', function(e){
+    var p = at(e);
+    tx = p.x; ty = p.y;
+    if (mx < -1000){ mx = p.x; my = p.y; }               /* touch: land on the point, no swoop */
+    if (dents.length < 4){
+      dents.push({ x: p.x, y: p.y, r: 0, life: 1, born: performance.now() });
+    }
+    wake();
+  }, { passive: true });
+
+  if ('ResizeObserver' in window) new ResizeObserver(size).observe(sec);
+  window.addEventListener('resize', size);
+
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      inView = es[0].isIntersecting;                     /* pause only, see above */
+      if (inView) wake();
+    }, { rootMargin: '80px' }).observe(sec);
+  }
+
+  /* Some in-app webviews (Instagram's especially) measure the section as 0 wide
+     while the page is still settling. Keep trying briefly instead of trusting one
+     measurement, or a blank 300x150 canvas is what ships. Stops the moment it
+     succeeds; ResizeObserver and fonts.ready handle every change after that. */
+  (function settle(n){
+    if (size() || n > 20) return;
+    setTimeout(function(){ settle(n + 1); }, 120);
+  })(0);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+})();
+
+/* The corridor rests when it scrolls out of view. Same rule as above: the
+   observer only ever PAUSES it. No observer, or a dead one, means the beams
+   keep running, which is correct behaviour and merely less thrifty. */
+(function(){
+  var w = document.querySelector('.warp');
+  if (!w || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function(es){
+    w.classList.toggle('rest', !es[0].isIntersecting);
+  }, { rootMargin: '120px' }).observe(w);
+})();
 </script>
 </body>
 </html>
