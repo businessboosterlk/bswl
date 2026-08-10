@@ -1282,6 +1282,19 @@ document.getElementById('enqForm').addEventListener('submit', function(e){
     + 'Batch: ' + batch + '\n'
     + 'Preferred location: ' + loc + '\n'
     + '(Sent from the website)';
+  /* ── THE PIPE. The enquiry goes into the system as well as into WhatsApp,
+     so nobody has to retype it off a phone. Same origin as the system, so this
+     crossing is real. On a client's own domain these become two origins and
+     this is where the real backend goes instead. ── */
+  try{
+    const KEY='bswl_enquiries_v1';
+    const q=JSON.parse(localStorage.getItem(KEY)||'[]');
+    q.push({ref:'W'+Date.now().toString(36).toUpperCase(),
+            name:name,phone:phone,batch:batch,loc:loc,
+            at:new Date().toISOString(),src:'Website'});
+    /* keep it small: the desk clears these as it works them */
+    localStorage.setItem(KEY,JSON.stringify(q.slice(-50)));
+  }catch(err){/* a private window or a full store must never block the enquiry */}
   const url = 'https://wa.me/' + LEON_WA + '?text=' + encodeURIComponent(text);
   document.getElementById('waAgain').href = url;
   this.style.display = 'none';
