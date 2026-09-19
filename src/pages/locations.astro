@@ -1,0 +1,44 @@
+---
+// WHERE WE TEACH. Towns only. No institute names, addresses, days or times until Leon sends them in writing.
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import locations from '../data/locations.json';
+import { BASE, SITE } from '../scripts/config.js';
+import { breadcrumb, siteOf } from '../scripts/seo.js';
+---
+<Layout
+  title="Where Leon teaches: Nugegoda, Kiribathgoda, Gampaha and online"
+  description="A/L Business Studies with Leon Fambeck in Nugegoda, Kiribathgoda and Gampaha, at his own classroom and live online. Ask for the timetable on WhatsApp."
+  path="locations/" page="locations" schema={[breadcrumb(siteOf(Astro.site), BASE, [{ name: 'Where we teach', path: 'locations/' }])]}>
+
+  <PageHero uid="lo" pose="right" kicker="Where we teach"
+    title="Five places<br>to learn."
+    lede="Three institutes, a classroom at Leon's home and a live online class. The same lessons and the same tutes in every one.">
+    <a class="hx-pill" href={BASE + 'enrol/'}>Enrol now</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="places" data-sr>
+        {locations.map((l, n) => (
+          <article class="place" id={l.key}>
+            <i class="way-ic"><Icon name={l.icon} /></i>
+            <div>
+              <span class="meta">{l.mode}</span>
+              <h2>{l.name}</h2>
+              <p>{l.line}</p>
+            </div>
+            <div class="place-cta">
+              <a class="btn btn-ghost" data-wa={l.ask} href={'https://wa.me/' + SITE.whatsapp}>Ask for the timetable</a>
+              <a class="hx-link" href={BASE + 'enrol/?loc=' + encodeURIComponent(l.name)}>Enrol here <b aria-hidden="true">&rsaquo;</b></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand uid="loc" title="Not sure which is nearest?" line="Tell Leon where you live and he will point you to the right class." about="which class is nearest to me" />
+</Layout>

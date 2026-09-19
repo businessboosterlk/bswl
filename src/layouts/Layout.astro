@@ -1,0 +1,176 @@
+---
+// SHARED LAYOUT for every page: head (SEO, share preview, JSON-LD), nav, drawer, footer and the sticky phone bar.
+// Real-world values come from src/scripts/config.js. NAV LAW: brand hard left, the action hard right, full width bar.
+import '../styles/global.css';
+import '../styles/pages.css';
+import { getCollection } from 'astro:content';
+import { SITE, BASE, ROBOTS } from '../scripts/config.js';
+
+const {
+  title,
+  description,
+  path = '',            // '' for home, 'about/' for /about/
+  page = 'home',        // marks the active nav link and tags enquiries
+  schema = [],          // extra JSON-LD nodes (BreadcrumbList, FAQPage, Course, Person)
+  home = false          // the home page loads GSAP and its own script
+} = Astro.props;
+
+const site = Astro.site ? String(Astro.site).replace(/\/$/, '') : '';
+const url = site + BASE + path;
+const og = site + BASE + 'assets/og.jpg';
+const year = new Date().getFullYear();
+
+// The blog appears in the menu the day the first post is published. An empty blog is never linked.
+const posts = (await getCollection('blog', ({ data }) => !data.draft));
+const nav = [
+  { href: BASE + 'classes/', label: 'Classes', key: 'classes' },
+  { href: BASE + 'about/', label: 'About Leon', key: 'about' },
+  { href: BASE + 'locations/', label: 'Where we teach', key: 'locations' },
+  { href: BASE + 'tutes/', label: 'The tutes', key: 'tutes' },
+  ...(posts.length ? [{ href: BASE + 'blog/', label: 'Blog', key: 'blog' }] : [])
+];
+
+const org = {
+  '@type': 'EducationalOrganization',
+  '@id': site + BASE + '#org',
+  name: SITE.name,
+  alternateName: SITE.short,
+  url: site + BASE,
+  logo: site + BASE + 'assets/logo.png',
+  image: og,
+  description: 'A/L Business Studies tuition in English medium by Leon Fambeck. The 2027 and 2028 batches, in person at Nugegoda, Kiribathgoda and Gampaha, at Leon\'s own classroom and live online.',
+  founder: { '@id': site + BASE + '#leon' },
+  areaServed: 'Sri Lanka',
+  knowsLanguage: 'en',
+  contactPoint: { '@type': 'ContactPoint', contactType: 'admissions', telephone: '+' + SITE.whatsapp, url: 'https://wa.me/' + SITE.whatsapp, availableLanguage: 'English' },
+  sameAs: [SITE.instagram]
+};
+const leon = {
+  '@type': 'Person',
+  '@id': site + BASE + '#leon',
+  name: SITE.teacher,
+  jobTitle: 'A/L Business Studies teacher',
+  worksFor: { '@id': site + BASE + '#org' },
+  image: site + BASE + 'assets/leon-front.webp',
+  sameAs: [SITE.instagram]
+};
+const website = { '@type': 'WebSite', '@id': site + BASE + '#website', url: site + BASE, name: SITE.name, publisher: { '@id': site + BASE + '#org' }, inLanguage: 'en' };
+const graph = { '@context': 'https://schema.org', '@graph': [org, leon, website, ...schema] };
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={url}>
+<meta name="robots" content={ROBOTS}>
+<meta name="theme-color" content="#f5f5f7">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content={SITE.name}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={url}>
+<meta property="og:image" content={og}>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href={BASE + 'assets/favicon.png'}>
+<link rel="apple-touch-icon" href={BASE + 'assets/favicon.png'}>
+<!-- Search Console verification: paste the content value here in October, when SEO starts -->
+<!-- <meta name="google-site-verification" content=""> -->
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Inter only stands in where there is no San Francisco (Android, Windows). Apple devices never download it. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<slot name="head" />
+</head>
+<body data-page={page}>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href={BASE} class="brand" aria-label={SITE.name + ', home'}>
+      <img src={BASE + 'assets/favicon.png'} alt="" width="512" height="512">
+      <span class="bw"><b>ACADEMY OF BUSINESS STUDIES</b><span>BY LEON FAMBECK</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      {nav.map(n => <a href={n.href} class:list={[{ on: n.key === page }]} aria-current={n.key === page ? 'page' : undefined}>{n.label}</a>)}
+    </nav>
+    <a class="nav-app" href={BASE + 'app/'}>Student app</a>
+    <a class="btn btn-primary" href={BASE + 'enrol/'}>Enrol now</a>
+    <button class="hamb" aria-label="Open menu" data-open-drawer>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="scrim" id="scrim" data-close-drawer></div>
+<aside class="drawer" id="drawer" aria-label="Menu">
+  <div class="d-head">
+    <img src={BASE + 'assets/logo.png'} alt={SITE.name}>
+    <button class="d-close" aria-label="Close menu" data-close-drawer>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href={BASE}>Home</a>
+    {nav.map(n => <a href={n.href}>{n.label}</a>)}
+    <a href={BASE + 'app/'}>Student app</a>
+  </nav>
+  <a class="btn btn-primary" style="margin-top:var(--s-6);width:100%" href={BASE + 'enrol/'}>Enrol now</a>
+</aside>
+
+<main id="main">
+  <slot />
+</main>
+
+<footer class="footer dark">
+  <div class="wrap">
+    <img class="foot-mark" src={BASE + 'assets/logo-white.png'} alt={SITE.name} loading="lazy" width="1080" height="1350">
+    <div class="foot-cols">
+      <div>
+        <h4>Classes</h4>
+        <a href={BASE + 'classes/#c-2027'}>The 2027 batch</a>
+        <a href={BASE + 'classes/#c-2028'}>The 2028 batch</a>
+        <a href={BASE + 'classes/#c-revision'}>Revision</a>
+      </div>
+      <div>
+        <h4>Where we teach</h4>
+        <a href={BASE + 'locations/'}>Nugegoda</a>
+        <a href={BASE + 'locations/'}>Kiribathgoda</a>
+        <a href={BASE + 'locations/'}>Gampaha</a>
+        <a href={BASE + 'locations/'}>Leon's classroom</a>
+        <a href={BASE + 'locations/'}>Online</a>
+      </div>
+      <div>
+        <h4>Leon</h4>
+        <a href={BASE + 'about/'}>About Leon</a>
+        <a href={BASE + 'tutes/'}>The tutes</a>
+        {posts.length > 0 && <a href={BASE + 'blog/'}>Blog</a>}
+        <a href={BASE + 'enrol/'}>Enrol</a>
+        <a href={BASE + 'app/'}>Student app</a>
+      </div>
+      <div>
+        <h4>Talk to Leon</h4>
+        <a data-wa="joining the class" href={'https://wa.me/' + SITE.whatsapp}>WhatsApp {SITE.whatsappPretty}</a>
+        <a class="ig" href={SITE.instagram} target="_blank" rel="noopener">{SITE.instagramHandle}</a>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>&copy; {year} {SITE.name}</span>
+      <span>A/L Business Studies · English medium · Sri Lanka</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mbar" id="mbar"><a class="btn btn-primary" href={BASE + 'enrol/'}>Enrol now</a></div>
+
+{home && <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>}
+{home && <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>}
+<script>import '../scripts/site.js';</script>
+<slot name="scripts" />
+</body>
+</html>

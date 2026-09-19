@@ -1,0 +1,40 @@
+---
+// STUDENT APP. For Leon's enrolled students. The app itself lives at SITE.studentApp and is run by BB's developer.
+// This page tells a student how to get in, so a student who lands here is never left guessing.
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import Bulb from '../components/Bulb.astro';
+import { BASE, SITE } from '../scripts/config.js';
+import { breadcrumb, siteOf } from '../scripts/seo.js';
+const steps = [
+  { icon: 'chat', t: 'Ask Leon for your code', p: 'Leon gives every enrolled student a six digit code. Each code works once.' },
+  { icon: 'phone', t: 'Open the app and sign in', p: 'Type your name and your code. You stay signed in on that phone.' },
+  { icon: 'home', t: 'Add it to your home screen', p: 'In your browser menu choose Add to Home Screen. It opens like any other app.' }
+];
+---
+<Layout
+  title="Student app | Academy of Business Studies by Leon Fambeck"
+  description="The study app for Leon Fambeck's A/L Business Studies students. Sign in with your name and the code Leon gives you."
+  path="app/" page="app" schema={[breadcrumb(siteOf(Astro.site), BASE, [{ name: 'Student app', path: 'app/' }])]}>
+
+  <section class="enrol-page app-page" data-light="0.6">
+    <div class="enrol-mark" aria-hidden="true"><div class="bulbwrap"><Bulb uid="ap" /><i class="ring"></i></div></div>
+    <div class="enrol-grid">
+      <div class="enrol-side">
+        <p class="ph-kick">For Leon's students</p>
+        <h1>Your study<br>app.</h1>
+        <p class="ph-lede">What to do next, your lessons and your progress, in one place. It is for students who are already in a class.</p>
+        <div class="ph-cta">
+          <a class="hx-pill" href={SITE.studentApp} target="_blank" rel="noopener">Open the student app</a>
+          <a class="hx-link" href={BASE + 'enrol/'}>Not a student yet? Enrol <b aria-hidden="true">&rsaquo;</b></a>
+        </div>
+      </div>
+      <ol class="app-steps" data-sr>
+        {steps.map((s, n) => (
+          <li><i class="way-ic"><Icon name={s.icon} /></i><div><h2>{s.t}</h2><p>{s.p}</p></div></li>
+        ))}
+        <li class="app-help"><p>Code not working? It may have been used already. <a data-wa="a new code for the student app" href={'https://wa.me/' + SITE.whatsapp}>Ask Leon for a new one</a>.</p></li>
+      </ol>
+    </div>
+  </section>
+</Layout>

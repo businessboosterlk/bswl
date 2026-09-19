@@ -1,0 +1,32 @@
+---
+// ENROL. One form, straight to WhatsApp with what the visitor chose. Links from other pages arrive with
+// ?batch= and ?loc= and the form is already filled (site.js).
+import Layout from '../layouts/Layout.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import Bulb from '../components/Bulb.astro';
+import { BASE, SITE } from '../scripts/config.js';
+import { breadcrumb, siteOf } from '../scripts/seo.js';
+---
+<Layout
+  title="Enrol for A/L Business Studies with Leon Fambeck"
+  description="Enrol for Leon Fambeck's A/L Business Studies class. Send your name and WhatsApp number and Leon replies with the timetable and the fees."
+  path="enrol/" page="enrol" schema={[breadcrumb(siteOf(Astro.site), BASE, [{ name: 'Enrol', path: 'enrol/' }])]}>
+
+  <section class="enrol-page" id="enquire" data-light="0.6">
+    <div class="enrol-mark" aria-hidden="true"><div class="bulbwrap"><Bulb uid="en" /><i class="ring"></i></div></div>
+    <div class="enrol-grid">
+      <div class="enrol-side">
+        <p class="ph-kick">Enrol</p>
+        <h1>Save your<br>seat.</h1>
+        <p class="ph-lede">Send your details and you get a reply on WhatsApp with the timetable, the fees and your first class.</p>
+        <ol class="enrol-steps">
+          <li><b>1</b><span>Send your details</span></li>
+          <li><b>2</b><span>Leon confirms your class on WhatsApp</span></li>
+          <li><b>3</b><span>You join, in person or online</span></li>
+        </ol>
+        <p class="alt">Rather talk first? <a data-wa="joining the class" href={'https://wa.me/' + SITE.whatsapp}>WhatsApp {SITE.whatsappPretty}</a> or message <a href={SITE.instagram} target="_blank" rel="noopener">{SITE.instagramHandle}</a> on Instagram.</p>
+      </div>
+      <div class="enrol-form"><EnquiryForm /></div>
+    </div>
+  </section>
+</Layout>

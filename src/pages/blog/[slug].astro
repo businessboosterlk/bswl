@@ -1,0 +1,35 @@
+---
+// One post. The short answer opens the page, ahead of everything else: it is the part Google's answer box,
+// voice search and AI answers lift. Article JSON-LD names Leon as the author.
+import Layout from '../../layouts/Layout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getCollection, render } from 'astro:content';
+import { BASE, SITE } from '../../scripts/config.js';
+import { breadcrumb, siteOf } from '../../scripts/seo.js';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const site = siteOf(Astro.site);
+const url = site + BASE + 'blog/' + post.id + '/';
+const fmt = d => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const article = {
+  '@type': 'Article', headline: post.data.title, description: post.data.description, datePublished: post.data.date.toISOString(),
+  mainEntityOfPage: url, inLanguage: 'en', author: { '@id': site + BASE + '#leon' }, publisher: { '@id': site + BASE + '#org' }
+};
+---
+<Layout title={post.data.title + ' | ' + SITE.short} description={post.data.description} path={'blog/' + post.id + '/'} page="blog"
+  schema={[breadcrumb(site, BASE, [{ name: 'Blog', path: 'blog/' }, { name: post.data.title, path: 'blog/' + post.id + '/' }]), article]}>
+  <article class="post-page">
+    <header class="post-head">
+      <p class="ph-kick"><a href={BASE + 'blog/'}>Blog</a> · {post.data.kind}</p>
+      <h1>{post.data.title}</h1>
+      <p class="post-answer">{post.data.answer}</p>
+      <p class="post-by">By {SITE.teacher} · {fmt(post.data.date)}</p>
+    </header>
+    <div class="prose"><Content /></div>
+  </article>
+  <CtaBand uid="poc" title="Want this taught properly?" />
+</Layout>

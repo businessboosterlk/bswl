@@ -1,0 +1,76 @@
+---
+// CLASSES. No fee is printed anywhere: Leon gives fees on WhatsApp. No timetable either until he sends one.
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import classes from '../data/classes.json';
+import faq from '../data/faq.json';
+import { BASE, SITE } from '../scripts/config.js';
+import { breadcrumb, faqSchema, siteOf } from '../scripts/seo.js';
+const site = siteOf(Astro.site);
+const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studies, ' + c.title, description: c.line, inLanguage: 'en', provider: { '@id': site + BASE + '#org' } }));
+const month = [
+  { icon: 'book', t: 'The lessons', p: 'The A/L Business Studies syllabus, in English medium.' },
+  { icon: 'calendar', t: 'The tutes', p: 'Leon\'s own tutes for every unit. Free and yours to keep.' },
+  { icon: 'screen', t: 'In person or online', p: 'Pick the place that suits you. The class and the tutes are the same.' }
+];
+---
+<Layout
+  title="A/L Business Studies classes: 2027 batch, 2028 batch and Revision"
+  description="Leon Fambeck's A/L Business Studies classes in English medium: the 2027 batch, the 2028 batch and Revision for the exam year. In person and online."
+  path="classes/" page="classes"
+  schema={[breadcrumb(site, BASE, [{ name: 'Classes', path: 'classes/' }]), faqSchema(faq), ...courses]}>
+
+  <PageHero uid="cl" pose="thumbs" kicker="The classes"
+    title="Pick your<br>year."
+    lede="Two theory batches and Revision for the exam year. Every class runs in person and online, in English medium.">
+    <a class="hx-pill" href={BASE + 'enrol/'}>Enrol now</a>
+    <a class="hx-link" href={BASE + '#finder'}>Find your class <b aria-hidden="true">&rsaquo;</b></a>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="cards3" data-sr>
+        {classes.map(c => (
+          <article class="ccard" id={'c-' + c.key}>
+            <span class="ccard-big" aria-hidden="true">{c.big}</span>
+            <span class="meta">{c.meta}</span>
+            <h2>{c.title}</h2>
+            <p>{c.line}</p>
+            <p class="ccard-who"><Icon name="check" /> {c.who}</p>
+            <a class="btn btn-primary" href={BASE + 'enrol/?batch=' + encodeURIComponent(c.batch)}>{c.cta}</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">What you get</span>
+        <h2>The same in every class.</h2>
+      </div>
+      <div class="ways ways-3" data-sr>
+        {month.map(w => (
+          <div class="way"><i class="way-ic"><Icon name={w.icon} /></i><h3>{w.t}</h3><p>{w.p}</p></div>
+        ))}
+      </div>
+      <p class="note-line" data-sr>Days, times and fees change by class and by place, so Leon sends the current ones on WhatsApp. <a class="hx-link" data-wa="the timetable and the fees" href={'https://wa.me/' + SITE.whatsapp}>Ask for them <b aria-hidden="true">&rsaquo;</b></a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">Questions</span>
+        <h2>What students and parents ask.</h2>
+      </div>
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <CtaBand uid="clc" title="Know your class?" about="joining a class" />
+</Layout>

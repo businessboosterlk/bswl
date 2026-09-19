@@ -1,0 +1,36 @@
+---
+// LEON'S MARK, traced from his own logo file to vector on 18 Sep 2026 (potrace, one path per shape, so the
+// rays can move on their own). Never redraw it: the paths live in src/data/bulb.json.
+// tone  'ink'   = brand black with light falling across it, for light pages
+//       'paper' = white, for the dark bands
+// glow  adds the layer that carries the moving light (src/scripts/light.js drives it)
+import paths from '../data/bulb.json';
+const { uid = 'mk', tone = 'ink', glow = true } = Astro.props;
+const stops = tone === 'paper'
+  ? [['0', '#ffffff'], ['.45', '#ececf0'], ['1', '#b9b9c2']]
+  : [['0', '#46464e'], ['.3', '#202024'], ['1', '#0b0b0d']];
+const body = paths.filter(p => p.k === 'body');
+const T = 'translate(0,5120) scale(.1,-.1)';
+---
+<svg class="bulb" data-bulb viewBox="0 0 3552 5120" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id={uid + 'Ink'} gradientUnits="userSpaceOnUse" cx="7000" cy="40500" r="36000">
+      {stops.map(([o, c]) => <stop offset={o} stop-color={c} />)}
+    </radialGradient>
+    {glow && (
+      <radialGradient id={uid + 'Glow'} data-glow gradientUnits="userSpaceOnUse" cx="14200" cy="28000" r="11500">
+        <stop offset="0" stop-color={tone === 'paper' ? '#141417' : '#fff'} stop-opacity={tone === 'paper' ? '.5' : '.95'} />
+        <stop offset=".35" stop-color={tone === 'paper' ? '#141417' : '#fff'} stop-opacity={tone === 'paper' ? '.18' : '.38'} />
+        <stop offset="1" stop-color={tone === 'paper' ? '#141417' : '#fff'} stop-opacity="0" />
+      </radialGradient>
+    )}
+  </defs>
+  <g transform={T} fill={`url(#${uid}Ink)`}>
+    {paths.map(p => <path class={'bulb-' + p.k} style={p.style} d={p.d} />)}
+  </g>
+  {glow && (
+    <g class="bulb-glow" transform={T} fill={`url(#${uid}Glow)`}>
+      {body.map(p => <path d={p.d} />)}
+    </g>
+  )}
+</svg>

@@ -1,0 +1,55 @@
+---
+// THE TUTES. The card is a drawn illustration of a tute page, never a scan presented as one of Leon's real pages.
+// When Leon sends photos of the real pack, they replace it.
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { BASE } from '../scripts/config.js';
+import { breadcrumb, siteOf } from '../scripts/seo.js';
+const inside = [
+  { icon: 'book', t: 'Theory notes', p: 'Each unit of the syllabus, written up by Leon.' },
+  { icon: 'check', t: 'Worked examples', p: 'The theory put to work on real questions.' },
+  { icon: 'speech', t: 'Key terms', p: 'The words the paper expects you to use.' }
+];
+---
+<Layout
+  title="Free A/L Business Studies tutes from Leon Fambeck"
+  description="Every student in Leon Fambeck's A/L Business Studies class gets his full set of tutes, free, from the first day: theory notes, worked examples and key terms."
+  path="tutes/" page="tutes" schema={[breadcrumb(siteOf(Astro.site), BASE, [{ name: 'The tutes', path: 'tutes/' }])]}>
+
+  <PageHero uid="tu" pose="front" kicker="The tutes"
+    title="Free tutes.<br>From day one."
+    lede="Every student gets Leon's complete set of tutes. You do not pay for them and they are yours to keep.">
+    <a class="hx-pill" href={BASE + 'enrol/'}>Enrol and get the tutes</a>
+  </PageHero>
+
+  <section class="section dark tute-show">
+    <div class="wrap tute-grid">
+      <div class="tute-stage" data-sr>
+        <article class="tute">
+        <div class="th"><span>A/L Business Studies &middot; Unit 01</span><b>Fambeck</b></div>
+        <div class="tt">The Business Environment</div>
+        <div class="ts">Theory notes &middot; worked examples</div>
+        <div class="tbars"><div class="tbar"></div><div class="tbar"></div><div class="tbar"></div><div class="tbar"></div></div>
+        <div class="tdia" aria-hidden="true">
+          <svg viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 100 V20 M20 100 H180"/><path d="M30 90 C 80 30, 120 30, 175 34"/><path d="M30 34 C 90 90, 130 90, 175 96"/></svg>
+        </div>
+        <div class="tkey"><div><span class="kl">Key term</span><span class="kv">Opportunity cost</span></div></div>
+        <div class="tf"><span>Page 01</span><span class="tstamp">TUTE</span></div>
+      </article>
+      </div>
+      <div class="tute-copy" data-sr>
+        <span class="eyebrow">What is inside</span>
+        <h2>Written by Leon, for his own class.</h2>
+        <div class="inside">
+          {inside.map(w => (
+            <div class="inside-row"><i class="rec-ic"><Icon name={w.icon} /></i><div><h3>{w.t}</h3><p>{w.p}</p></div></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand uid="tuc" title="The tutes come with the class." line="Join a batch and the full set is yours from your first day." about="joining and getting the tutes" />
+</Layout>

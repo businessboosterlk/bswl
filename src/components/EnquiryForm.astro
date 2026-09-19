@@ -1,0 +1,53 @@
+---
+// The one enquiry form. BOOKING LAW: name and number required, nothing else asked that Leon does not need,
+// no fake availability, and it hands off to WhatsApp with what the visitor chose. Script: site.js.
+import classes from '../data/classes.json';
+import locations from '../data/locations.json';
+---
+<form class="form" id="enqForm" novalidate data-sr>
+  <div class="f2">
+    <div class="field" id="fName">
+      <label for="inName">Student's name</label>
+      <input id="inName" name="name" autocomplete="name" required>
+      <p class="err">Please enter the student's name.</p>
+    </div>
+    <div class="field" id="fPhone">
+      <label for="inPhone">WhatsApp number</label>
+      <input id="inPhone" name="phone" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX" required>
+      <p class="err">Enter a Sri Lankan number, like 07X XXX XXXX.</p>
+    </div>
+  </div>
+  <div class="f2">
+    <div class="field" id="fBatch">
+      <label for="inBatch">Class</label>
+        <select id="inBatch" name="batch" required>
+          <option value="" selected disabled>Choose a class</option>
+          {classes.map(c => <option>{c.batch}</option>)}
+          <option>Not sure yet</option>
+        </select>
+      <p class="err">Pick a class.</p>
+    </div>
+    <div class="field" id="fLoc">
+      <label for="inLoc">Where you want to study</label>
+        <select id="inLoc" name="loc" required>
+          <option value="" selected disabled>Choose a place</option>
+          {locations.map(l => <option>{l.name}</option>)}
+        </select>
+      <p class="err">Pick a place.</p>
+    </div>
+  </div>
+  <button class="btn btn-primary btn-lg" type="submit">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-5.1A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+    Send on WhatsApp
+  </button>
+  <p class="fine">Your enquiry opens in WhatsApp. Nothing is sent until you press send there.</p>
+</form>
+<div class="enq-done" id="enqDone" role="status">
+  <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+  <h3>Your enquiry is ready.</h3>
+  <p>WhatsApp should have opened with your message. Press <b>send</b> there and you are done. Leon replies with the next steps.</p>
+  <div class="row">
+    <a class="btn btn-primary" id="waAgain" href="#" target="_blank" rel="noopener">Open WhatsApp again</a>
+    <a class="again" href="#" id="enqReset">Send another enquiry</a>
+  </div>
+</div>

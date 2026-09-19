@@ -1,0 +1,38 @@
+---
+// BLOG. Four posts a month from October 2026. Drafts never build. Until the first post is published this page
+// is not linked from the menu, the footer or the sitemap, so nobody lands on an empty shelf.
+import Layout from '../../layouts/Layout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getCollection } from 'astro:content';
+import { BASE } from '../../scripts/config.js';
+import { breadcrumb, siteOf } from '../../scripts/seo.js';
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => +b.data.date - +a.data.date);
+const fmt = d => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Layout
+  title="A/L Business Studies advice from Leon Fambeck"
+  description="Straight answers for A/L Business Studies students and their parents: choosing subjects, revision, past papers and how to study."
+  path="blog/" page="blog" schema={[breadcrumb(siteOf(Astro.site), BASE, [{ name: 'Blog', path: 'blog/' }])]}>
+  <section class="blog-head">
+    <p class="ph-kick">Blog</p>
+    <h1>Straight answers.</h1>
+    <p class="ph-lede">What A/L Business Studies students and their parents ask, answered by Leon.</p>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      {posts.length === 0
+        ? <p class="note-line">The first posts go up in October.</p>
+        : <div class="posts" data-sr>
+            {posts.map(p => (
+              <a class="post" href={BASE + 'blog/' + p.id + '/'}>
+                <span class="meta">{p.data.kind} · {fmt(p.data.date)}</span>
+                <h2>{p.data.title}</h2>
+                <p>{p.data.answer}</p>
+                <span class="hx-link">Read it <b aria-hidden="true">&rsaquo;</b></span>
+              </a>
+            ))}
+          </div>}
+    </div>
+  </section>
+  <CtaBand uid="blc" />
+</Layout>

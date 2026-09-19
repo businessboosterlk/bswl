@@ -1,0 +1,42 @@
+[
+  {
+    "key": "nugegoda",
+    "name": "Nugegoda",
+    "mode": "In person, at an institute",
+    "icon": "pin",
+    "line": "Leon teaches in person at an institute in Nugegoda.",
+    "ask": "the Nugegoda timetable"
+  },
+  {
+    "key": "kiribathgoda",
+    "name": "Kiribathgoda",
+    "mode": "In person, at an institute",
+    "icon": "pin",
+    "line": "Leon teaches in person at an institute in Kiribathgoda.",
+    "ask": "the Kiribathgoda timetable"
+  },
+  {
+    "key": "gampaha",
+    "name": "Gampaha",
+    "mode": "In person, at an institute",
+    "icon": "pin",
+    "line": "Leon teaches in person at an institute in Gampaha.",
+    "ask": "the Gampaha timetable"
+  },
+  {
+    "key": "home",
+    "name": "Leon's classroom",
+    "mode": "In person, at his home",
+    "icon": "home",
+    "line": "A classroom built for the purpose, at Leon's home.",
+    "ask": "the classes at Leon's home classroom"
+  },
+  {
+    "key": "online",
+    "name": "Online",
+    "mode": "Live, from anywhere",
+    "icon": "screen",
+    "line": "Live classes you join from anywhere.",
+    "ask": "joining online"
+  }
+]

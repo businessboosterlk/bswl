@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { BASE } from '../scripts/config.js';
+---
+<Layout title="Page not found | Academy of Business Studies by Leon Fambeck" description="This page does not exist." path="404/" page="404">
+  <section class="nf">
+    <p class="ph-kick">Page not found</p>
+    <h1>That page<br>is not here.</h1>
+    <p class="ph-lede">The link may be old. Everything about the class is one tap away.</p>
+    <div class="ph-cta"><a class="hx-pill" href={BASE}>Go to the home page</a><a class="hx-link" href={BASE + 'classes/'}>See the classes <b aria-hidden="true">&rsaquo;</b></a></div>
+  </section>
+</Layout>

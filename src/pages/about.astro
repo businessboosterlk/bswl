@@ -1,0 +1,79 @@
+---
+// ABOUT LEON. Every line here is something Leon has already said in public: his own website and his
+// Instagram. Nothing is invented. Still needed from Leon: his sport, how long he has taught, one line in his own words.
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import Bulb from '../components/Bulb.astro';
+import { BASE, SITE } from '../scripts/config.js';
+import { breadcrumb, siteOf } from '../scripts/seo.js';
+const ways = [
+  { icon: 'whistle', t: 'Discipline first', p: 'Leon runs a class the way a coach runs a team. You turn up, you do the work and you know where you stand.' },
+  { icon: 'book', t: 'Tutes you keep', p: 'Every student gets the full set of tutes, written by Leon. Free, from the first day.' },
+  { icon: 'speech', t: 'Taught in English', p: 'The whole A/L Business Studies syllabus, in English medium.' },
+  { icon: 'pin', t: 'Where it suits you', p: 'Three institutes, a classroom at Leon\'s home and a live online class.' }
+];
+---
+<Layout
+  title="About Leon Fambeck | A/L Business Studies teacher"
+  description="Leon Fambeck came to teaching from sport and runs his A/L Business Studies class with a coach's discipline. English medium, in person and online."
+  path="about/" page="about" schema={[breadcrumb(siteOf(Astro.site), BASE, [{ name: 'About Leon', path: 'about/' }])]}>
+
+  <PageHero uid="ab" pose="profile" kicker="About Leon"
+    title="From the field<br>to the classroom."
+    lede="Leon Fambeck came to teaching from sport. He teaches A/L Business Studies with a coach's discipline.">
+    <a class="hx-pill" href={BASE + 'enrol/'}>Enrol with Leon</a>
+    <a class="hx-link" href={BASE + 'classes/'}>See the classes <b aria-hidden="true">&rsaquo;</b></a>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap story">
+      <div class="story-side" data-sr>
+        <span class="eyebrow">The story</span>
+        <h2>A coach who teaches Business Studies.</h2>
+      </div>
+      <div class="story-body" data-sr>
+        <p class="big">Leon Fambeck came to teaching from sport. It shows in how he runs a class.</p>
+        <p>Sport teaches one thing above all: you get better by training on purpose, week after week, with someone honest beside you. Leon brought that into the classroom. He has a coach's discipline and a real feel for how students learn, train and hold their nerve under pressure.</p>
+        <p>He teaches A/L Business Studies in English medium, to the 2027 and 2028 batches, in person and online.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark rec rec-slim" data-light="0.8">
+    <div class="wrap">
+      <div class="rec-top">
+        <div class="rec-copy" data-sr>
+          <span class="eyebrow">The record</span>
+          <h2>Not one student has failed.</h2>
+          <p>Look at the middle of the bulb in Leon's logo. That zero is the number of his students who have failed A/L Business Studies.</p>
+          <p class="rec-stat"><b>0</b><span>students failed, ever</span></p>
+        </div>
+        <div class="rec-mark" aria-hidden="true">
+          <div class="bulbwrap"><Bulb uid="abr" tone="paper" glow={false} /><i class="rec-zero"></i><i class="ring"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">How Leon teaches</span>
+        <h2>Four things you can count on.</h2>
+      </div>
+      <div class="ways" data-sr>
+        {ways.map(w => (
+          <div class="way">
+            <i class="way-ic"><Icon name={w.icon} /></i>
+            <h3>{w.t}</h3>
+            <p>{w.p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand uid="abc" title="Meet Leon in a class." line="Send your details and Leon replies on WhatsApp with the timetable and the fees." about="joining Leon's class" />
+</Layout>

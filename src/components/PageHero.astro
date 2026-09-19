@@ -1,0 +1,20 @@
+---
+// The header of every inner page. Same idea as the home hero, smaller: the headline hard left at the brand's x,
+// Leon on the right in front of his mark. Leon is static. The light behind him moves (light.js).
+import Bulb from './Bulb.astro';
+import { BASE } from '../scripts/config.js';
+const { kicker, title, lede, pose = 'right', alt = 'Leon Fambeck', uid = 'ph' } = Astro.props;
+const dims = { front: [1035, 1800], right: [947, 1800], profile: [985, 1800], pointing: [1300, 1800], thumbs: [1024, 1800] }[pose];
+---
+<section class="ph" data-light="0.7">
+  <div class="ph-copy">
+    <p class="ph-kick">{kicker}</p>
+    <h1 set:html={title} />
+    <p class="ph-lede">{lede}</p>
+    <div class="ph-cta"><slot /></div>
+  </div>
+  <div class="ph-stage" aria-hidden="true">
+    <div class="bulbwrap"><Bulb uid={uid} /><i class="ring"></i></div>
+    <img class="ph-leon" src={BASE + 'assets/leon-' + pose + '.webp'} alt="" width={dims[0]} height={dims[1]} fetchpriority="high">
+  </div>
+</section>

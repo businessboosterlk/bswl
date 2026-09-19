@@ -1,0 +1,32 @@
+[
+  {
+    "key": "2027",
+    "big": "2027",
+    "meta": "A/L 2027 · Theory",
+    "title": "The 2027 batch",
+    "line": "For students sitting the A/L in 2027. Theory taught properly, with Leon's own tutes at every step, building towards the exam.",
+    "who": "You sit the A/L in 2027.",
+    "cta": "Enrol for 2027",
+    "batch": "2027 batch"
+  },
+  {
+    "key": "2028",
+    "big": "2028",
+    "meta": "A/L 2028 · Theory",
+    "title": "The 2028 batch",
+    "line": "The head start. Join early, learn without exam-season pressure and walk into the final year already ahead.",
+    "who": "You sit the A/L in 2028.",
+    "cta": "Enrol for 2028",
+    "batch": "2028 batch"
+  },
+  {
+    "key": "revision",
+    "big": "REVISE",
+    "meta": "Exam year · Revision",
+    "title": "Revision",
+    "line": "For students in their exam year who want the syllabus once more before the paper.",
+    "who": "Your exam is next.",
+    "cta": "Ask about Revision",
+    "batch": "Revision"
+  }
+]

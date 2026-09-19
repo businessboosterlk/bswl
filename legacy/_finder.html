@@ -1,0 +1,53 @@
+  <section class="section finder" id="finder" aria-label="Find your class">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">Find your class</span>
+        <h2>Which class is yours?</h2>
+        <p>Two taps and you'll know exactly which batch to join.</p>
+      </div>
+
+      <!-- fallback shown when JS is off: the full class list still works below -->
+      <div class="finder-fallback">
+        <p>Pick the batch that matches your A/L exam year from the classes below, and enrol.</p>
+        <a class="btn btn-ghost" href="#classes">See all classes</a>
+      </div>
+
+      <!-- interactive tool -->
+      <div class="finder-tool" aria-live="polite">
+        <div class="fstep" data-step="1">
+          <span class="fq">Step 01: When do you sit your A/L?</span>
+          <div class="fopts">
+            <button class="fopt" type="button" data-year="2027">2027</button>
+            <button class="fopt" type="button" data-year="2028">2028</button>
+            <button class="fopt" type="button" data-year="crash">This year</button>
+            <button class="fopt" type="button" data-year="unsure">Not sure</button>
+          </div>
+        </div>
+        <div class="fstep" data-step="2" hidden>
+          <span class="fq">Step 02: Where do you want to study?</span>
+          <div class="fopts">
+            <button class="fopt" type="button" data-loc="Nugegoda">Nugegoda</button>
+            <button class="fopt" type="button" data-loc="Kiribathgoda">Kiribathgoda</button>
+            <button class="fopt" type="button" data-loc="Online">Online</button>
+          </div>
+          <button class="fback" type="button" data-back>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 6-6m-6 6 6 6"/></svg>
+            Back
+          </button>
+        </div>
+        <div class="fresult dark" hidden role="status">
+          <div class="fr-num"><span>2027</span></div>
+          <div class="fr-body">
+            <span class="fr-label">Your batch</span>
+            <h3 class="fr-title">The 2027 batch</h3>
+            <p class="fr-text">Theory taught properly.</p>
+            <div class="fr-cta">
+              <button class="btn btn-primary fr-enrol" type="button">Enrol for the 2027 batch</button>
+              <button class="fback fr-restart" type="button">Start over</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+

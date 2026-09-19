@@ -1,0 +1,324 @@
+---
+// HOME. The sales page: a visitor can act the second they land and at every scroll depth after that.
+// Sections that moved across unchanged from the single-file build keep their class names, so global.css
+// and home.js still own them. New on 18 Sep 2026: the hero, About without the black arch, the record
+// shown as the zero in Leon's own bulb, five places to learn, Revision in place of the Crash Course.
+import Layout from '../layouts/Layout.astro';
+import Bulb from '../components/Bulb.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import classes from '../data/classes.json';
+import locations from '../data/locations.json';
+import faq from '../data/faq.json';
+import { BASE, SITE } from '../scripts/config.js';
+import { faqSchema } from '../scripts/seo.js';
+
+const chips = [
+  { c: 'c1', href: '#classes', icon: 'calendar', t: '2027 and 2028', s: 'Both batches are open' },
+  { c: 'c2', href: '#locations', icon: 'pin', t: 'Five places to learn', s: 'Four in person, one online' },
+  { c: 'c3', href: '#tutes', icon: 'book', t: 'Free tutes', s: 'From your first day' },
+  { c: 'c4', href: '#faq', icon: 'speech', t: 'English medium', s: 'The full A/L syllabus' },
+  { c: 'c5', href: BASE + 'app/', icon: 'phone', t: 'Student app', s: 'Sign in with your code' }
+];
+const reasons = [
+  { icon: 'medal', t: 'Island-rank results', p: 'Leon\'s students have gone on to island-rank, country-top results in A/L Business Studies.' },
+  { icon: 'whistle', t: 'A coach, not just a teacher', p: 'A former sportsman, Leon teaches with a coach\'s discipline. He knows how students learn, train and perform under pressure.' },
+  { icon: 'book', t: 'Tutes worth keeping', p: 'Every student gets the full set of tutes, written by Leon himself. Free, from the first day.' },
+  { icon: 'pin', t: 'Learn where you learn best', p: 'Three institutes, a classroom built for the purpose at Leon\'s home and a live online class.' }
+];
+const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studies, ' + c.title, description: c.line, inLanguage: 'en', provider: { '@id': String(Astro.site).replace(/\/$/, '') + BASE + '#org' } }));
+---
+<Layout
+  title="A/L Business Studies in English medium | Leon Fambeck"
+  description="A/L Business Studies, taught properly by Leon Fambeck. The 2027 and 2028 batches in English medium at Nugegoda, Kiribathgoda and Gampaha, at Leon's classroom and online."
+  page="home" home schema={[faqSchema(faq), ...courses]}>
+  <link slot="head" rel="preload" as="image" href={BASE + 'assets/leon-front.webp'} fetchpriority="high">
+
+  <!-- ══════════ HERO. Leon is static. The light behind him moves (light.js). ══════════ -->
+  <section class="hx" id="hero" data-light aria-label="A/L Business Studies with Leon Fambeck">
+    <div class="hx-head">
+      <small>Business Studies,</small>
+      <h1 id="heroH1"><span><i>Taught</i></span><span><i>Properly.</i></span></h1>
+    </div>
+    <div class="hx-copy">
+      <p>The 2027 and 2028 batches, in English medium. In person at Nugegoda, Kiribathgoda and Gampaha, at Leon's own classroom or live online.</p>
+      <div class="hx-cta"><a class="hx-pill" href="#enquire">Enrol now</a><a class="hx-link" href="#finder">Find your class <b aria-hidden="true">&rsaquo;</b></a></div>
+    </div>
+    <div class="hx-stage">
+      <div class="bulbwrap" aria-hidden="true"><Bulb uid="hx" /><i class="ring"></i></div>
+      <img class="hx-leon" src={BASE + 'assets/leon-front.webp'} alt="Leon Fambeck, A/L Business Studies teacher" width="1035" height="1800" fetchpriority="high">
+      <div class="hx-chips">
+        {chips.map((k, n) => (
+          <a class={'hx-chip ' + k.c} style={`--n:${n}`} href={k.href}>
+            <i class="hx-ic"><Icon name={k.icon} /></i>
+            <span><b>{k.t}</b><span>{k.s}</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ TRUST STRIP on the exercise-book page ══════════ -->
+  <section class="trust" aria-label="At a glance">
+    <canvas class="page" aria-hidden="true"></canvas>
+    <div class="wrap trust-row" data-sr>
+      <div class="trust-item"><b>100%</b><span>Pass record. Not one student has ever failed.</span></div>
+      <div class="trust-item"><b>Island rank</b><span>Country-top A/L Business Studies results.</span></div>
+      <div class="trust-item"><b>5 places</b><span>Three institutes, Leon's classroom and live online.</span></div>
+    </div>
+  </section>
+
+  <!-- ══════════ WHO IS LEON. No box behind him: Leon, cut out, standing on the page. ══════════ -->
+  <section class="section who" id="about" aria-label="Who is Leon">
+    <div class="wrap who-grid">
+      <figure class="who-fig" data-sr>
+        <img src={BASE + 'assets/leon-right.webp'} alt="Leon Fambeck" width="947" height="1800" loading="lazy">
+        <figcaption><b>Leon Fambeck</b><span>A/L Business Studies</span></figcaption>
+      </figure>
+      <div class="who-body" data-sr>
+        <span class="eyebrow">Who is Leon</span>
+        <h2>The teacher behind the record.</h2>
+        <p>Leon Fambeck came to teaching from sport. It shows in how he runs a class: a coach's discipline and a real feel for how students learn, train and hold their nerve under pressure.</p>
+        <p>He teaches A/L Business Studies the way it should be taught. The record speaks for itself. Not one of his students has failed.</p>
+        <div class="who-cta">
+          <a class="btn btn-primary" href="#enquire">Enrol with Leon</a>
+          <a class="hx-link" href={BASE + 'about/'}>More about Leon <b aria-hidden="true">&rsaquo;</b></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ THE RECORD. The zero in the middle of Leon's bulb is the number of students who have failed. ══════════ -->
+  <section class="section dark rec" id="why" data-light="0.8" aria-label="Why Leon">
+    <div class="wrap">
+      <div class="rec-top">
+        <div class="rec-copy" data-sr>
+          <span class="eyebrow">Why Leon</span>
+          <h2>A perfect record.</h2>
+          <p>Look at the middle of the bulb. That zero is the number of Leon's students who have failed A/L Business Studies.</p>
+          <p class="rec-sub">Not a single one. Not once.</p>
+          <p class="rec-stat"><b>0</b><span>students failed, ever</span></p>
+        </div>
+        <div class="rec-mark" aria-hidden="true">
+          <div class="bulbwrap"><Bulb uid="rc" tone="paper" glow={false} /><i class="rec-zero"></i><i class="ring"></i></div>
+        </div>
+      </div>
+      <div class="rec-grid">
+        {reasons.map((r, n) => (
+          <div class="rec-item" data-sr style={`--n:${n}`}>
+            <i class="rec-ic"><Icon name={r.icon} /></i>
+            <h3>{r.t}</h3>
+            <p>{r.p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section finder" id="finder" aria-label="Find your class">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">Find your class</span>
+        <h2>Which class is yours?</h2>
+        <p>Two taps and you know which class to join.</p>
+      </div>
+
+      <!-- fallback shown when JS is off: the full class list still works below -->
+      <div class="finder-fallback">
+        <p>Pick the batch that matches your A/L exam year from the classes below and enrol.</p>
+        <a class="btn btn-ghost" href="#classes">See the classes</a>
+      </div>
+
+      <!-- interactive tool -->
+      <div class="finder-tool" aria-live="polite">
+        <div class="fstep" data-step="1">
+          <span class="fq">Step 01: When do you sit your A/L?</span>
+          <div class="fopts">
+            <button class="fopt" type="button" data-year="2027">2027</button>
+            <button class="fopt" type="button" data-year="2028">2028</button>
+            <button class="fopt" type="button" data-year="revision">My exam is next</button>
+            <button class="fopt" type="button" data-year="unsure">Not sure</button>
+          </div>
+        </div>
+        <div class="fstep" data-step="2" hidden>
+          <span class="fq">Step 02: Where do you want to study?</span>
+          <div class="fopts">
+            <button class="fopt" type="button" data-loc="Nugegoda">Nugegoda</button>
+            <button class="fopt" type="button" data-loc="Kiribathgoda">Kiribathgoda</button>
+            <button class="fopt" type="button" data-loc="Gampaha">Gampaha</button>
+            <button class="fopt" type="button" data-loc="Leon's classroom">Leon's classroom</button>
+            <button class="fopt" type="button" data-loc="Online">Online</button>
+          </div>
+          <button class="fback" type="button" data-back>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0 6-6m-6 6 6 6"/></svg>
+            Back
+          </button>
+        </div>
+        <div class="fresult dark" hidden role="status">
+          <div class="fr-num"><span>2027</span></div>
+          <div class="fr-body">
+            <span class="fr-label">Your batch</span>
+            <h3 class="fr-title">The 2027 batch</h3>
+            <p class="fr-text">Theory taught properly.</p>
+            <div class="fr-cta">
+              <button class="btn btn-primary fr-enrol" type="button">Enrol for the 2027 batch</button>
+              <button class="fback fr-restart" type="button">Start over</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ CLASSES. No prices: Leon gives fees on WhatsApp. ══════════ -->
+  <section class="section" id="classes" aria-label="Classes">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">The classes</span>
+        <h2>Pick your year.</h2>
+        <p>Every class runs in person and online, in English medium.</p>
+        <p class="cls-note">Class days and times: ask for the current timetable.</p>
+      </div>
+      {classes.map(c => (
+        <div class="cls-row" data-cls id={'c-' + c.key}>
+          <div class="cls-top">
+            <div class:list={['num', { long: c.big.length > 5 }]} aria-label={c.title}><span class="o" aria-hidden="true">{c.big}</span><span class="f" aria-hidden="true">{c.big}</span></div>
+            ARROW_SVG
+          </div>
+          <div class="cls-copy">
+            <span class="meta">{c.meta}</span>
+            <h3>{c.title}</h3>
+            <p>{c.line}</p>
+            <a class="btn btn-ghost" href="#enquire" data-batch={c.batch}>{c.cta}</a>
+          </div>
+          <span class="rule" aria-hidden="true"></span>
+        </div>
+      ))}
+      <p class="more" data-sr><a class="hx-link" href={BASE + 'classes/'}>Everything about the classes <b aria-hidden="true">&rsaquo;</b></a></p>
+    </div>
+  </section>
+
+  <section class="tutes" id="tutes" aria-label="The tutes">
+    <div class="t-grid" aria-hidden="true"></div>
+    <div class="t-icons" aria-hidden="true">
+      <!-- bar chart -->
+      <span class="t-ico" style="top:17%;left:11%;--sz:58px;--rot:-8deg;--dur:9s;--delay:0s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><rect x="5" y="11" width="3.4" height="7"/><rect x="10.3" y="6" width="3.4" height="12"/><rect x="15.6" y="14" width="3.4" height="4"/></svg>
+      </span>
+      <!-- trend up -->
+      <span class="t-ico" style="top:60%;left:14%;--sz:66px;--rot:6deg;--dur:11s;--delay:1.2s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v5h-5"/></svg>
+      </span>
+      <!-- pie chart -->
+      <span class="t-ico" style="top:23%;right:13%;--sz:52px;--rot:10deg;--dur:8.5s;--delay:.6s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9h9"/></svg>
+      </span>
+      <!-- coin / currency -->
+      <span class="t-ico" style="top:66%;right:11%;--sz:56px;--rot:-6deg;--dur:10s;--delay:2s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M14.5 9.3a2.4 2.4 0 0 0-2.5-1.3c-1.6 0-2.6.9-2.6 2s1 1.8 2.6 2 2.6.9 2.6 2-1 2-2.6 2a2.6 2.6 0 0 1-2.6-1.4"/></svg>
+      </span>
+      <!-- briefcase -->
+      <span class="t-ico" style="top:40%;left:6%;--sz:48px;--rot:12deg;--dur:9.5s;--delay:1.6s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12.5" rx="2"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5"/><path d="M3 12h18"/></svg>
+      </span>
+      <!-- target -->
+      <span class="t-ico" style="top:38%;right:6%;--sz:50px;--rot:-10deg;--dur:8s;--delay:.3s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg>
+      </span>
+    </div>
+    <div class="t-glow" aria-hidden="true"></div>
+    <div class="big" aria-hidden="true"><span class="word" id="tW1">Free.</span><span class="word" id="tW2">Tutes.</span></div>
+
+    <span class="t-eyebrow"><span class="dot"></span> The tutes</span>
+
+    <div class="stage">
+      <article class="tute" id="tuteCard">
+        <div class="th"><span id="tuteUnit">A/L Business Studies &middot; Unit 01</span><b>Fambeck</b></div>
+        <div class="tt" id="tuteTitle">The Business Environment</div>
+        <div class="ts">Theory notes &middot; worked examples</div>
+        <div class="tbars"><div class="tbar"></div><div class="tbar"></div><div class="tbar"></div><div class="tbar"></div></div>
+        <div class="tdia" aria-hidden="true">
+          <svg viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 100 V20 M20 100 H180"/><path d="M30 90 C 80 30, 120 30, 175 34"/><path d="M30 34 C 90 90, 130 90, 175 96"/></svg>
+        </div>
+        <div class="tkey"><div><span class="kl">Key term</span><span class="kv" id="tuteKey">Opportunity cost</span></div></div>
+        <div class="tf"><span id="tutePage">Page 01</span><span class="tstamp">TUTE</span></div>
+      </article>
+    </div>
+
+    <div class="t-foot">
+      <div class="t-cap">
+        <span class="line" id="tCapA">Every student gets Leon's complete set of tutes. Free, from day one.</span>
+        <span class="line" id="tCapB">Theory notes and worked examples, written by Leon. Yours to keep.</span>
+      </div>
+      <div class="t-prog"><span>Free</span><span class="track"><span class="fill" id="tuteFill"></span></span><span>Tutes</span></div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ WHERE WE TEACH ══════════ -->
+  <section class="section" id="locations" aria-label="Where we teach">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">Where we teach</span>
+        <h2>Five places to learn.</h2>
+        <p>The same class and the same tutes in every one of them.</p>
+      </div>
+      <div class="loc-grid loc-5" data-sr>
+        {locations.map((l, n) => (
+          <div class="loc">
+            <i class="loc-ic"><Icon name={l.icon} /></i>
+            <h3>{l.name}</h3>
+            <p class="mode">{l.mode}</p>
+            <a data-wa={l.ask} href={'https://wa.me/' + SITE.whatsapp}>Ask for the timetable <Icon name="arrow" /></a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ HOW TO ENROL ══════════ -->
+  <section class="section" id="how" aria-label="How to enrol">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">How to enrol</span>
+        <h2>Three steps in.</h2>
+      </div>
+      <div class="steps" data-sr>
+        <div class="step"><span class="no">01</span><h3>Send your details</h3><p>Fill the short form below or message Leon on WhatsApp.</p></div>
+        <div class="step"><span class="no">02</span><h3>Talk to Leon</h3><p>He confirms your class, answers your questions and shares the timetable and the fees.</p></div>
+        <div class="step"><span class="no">03</span><h3>Join your class</h3><p>Start in person at the place nearest you or online from anywhere.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ FAQ ══════════ -->
+  <section class="section" id="faq" aria-label="Questions">
+    <div class="wrap">
+      <div class="sect-head" data-sr>
+        <span class="eyebrow">Questions</span>
+        <h2>Good to know.</h2>
+      </div>
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <!-- ══════════ ENQUIRE ══════════ -->
+  <section class="section" id="enquire" aria-label="Enquire">
+    <div class="wrap">
+      <div class="enq">
+        <div class="enq-side" data-sr>
+          <span class="eyebrow">Enrol</span>
+          <h2>Save your seat.</h2>
+          <p>Send your details and you get a reply on WhatsApp with everything you need to join.</p>
+          <p class="alt">Prefer Instagram? Message <a href={SITE.instagram} target="_blank" rel="noopener">{SITE.instagramHandle}</a>.</p>
+        </div>
+        <div><EnquiryForm /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- no attributes on this tag: any attribute makes Astro ship it as a plain inline script, and an import then throws -->
+  <script>import '../scripts/home.js';</script>
+</Layout>

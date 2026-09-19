@@ -1,0 +1,12 @@
+---
+// Native details, so it works with no JavaScript at all.
+const { items } = Astro.props;
+---
+<div class="faq" data-sr>
+  {items.map(i => (
+    <details>
+      <summary>{i.q}<span class="ic" aria-hidden="true"></span></summary>
+      <p class="ans">{i.a}</p>
+    </details>
+  ))}
+</div>

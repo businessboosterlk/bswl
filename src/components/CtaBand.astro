@@ -1,0 +1,17 @@
+---
+// Every page ends in an action (the conversion standard: nobody scrolls back to enrol).
+import Bulb from './Bulb.astro';
+import { BASE, SITE } from '../scripts/config.js';
+const { title = 'Ready to start?', line = 'Send your details and Leon replies on WhatsApp with the timetable and the fees.', about = 'joining the class', uid = 'cb' } = Astro.props;
+---
+<section class="cta-band dark" data-light="0.5">
+  <div class="bulbwrap" aria-hidden="true"><Bulb uid={uid} tone="paper" glow={false} /><i class="ring"></i></div>
+  <div class="wrap">
+    <h2>{title}</h2>
+    <p>{line}</p>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-lg" href={BASE + 'enrol/'}>Enrol now</a>
+      <a class="btn btn-ghost btn-lg" data-wa={about} href={'https://wa.me/' + SITE.whatsapp}>WhatsApp {SITE.whatsappPretty}</a>
+    </div>
+  </div>
+</section>
