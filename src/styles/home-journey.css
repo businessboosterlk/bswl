@@ -1,0 +1,274 @@
+/* Home-page journey: two deliberately different beats, scoped to this page. */
+#locations {
+  background: #fff;
+}
+
+#locations .loc-grid.loc-5 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  border: 0;
+}
+
+#locations .loc-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 222px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid #e5e6e9;
+  border-radius: 18px;
+  background: #f8f8f9;
+  color: #141417;
+  box-shadow: none;
+  transition: background-color .32s var(--ease), color .32s var(--ease),
+    border-color .32s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+
+#locations .loc-card::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: radial-gradient(circle at 92% 8%, rgba(255, 255, 255, .11), transparent 46%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s var(--ease);
+}
+
+#locations .loc-card > * { position: relative; z-index: 1; }
+
+#locations .loc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .15em;
+  color: #777984;
+}
+
+#locations .loc-card-arrow {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: -5px -5px 0 0;
+  border: 1px solid #d9dade;
+  border-radius: 50%;
+  color: #141417;
+  transition: transform .35s var(--ease), border-color .35s var(--ease);
+}
+
+#locations .loc-card-arrow .ic {
+  width: 15px;
+  height: 15px;
+  transform: rotate(-45deg);
+}
+
+#locations .loc-card .loc-ic {
+  width: 42px;
+  height: 42px;
+  margin: auto 0 20px;
+  border-radius: 12px;
+  background: #141417;
+  color: #fff;
+  transition: background-color .32s var(--ease), color .32s var(--ease);
+}
+
+#locations .loc-card h3 {
+  margin-bottom: 5px;
+  font-size: clamp(20px, 1.7vw, 24px);
+  line-height: 1.18;
+  color: inherit;
+}
+
+#locations .loc-card .mode {
+  display: block;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #676873;
+  transition: color .32s var(--ease);
+}
+
+#locations .loc-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 22px;
+  font-size: 12.5px;
+  line-height: 1.25;
+  font-weight: 600;
+  color: inherit;
+}
+
+#locations .loc-card-cta .ic {
+  width: 15px;
+  height: 15px;
+  transition: transform .32s var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #locations .loc-card:hover {
+    transform: translateY(-5px);
+    background: #17181c;
+    border-color: #17181c;
+    color: #fff;
+    box-shadow: 0 20px 38px rgba(16, 17, 21, .16);
+  }
+
+  #locations .loc-card:hover::before { opacity: 1; }
+  #locations .loc-card:hover .loc-card-arrow { transform: translate(2px, -2px); border-color: rgba(255, 255, 255, .35); color: #fff; }
+  #locations .loc-card:hover .loc-ic { background: #fff; color: #17181c; }
+  #locations .loc-card:hover .mode,
+  #locations .loc-card:hover .loc-top { color: #c5c6cc; }
+  #locations .loc-card:hover .loc-card-cta .ic { transform: translateX(3px); }
+}
+
+/* Keyboard and touch users receive the same inversion without needing hover. */
+#locations .loc-card:focus-visible,
+#locations .loc-card:active {
+  background: #17181c;
+  border-color: #17181c;
+  color: #fff;
+}
+
+#locations .loc-card:focus-visible::before,
+#locations .loc-card:active::before { opacity: 1; }
+#locations .loc-card:focus-visible .loc-card-arrow,
+#locations .loc-card:active .loc-card-arrow { border-color: rgba(255, 255, 255, .35); color: #fff; }
+#locations .loc-card:focus-visible .loc-ic,
+#locations .loc-card:active .loc-ic { background: #fff; color: #17181c; }
+#locations .loc-card:focus-visible .mode,
+#locations .loc-card:focus-visible .loc-top,
+#locations .loc-card:active .mode,
+#locations .loc-card:active .loc-top { color: #c5c6cc; }
+
+@media (min-width: 620px) {
+  #locations .loc-grid.loc-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #locations .loc-card:last-child { grid-column: 1 / -1; }
+}
+
+@media (min-width: 840px) {
+  #locations .loc-grid.loc-5 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  #locations .loc-card:nth-child(-n + 2) { grid-column: span 3; }
+  #locations .loc-card:nth-child(n + 3),
+  #locations .loc-card:last-child { grid-column: span 2; }
+}
+
+@media (min-width: 1160px) {
+  #locations .loc-grid.loc-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  #locations .loc-card,
+  #locations .loc-card:nth-child(-n + 2),
+  #locations .loc-card:nth-child(n + 3),
+  #locations .loc-card:last-child { grid-column: auto; }
+  #locations .loc-card { min-height: 268px; padding: 22px; }
+}
+
+#how {
+  background: #f7f7f8;
+  border-block: 1px solid #ececef;
+}
+
+#how .enrol-flow {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: 1120px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+#how .enrol-flow::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 35px;
+  top: 36px;
+  bottom: 50px;
+  width: 1px;
+  background: #c8c9ce;
+}
+
+#how .enrol-flow-step {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: start;
+  gap: 22px;
+  padding: 0 0 44px;
+}
+
+#how .enrol-flow-step:last-child { padding-bottom: 0; }
+
+#how .enrol-flow-number {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 1px solid #d8d9dc;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 7px 20px rgba(17, 18, 21, .05);
+  font: 600 19px/1 var(--font-display);
+  letter-spacing: -.04em;
+  color: #141417;
+}
+
+#how .enrol-flow-step:last-child .enrol-flow-number {
+  background: #17181c;
+  border-color: #17181c;
+  color: #fff;
+}
+
+#how .enrol-flow-step > div { padding-top: 6px; }
+#how .enrol-flow-kicker {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: #777984;
+}
+#how .enrol-flow-step h3 { margin-bottom: 10px; font-size: clamp(20px, 2.1vw, 25px); }
+#how .enrol-flow-step p { max-width: 31ch; font-size: 14px; line-height: 1.6; color: #5b5b66; }
+
+#how .enrol-flow-action {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-top: 50px;
+  padding-top: 24px;
+  border-top: 1px solid #dfe0e3;
+}
+#how .enrol-flow-action > span { font-size: 14px; color: #676873; }
+#how .enrol-flow-action .btn { min-width: 190px; }
+#how .enrol-flow-action .btn .ic { width: 16px; height: 16px; }
+
+@media (min-width: 760px) {
+  #how .enrol-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  #how .enrol-flow::before { top: 35px; bottom: auto; left: 36px; right: 36px; width: auto; height: 1px; }
+  #how .enrol-flow-step { display: block; padding: 0; }
+  #how .enrol-flow-number { margin-bottom: 30px; }
+  #how .enrol-flow-step > div { padding: 0; }
+  #how .enrol-flow-action { justify-content: space-between; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #locations .loc-card,
+  #locations .loc-card::before,
+  #locations .loc-card-arrow,
+  #locations .loc-card .loc-ic,
+  #locations .loc-card-cta .ic { transition: none; }
+  #locations .loc-card:hover { transform: none; }
+}

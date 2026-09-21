@@ -94,64 +94,43 @@ body.locked{overflow:hidden}
 @keyframes mkFire{0%{transform:none}38%{transform:translate(calc(var(--dx)*2.1),calc(var(--dy)*2.1)) scale(1.14)}100%{transform:none}}
 @keyframes mkRing{from{opacity:.75;transform:translate(-50%,-50%) scale(.8)}to{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
 
-/* ═══ HOME HERO. Depth is the z order: mark, headline, Leon, chips. The headline is white type in difference
-   mode, so one line reads black on the page and white where it crosses the mark. The blend sits on the positioned
-   box itself: under a transformed parent it blends against nothing and the type stays white. ═══ */
+/* ═══ HOME HERO. One complete bulb mark, one portrait, one message. ═══ */
 .hx{--H:clamp(520px,calc(100svh - var(--nav-h) - 56px),900px);
   position:relative;isolation:isolate;overflow:hidden;min-height:calc(100svh - var(--nav-h));
   display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:1fr;
-  background:radial-gradient(70% 80% at 64% 42%,#fff 0%,var(--paper) 62%,#ededf0 100%)}
-.hx:after,.ph:after{content:"";position:absolute;z-index:4;left:0;right:0;bottom:0;height:52px;pointer-events:none;
+  background:linear-gradient(112deg,#fff 0%,#f8f8fa 58%,#ececf0 100%)}
+.hx:after{content:"";position:absolute;z-index:4;left:0;right:0;bottom:0;height:1px;background:#d9d9df;pointer-events:none}
+.ph:after{content:"";position:absolute;z-index:4;left:0;right:0;bottom:0;height:52px;pointer-events:none;
   background:linear-gradient(180deg,rgba(240,240,243,0),rgba(240,240,243,.94))}
-.hx-stage{position:absolute;left:63%;bottom:0;width:var(--H);height:var(--H);transform:translateX(-50%);pointer-events:none}
-.hx-stage .bulbwrap{position:absolute;z-index:1;top:-7%;left:50%;width:112%;margin-left:-44.8%}   /* 40% of 112: the bulb HEAD is centred on Leon */
-.hx-leon{position:absolute;z-index:3;bottom:0;left:50%;height:91%;width:auto;max-width:none;transform:translateX(-50%)}   /* static, always */
-.hx-head{position:absolute;z-index:2;left:var(--edge);top:50%;transform:translateY(-72%);pointer-events:none;mix-blend-mode:difference}
-.hx-head small{display:block;font:500 clamp(17px,1.55vw,23px)/1 var(--hx-display);letter-spacing:-.015em;color:#87878a;margin:0 0 18px 5px}
-.hx-head h1{font:700 clamp(62px,9.2vw,142px)/.9 var(--hx-display);letter-spacing:-.055em;color:#fff;max-width:none}
+.hx-stage{position:absolute;left:69%;bottom:0;width:var(--H);height:var(--H);transform:translateX(-50%);pointer-events:none}
+.hx-stage .bulbwrap{position:absolute;z-index:1;top:7%;left:52%;width:55%;opacity:.58}
+.hx-stage .bulb-outline g[fill]{fill:none}
+.hx-stage .bulb-outline .bulb-body,.hx-stage .bulb-outline .bulb-ray,.hx-stage .bulb-outline .bulb-glint{stroke:#55555d;stroke-width:95;stroke-linejoin:round;stroke-linecap:round}
+.hx-stage .bulb-outline .bulb-ray,.hx-stage .bulb-outline .bulb-glint{stroke-width:125}
+.hx-leon{position:absolute;z-index:3;bottom:0;left:50%;height:98%;width:auto;max-width:none;transform:translateX(-50%);filter:drop-shadow(0 18px 23px rgba(25,25,29,.11))}
+.hx-head{position:absolute;z-index:2;left:var(--edge);top:50%;transform:translateY(-72%);pointer-events:none}
+.hx-head small{display:block;font:600 clamp(13px,1.1vw,16px)/1.2 var(--hx-display);letter-spacing:.12em;text-transform:uppercase;color:#66666c;margin:0 0 24px 4px}
+.hx-head h1{font:700 clamp(62px,9.2vw,142px)/.9 var(--hx-display);letter-spacing:-.055em;color:#121214;max-width:none}
 .hx-head h1 span{display:block;overflow:hidden;padding:0 .08em .16em 0;margin-bottom:-.16em}
 .hx-head h1 i{display:block;font-style:normal}
 .hx-copy{position:relative;z-index:5;align-self:end;padding:0 var(--edge) 7svh;max-width:calc(var(--edge) + 470px)}
 .hx-copy p{font-size:17px;line-height:1.55;letter-spacing:-.012em;color:var(--gr);max-width:36ch}
 .hx-cta,.ph-cta{margin-top:26px;display:flex;align-items:center;gap:26px;flex-wrap:wrap}
 
-/* THE CHIPS: five true facts that float in front of him, each a door into the site. They POP in one after
-   another once Leon has arrived, then float for good. */
-.hx-chips{position:absolute;inset:0;z-index:6}
-.hx-chip{position:absolute;display:flex;align-items:center;gap:12px;padding:9px 18px 9px 9px;border-radius:20px;pointer-events:auto;white-space:nowrap;
-  background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);
-  border:1px solid rgba(255,255,255,.75);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 14px 34px rgba(20,20,23,.16),0 2px 6px rgba(20,20,23,.08);
-  transition:box-shadow .45s var(--ease),background .3s}
-.hx-chip:hover{background:rgba(255,255,255,.95);box-shadow:0 1px 0 #fff inset,0 20px 44px rgba(20,20,23,.22),0 3px 8px rgba(20,20,23,.1)}
-.hx-ic{flex:none;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#3a3a41,#0e0e10);color:#fff}
-.hx-ic .ic{width:21px;height:21px}
-.hx-chip b{display:block;font:600 14.5px/1.15 var(--hx-display);letter-spacing:-.015em;color:#141417}
-.hx-chip span span{display:block;margin-top:3px;font:500 12px/1.1 var(--hx-display);color:var(--gr);letter-spacing:-.005em}
-.hx-chip.c1{left:-4%;top:64%;--f:6s}
-.hx-chip.c2{left:82%;top:70%;--f:7.2s}
-.hx-chip.c3{left:87%;top:-1%;--f:6.6s}
-.hx-chip.c4{left:-6%;top:23%;--f:7.6s}
-.hx-chip.c5{left:88%;top:34%;--f:5.8s}
-
 @media (prefers-reduced-motion:no-preference){
-  .hx-stage .bulbwrap,.ph-stage .bulbwrap{animation:hxBulb 1.3s var(--ease) both}
+  .ph-stage .bulbwrap{animation:hxBulb 1.3s var(--ease) both}
   .hx-leon,.ph-leon{animation:hxLeon 1.25s var(--ease) .2s both}
+  .hx-stage .bulbwrap{animation:hxBulbLine 1.4s var(--ease) .3s both}
   .hx-head h1 i{animation:hxLine 1.05s var(--ease) both}
   .hx-head h1 span:nth-child(1) i{animation-delay:.5s}
   .hx-head h1 span:nth-child(2) i{animation-delay:.6s}
   .hx-head small,.hx-copy,.ph-copy{animation:hxUp 1s var(--ease) .8s both}
-  .hx-chip{animation:hxPop .85s cubic-bezier(.34,1.56,.64,1) both,hxFloat var(--f,6s) ease-in-out infinite alternate;
-    animation-delay:calc(1.5s + var(--n)*.22s),calc(2.8s + var(--n)*.45s)}
-  .hx-chip .ic *{animation:hxDraw 1.2s var(--ease) both;animation-delay:calc(1.9s + var(--n)*.22s)}
 }
 @keyframes hxBulb{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes hxBulbLine{from{opacity:0;transform:scale(.94)}to{opacity:.58;transform:scale(1)}}
 @keyframes hxLeon{from{opacity:0;transform:translateX(-50%) translateY(48px)}to{opacity:1;transform:translateX(-50%)}}
 @keyframes hxLine{from{transform:translateY(108%)}to{transform:none}}
 @keyframes hxUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-@keyframes hxPop{0%{opacity:0;transform:translateY(26px) scale(.55)}60%{opacity:1}100%{opacity:1;transform:none}}
-@keyframes hxFloat{from{transform:translateY(0)}to{transform:translateY(-11px)}}
-@keyframes hxDraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
-
 @media (max-width:1100px){
   .hx{grid-template-rows:auto auto 1fr}
   .hx-head{position:relative;top:auto;left:auto;transform:none;padding:36px var(--edge) 0}
@@ -159,19 +138,11 @@ body.locked{overflow:hidden}
   .hx-head h1{font-size:clamp(56px,15vw,112px)}
   .hx-copy{align-self:start;padding:22px var(--edge) 0;max-width:none}
   .hx-stage{position:relative;left:auto;transform:none;justify-self:center;grid-row:3;align-self:end;--H:clamp(420px,62svh,660px);margin-top:26px}
-  .hx-chip.c1{left:calc(50% - 46vw);top:50%}
-  .hx-chip.c2{left:auto;right:calc(50% - 46vw);top:74%}
-  .hx-chip.c3{left:auto;right:calc(50% - 46vw);top:36%}
-  .hx-chip.c4{left:calc(50% - 46vw);top:80%}
-  .hx-chip.c5{left:auto;right:calc(50% - 44vw);top:56%}
 }
 @media (max-width:700px){
-  .hx-chip{padding:7px 14px 7px 7px;border-radius:17px;gap:10px}
-  .hx-ic{width:34px;height:34px;border-radius:11px}.hx-ic .ic{width:18px;height:18px}
-  .hx-chip b{font-size:13px}.hx-chip span span{font-size:11px}
-  .hx-chip.c2,.hx-chip.c4{display:none}
-  .hx-chip.c1{top:48%}.hx-chip.c3{top:35%}.hx-chip.c5{top:61%}   /* his face ends at 30% of the stage: no chip above that */
   .hx-copy p{font-size:16px}
+  .hx-stage{width:min(100vw,var(--H))}
+  .hx-stage .bulbwrap{top:11%;left:52%;width:45%}
 }
 
 /* ═══ WHO IS LEON. No box behind him. Leon, cut out, standing on the page with a soft floor shadow. ═══ */

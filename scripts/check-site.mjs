@@ -13,12 +13,9 @@
 const { chromium } = await import(process.env.PW || 'playwright');
 import { spawn } from 'node:child_process';
 
-// Astro 7 allows ONE preview server per project. If the dev's own preview is already up on 4605 the gate uses it,
-// otherwise it starts its own. (Found 19 Sep 2026: a second `astro preview` exits at once and the gate waited for ever.)
-let PORT = 4605;
-const alive = async port => { try { return (await fetch(`http://localhost:${port}/bswl/`)).ok; } catch { return false; } };
-const OWN = !(await alive(4605));
-if (OWN) PORT = 4699;
+// Always launch a fresh preview of this build. A process already listening on the dev port
+// may be serving an older build, which gives false failures (or false passes).
+const PORT = 4699;
 const ROOT = `http://localhost:${PORT}/bswl/`;
 const PAGES = ['', 'classes/', 'about/', 'locations/', 'tutes/', 'enrol/', 'app/', 'blog/'];
 const WIDTHS = [[1440, 900], [1280, 720], [820, 1180], [390, 844], [360, 740]];
@@ -26,12 +23,17 @@ const WA = '94771396173';
 let pass = 0; const fails = [];
 const ok = (name, cond, detail = '') => { if (cond) pass++; else fails.push(name + (detail ? '  <- ' + detail : '')); };
 
-const server = OWN ? spawn('npx', ['astro', 'preview', '--port', String(PORT)], { stdio: 'ignore' }) : { kill() {} };
+const server = spawn(process.execPath, ['node_modules/astro/bin/astro.mjs', 'preview', '--port', String(PORT)], { stdio: 'ignore' });
 const up = async () => { for (let i = 0; i < 60; i++) { try { const r = await fetch(ROOT); if (r.ok) return; } catch {} await new Promise(r => setTimeout(r, 500)); } throw new Error('preview never started'); };
 
 try {
   await up();
-  const b = await chromium.launch();
+  let b;
+  try { b = await chromium.launch(); }
+  catch (err) {
+    if (!String(err).includes("Executable doesn't exist")) throw err;
+    b = await chromium.launch({ channel: 'chrome' });
+  }
   const links = new Set();
   for (const pth of PAGES) {
     for (const [w, h] of WIDTHS) {
@@ -77,13 +79,17 @@ try {
   await p.mouse.wheel(0, 320); await p.waitForTimeout(900);
   const l2 = await box('.hx-leon');
   ok('home: Leon does not move on scroll', l2[0] === l0[0] && l2[1] === l0[1], JSON.stringify([l0, l2]));
-  ok('home: five chips, none over his face', await p.evaluate(() => { const L = document.querySelector('.hx-leon').getBoundingClientRect(); const f = { l: L.left + L.width * .3, r: L.left + L.width * .7, t: L.top, b: L.top + L.height * .24 };
-    const c = [...document.querySelectorAll('.hx-chip')]; return c.length === 5 && c.every(x => { const r = x.getBoundingClientRect(); return r.right < f.l || r.left > f.r || r.bottom < f.t || r.top > f.b; }); }));
+  ok('home: one clean portrait and the complete bulb mark', await p.evaluate(() =>
+    !!document.querySelector('.hx-leon[src*="leon-front-refined"]') &&
+    !!document.querySelector('.hx .bulb-outline') &&
+    document.querySelectorAll('.hx-chip').length === 0));
   await p.close();
   const ph = await b.newPage({ viewport: { width: 390, height: 844 } });
   await ph.goto(ROOT, { waitUntil: 'networkidle' }); await ph.waitForTimeout(3200);
-  ok('home on a phone: no chip over his face', await ph.evaluate(() => { const L = document.querySelector('.hx-leon').getBoundingClientRect(); const f = { l: L.left + L.width * .3, r: L.left + L.width * .7, t: L.top, b: L.top + L.height * .26 };
-    return [...document.querySelectorAll('.hx-chip')].filter(x => getComputedStyle(x).display !== 'none').every(x => { const r = x.getBoundingClientRect(); return r.right < f.l || r.left > f.r || r.bottom < f.t || r.top > f.b; }); }));
+  ok('home on a phone: hero actions remain reachable', await ph.evaluate(() => {
+    const links = [...document.querySelectorAll('.hx-cta a')];
+    return links.length === 2 && links.every(a => { const r = a.getBoundingClientRect(); return r.width > 0 && r.left >= 0 && r.right <= innerWidth; });
+  }));
   await ph.close();
 
   // 8. the form

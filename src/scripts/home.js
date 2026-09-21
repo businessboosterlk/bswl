@@ -82,7 +82,7 @@ window.addEventListener('load', () => {
 });
 
 function initMotion(){
-  const mob = innerWidth < 768;
+  const mob = innerWidth <= 900 || matchMedia('(pointer:coarse)').matches;
   const PF = mob ? .5 : 1;                     /* parallax factor halves on mobile */
 
   /* ── SCENE 2: classes — scrubbed numeral focus (outline→fill), rule draw, copy rise ── */
@@ -110,7 +110,7 @@ function initMotion(){
   gsap.to('.foot-mark', {yPercent:0, opacity:1, duration:1.2, ease:'expo.out',
     scrollTrigger:{trigger:'.footer', start:'top 82%', once:true}});
 
-  /* ── SCENE 6: THE TUTES — pinned scroll (desktop only; no pin on mobile/iOS) ── */
+  /* ── SCENE 6: THE TUTES — a short desktop beat, never a multi-screen scroll trap ── */
   if (!mob && document.getElementById('tutes')){
     const tW1=document.getElementById('tW1'), tW2=document.getElementById('tW2'),
           tStage=document.querySelector('.tutes .stage'), tCard=document.getElementById('tuteCard'),
@@ -123,7 +123,7 @@ function initMotion(){
     gsap.set(tW2, {xPercent:-50, yPercent:-50, x:'80vw', opacity:0, scale:.92});
     gsap.set(tStage, {scale:.72, opacity:0, rotationZ:-7});
     const tutTl = gsap.timeline({defaults:{ease:'sine.inOut'}, scrollTrigger:{
-      trigger:'#tutes', start:'top top', end:'+=340%', scrub:1, pin:true, anticipatePin:1,
+      trigger:'#tutes', start:'top top', end:'+=105%', scrub:.45, pin:true, anticipatePin:1,
       onUpdate:self => { tFill.style.width = (8 + self.progress*92) + '%'; }
     }});
     tutTl.to(tStage, {scale:1, opacity:1, rotationZ:0, duration:1, ease:'power2.out'}, 0)

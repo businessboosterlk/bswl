@@ -17,12 +17,19 @@ function onScroll() { if (nav) nav.classList.toggle('stick', scrollY > 8); }
 addEventListener('scroll', () => requestAnimationFrame(onScroll), { passive: true });
 onScroll();
 
-/* ── sticky mobile bar: hides while an enquiry form is on screen ── */
+/* ── sticky mobile bar: do not duplicate the hero CTA or cover the enquiry form ── */
 (function () {
-  const mbar = document.getElementById('mbar'), enq = document.getElementById('enquire');
-  if (mbar && enq && 'IntersectionObserver' in window) {
-    new IntersectionObserver(en => mbar.classList.toggle('off', en[0].isIntersecting), { threshold: .12 }).observe(enq);
-  }
+  const mbar = document.getElementById('mbar');
+  if (!mbar || !('IntersectionObserver' in window)) return;
+  const visible = new Map();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => visible.set(entry.target, entry.isIntersecting));
+    mbar.classList.toggle('off', [...visible.values()].some(Boolean));
+  }, { threshold: .12 });
+  [document.getElementById('hero'), document.getElementById('enquire')].filter(Boolean).forEach(el => {
+    visible.set(el, false);
+    observer.observe(el);
+  });
 })();
 
 /* ── WhatsApp links that name what the visitor was looking at. <a data-wa="the Gampaha timetable"> ── */

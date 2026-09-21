@@ -11,16 +11,11 @@ import EnquiryForm from '../components/EnquiryForm.astro';
 import classes from '../data/classes.json';
 import locations from '../data/locations.json';
 import faq from '../data/faq.json';
+import '../styles/home-journey.css';
 import { BASE, SITE } from '../scripts/config.js';
 import { faqSchema } from '../scripts/seo.js';
+import '../styles/home-discovery.css';
 
-const chips = [
-  { c: 'c1', href: '#classes', icon: 'calendar', t: '2027 and 2028', s: 'Both batches are open' },
-  { c: 'c2', href: '#locations', icon: 'pin', t: 'Five places to learn', s: 'Four in person, one online' },
-  { c: 'c3', href: '#tutes', icon: 'book', t: 'Free tutes', s: 'From your first day' },
-  { c: 'c4', href: '#faq', icon: 'speech', t: 'English medium', s: 'The full A/L syllabus' },
-  { c: 'c5', href: BASE + 'app/', icon: 'phone', t: 'Student app', s: 'Sign in with your code' }
-];
 const reasons = [
   { icon: 'medal', t: 'Island-rank results', p: 'Leon\'s students have gone on to island-rank, country-top results in A/L Business Studies.' },
   { icon: 'whistle', t: 'A coach, not just a teacher', p: 'A former sportsman, Leon teaches with a coach\'s discipline. He knows how students learn, train and perform under pressure.' },
@@ -33,12 +28,12 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
   title="A/L Business Studies in English medium | Leon Fambeck"
   description="A/L Business Studies, taught properly by Leon Fambeck. The 2027 and 2028 batches in English medium at Nugegoda, Kiribathgoda and Gampaha, at Leon's classroom and online."
   page="home" home schema={[faqSchema(faq), ...courses]}>
-  <link slot="head" rel="preload" as="image" href={BASE + 'assets/leon-front.webp'} fetchpriority="high">
+  <link slot="head" rel="preload" as="image" href={BASE + 'assets/leon-front-refined.webp'} fetchpriority="high">
 
   <!-- ══════════ HERO. Leon is static. The light behind him moves (light.js). ══════════ -->
   <section class="hx" id="hero" data-light aria-label="A/L Business Studies with Leon Fambeck">
     <div class="hx-head">
-      <small>Business Studies,</small>
+      <small>A/L Business Studies · With Leon Fambeck</small>
       <h1 id="heroH1"><span><i>Taught</i></span><span><i>Properly.</i></span></h1>
     </div>
     <div class="hx-copy">
@@ -46,16 +41,8 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
       <div class="hx-cta"><a class="hx-pill" href="#enquire">Enrol now</a><a class="hx-link" href="#finder">Find your class <b aria-hidden="true">&rsaquo;</b></a></div>
     </div>
     <div class="hx-stage">
-      <div class="bulbwrap" aria-hidden="true"><Bulb uid="hx" /><i class="ring"></i></div>
-      <img class="hx-leon" src={BASE + 'assets/leon-front.webp'} alt="Leon Fambeck, A/L Business Studies teacher" width="1035" height="1800" fetchpriority="high">
-      <div class="hx-chips">
-        {chips.map((k, n) => (
-          <a class={'hx-chip ' + k.c} style={`--n:${n}`} href={k.href}>
-            <i class="hx-ic"><Icon name={k.icon} /></i>
-            <span><b>{k.t}</b><span>{k.s}</span></span>
-          </a>
-        ))}
-      </div>
+      <div class="bulbwrap" aria-hidden="true"><Bulb uid="hx" glow={false} outline /></div>
+      <img class="hx-leon" src={BASE + 'assets/leon-front-refined.webp'} alt="Leon Fambeck, A/L Business Studies teacher" width="940" height="1673" fetchpriority="high">
     </div>
   </section>
 
@@ -104,10 +91,20 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
           <div class="bulbwrap"><Bulb uid="rc" tone="paper" glow={false} /><i class="rec-zero"></i><i class="ring"></i></div>
         </div>
       </div>
-      <div class="rec-grid">
+      <div class="rec-grid" role="tablist" aria-label="Reasons to learn with Leon">
         {reasons.map((r, n) => (
-          <div class="rec-item" data-sr style={`--n:${n}`}>
+          <button class="rec-item" type="button" role="tab" id={`reason-tab-${n + 1}`} aria-controls={`reason-panel-${n + 1}`} aria-selected={n === 0 ? 'true' : 'false'} tabindex={n === 0 ? 0 : -1} data-sr style={`--n:${n}`}>
+            <span class="rec-index" aria-hidden="true">0{n + 1} / 04</span>
             <i class="rec-ic"><Icon name={r.icon} /></i>
+            <span class="rec-item-heading">{r.t}</span>
+            <span class="rec-item-arrow" aria-hidden="true">↗</span>
+          </button>
+        ))}
+      </div>
+      <div class="rec-detail">
+        {reasons.map((r, n) => (
+          <div class="rec-panel" role="tabpanel" id={`reason-panel-${n + 1}`} aria-labelledby={`reason-tab-${n + 1}`} tabindex="0" hidden={n !== 0}>
+            <span class="rec-panel-index">The reason · 0{n + 1}</span>
             <h3>{r.t}</h3>
             <p>{r.p}</p>
           </div>
@@ -132,6 +129,13 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
 
       <!-- interactive tool -->
       <div class="finder-tool" aria-live="polite">
+        <div class="finder-progress" aria-hidden="true">
+          <span class="finder-progress-item" data-progress="year"><b>01</b> Your year</span>
+          <span class="finder-progress-line"></span>
+          <span class="finder-progress-item" data-progress="place"><b>02</b> Your place</span>
+          <span class="finder-progress-line"></span>
+          <span class="finder-progress-item" data-progress="match"><b>03</b> Your class</span>
+        </div>
         <div class="fstep" data-step="1">
           <span class="fq">Step 01: When do you sit your A/L?</span>
           <div class="fopts">
@@ -185,7 +189,7 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
         <div class="cls-row" data-cls id={'c-' + c.key}>
           <div class="cls-top">
             <div class:list={['num', { long: c.big.length > 5 }]} aria-label={c.title}><span class="o" aria-hidden="true">{c.big}</span><span class="f" aria-hidden="true">{c.big}</span></div>
-            ARROW_SVG
+            <svg class="cls-arr" viewBox="0 0 64 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 16h56m0 0-12-12m12 12-12 12" /></svg>
           </div>
           <div class="cls-copy">
             <span class="meta">{c.meta}</span>
@@ -267,12 +271,12 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
       </div>
       <div class="loc-grid loc-5" data-sr>
         {locations.map((l, n) => (
-          <div class="loc">
-            <i class="loc-ic"><Icon name={l.icon} /></i>
-            <h3>{l.name}</h3>
-            <p class="mode">{l.mode}</p>
-            <a data-wa={l.ask} href={'https://wa.me/' + SITE.whatsapp}>Ask for the timetable <Icon name="arrow" /></a>
-          </div>
+          <a class="loc loc-card" data-wa={l.ask} href={'https://wa.me/' + SITE.whatsapp} aria-label={`Ask Leon about ${l.ask} on WhatsApp`}>
+            <span class="loc-top"><span>{String(n + 1).padStart(2, '0')} / 05</span><span class="loc-card-arrow" aria-hidden="true"><Icon name="arrow" /></span></span>
+            <span class="loc-ic"><Icon name={l.icon} /></span>
+            <div class="loc-body"><h3>{l.name}</h3><span class="mode">{l.mode}</span></div>
+            <span class="loc-card-cta">Ask for timetable <Icon name="arrow" /></span>
+          </a>
         ))}
       </div>
     </div>
@@ -285,11 +289,21 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
         <span class="eyebrow">How to enrol</span>
         <h2>Three steps in.</h2>
       </div>
-      <div class="steps" data-sr>
-        <div class="step"><span class="no">01</span><h3>Send your details</h3><p>Fill the short form below or message Leon on WhatsApp.</p></div>
-        <div class="step"><span class="no">02</span><h3>Talk to Leon</h3><p>He confirms your class, answers your questions and shares the timetable and the fees.</p></div>
-        <div class="step"><span class="no">03</span><h3>Join your class</h3><p>Start in person at the place nearest you or online from anywhere.</p></div>
-      </div>
+      <ol class="enrol-flow" data-sr>
+        <li class="enrol-flow-step">
+          <span class="enrol-flow-number" aria-hidden="true">01</span>
+          <div><span class="enrol-flow-kicker">First</span><h3>Send your details</h3><p>Fill the short form or message Leon on WhatsApp.</p></div>
+        </li>
+        <li class="enrol-flow-step">
+          <span class="enrol-flow-number" aria-hidden="true">02</span>
+          <div><span class="enrol-flow-kicker">Next</span><h3>Talk to Leon</h3><p>He confirms your class, answers your questions and shares the timetable and fees.</p></div>
+        </li>
+        <li class="enrol-flow-step">
+          <span class="enrol-flow-number" aria-hidden="true">03</span>
+          <div><span class="enrol-flow-kicker">Then</span><h3>Join your class</h3><p>Start in person at the place nearest you or join live online.</p></div>
+        </li>
+      </ol>
+      <div class="enrol-flow-action" data-sr><span>Ready when you are.</span><a class="btn btn-primary" href="#enquire">Send your details <Icon name="arrow" /></a></div>
     </div>
   </section>
 
@@ -321,4 +335,5 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
 
   <!-- no attributes on this tag: any attribute makes Astro ship it as a plain inline script, and an import then throws -->
   <script>import '../scripts/home.js';</script>
+  <script>import '../scripts/discovery.js';</script>
 </Layout>
