@@ -6,6 +6,7 @@ import '../styles/pages.css';
 import { getCollection } from 'astro:content';
 import { SITE, BASE, ROBOTS } from '../scripts/config.js';
 import Contact from '../components/Contact.astro';
+import Icon from '../components/Icon.astro';
 
 const {
   title,
@@ -103,7 +104,7 @@ const graph = { '@context': 'https://schema.org', '@graph': [org, leon, website,
     <a class="nav-app" href={BASE + 'app/'}>Student app</a>
     <a class="btn btn-primary" href={BASE + 'enrol/'}>Enrol now</a>
     <button class="hamb" aria-label="Open menu" data-open-drawer>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <Icon name="menu" />
     </button>
   </div>
 </header>
@@ -113,7 +114,7 @@ const graph = { '@context': 'https://schema.org', '@graph': [org, leon, website,
   <div class="d-head">
     <img src={BASE + 'assets/logo.png'} alt={SITE.name}>
     <button class="d-close" aria-label="Close menu" data-close-drawer>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <Icon name="close" />
     </button>
   </div>
   <nav>

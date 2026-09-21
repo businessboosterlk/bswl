@@ -33,6 +33,15 @@ spawnSync(process.execPath, ['node_modules/astro/bin/astro.mjs', 'preview', 'sto
 const server = spawn(process.execPath, ['node_modules/astro/bin/astro.mjs', 'preview', '--port', String(PORT)], { stdio: 'ignore' });
 const up = async () => { for (let i = 0; i < 60; i++) { try { const r = await fetch(ROOT); if (r.ok) return; } catch {} await new Promise(r => setTimeout(r, 500)); } throw new Error('preview never started'); };
 
+// ICONS. 21 Sep 2026: a WhatsApp logo typed from memory reached the owner. Two checks make that impossible to repeat.
+{ const r = spawnSync(process.execPath, ['scripts/build-icons.mjs', '--check'], { encoding: 'utf8' });
+  ok('icons: every icon is byte for byte the licensed set (Lucide, Simple Icons), none edited by hand', r.status === 0, (r.stderr || '').trim());
+  const { readdirSync, statSync } = await import('node:fs'); const walk = d => readdirSync(d).flatMap(f => { const q = d + '/' + f; return statSync(q).isDirectory() ? walk(q) : [q]; });
+  // The only SVG anyone may write by hand: Leon's own mark (Bulb.astro), the long class arrow and the drawn tute page.
+  const ALLOWED = { 'src/components/Bulb.astro': 1, 'src/components/Icon.astro': 2, 'src/pages/index.astro': 2, 'src/pages/tutes.astro': 1 };
+  const bad = walk('src').filter(f => /\.(astro|js|ts)$/.test(f)).map(f => [f, (readFileSync(f, 'utf8').replace(/^\s*\/\/.*$/gm, '').match(/<svg\b/g) || []).length]).filter(([f, n]) => n > (ALLOWED[f] || 0));
+  ok('icons: no SVG typed by hand anywhere in the source', bad.length === 0, bad.map(([f, n]) => f + ' has ' + n).join(', ')); }
+
 try {
   await up();
   { const served = await (await fetch(ROOT)).text(); const built = readFileSync('dist/index.html', 'utf8');
@@ -47,7 +56,7 @@ try {
   for (const pth of PAGES) {
     for (const [w, h] of WIDTHS) {
       const p = await b.newPage({ viewport: { width: w, height: h } });
-      const errs = []; p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 120)); }); p.on('pageerror', e => errs.push(e.message.slice(0, 120)));
+      const errs = []; p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 120)); }); p.on('pageerror', e => { if (/maps\.gstatic\.com|google\.com\/maps/.test((e.stack || '') + e.message)) return; errs.push(e.message.slice(0, 120)); });   // an error thrown inside Google's own map frame is Google's, and it comes and goes with the network. Ours still fail.
       await p.goto(ROOT + pth, { waitUntil: 'networkidle' }); await p.waitForTimeout(w === 1440 ? 2600 : 900);
       const r = await p.evaluate(() => {
         const h1 = document.querySelector('h1'), brand = document.querySelector('.nav .brand');

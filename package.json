@@ -4,14 +4,23 @@
   "version": "2.0.0",
   "description": "Academy of Business Studies by Leon Fambeck. Astro static site on the BB stack standard.",
   "type": "module",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev --port 4605",
     "build": "astro build",
     "preview": "astro preview --port 4605",
+    "icons": "node scripts/build-icons.mjs",
     "check:site": "node scripts/check-site.mjs",
     "verify": "npm run build && npm run check:site"
   },
-  "dependencies": { "astro": "^7.3.2" },
-  "devDependencies": { "playwright": "^1.50.0" }
+  "dependencies": {
+    "astro": "^7.3.2"
+  },
+  "devDependencies": {
+    "lucide-static": "^1.47.0",
+    "playwright": "^1.50.0",
+    "simple-icons": "^16.32.0"
+  }
 }

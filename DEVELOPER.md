@@ -63,3 +63,7 @@ them must carry `noindex` (`ROBOTS` in `config.js`) or they compete in Google.
 
 `SITE.studentApp` in `config.js`. It is hosted separately. It answered 522 (hosting down) on 18 September 2026.
 Never point it at `businessboosterlk.github.io/bswl-demo/student/`: that is an old demo with three fixed logins.
+
+## Icons: never drawn by hand
+
+Every icon comes from one of two licensed sets: Lucide (line icons, ISC licence) and Simple Icons (brand marks such as WhatsApp, CC0). To add one, put its name in `scripts/build-icons.mjs` and run `npm run icons`. That writes `src/data/icons.json`, which is the only thing `Icon.astro` reads. The gate fails the deploy if that file differs from the packages by a single character, or if anybody types an `<svg>` into a page. Before shipping a new icon, render it at 120px and look at it.
