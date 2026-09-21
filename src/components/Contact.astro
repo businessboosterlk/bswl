@@ -1,0 +1,51 @@
+---
+// CONTACT, at the foot of every page (Thulaib, 21 Sep 2026). Every value comes from config.js. The map is Google's own
+// embed, which needs no key: it opens on the town, never on an address BB does not hold. The frame only loads when the
+// visitor reaches it, and it is greyscale so it sits inside a black and white brand.
+import Icon from './Icon.astro';
+import { SITE } from '../scripts/config.js';
+const src = q => 'https://www.google.com/maps?q=' + encodeURIComponent(q) + '&z=14&output=embed';
+const open = q => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+const ways = [
+  { icon: 'whatsapp', k: 'WhatsApp', v: SITE.whatsappPretty, href: 'https://wa.me/' + SITE.whatsapp, wa: 'joining the class' },
+  { icon: 'instagram', k: 'Instagram', v: SITE.instagramHandle, href: SITE.instagram },
+  { icon: 'facebook', k: 'Facebook', v: 'Leon Fambeck', href: SITE.facebook },
+  { icon: 'youtube', k: 'YouTube', v: '@BSwithLeon', href: SITE.youtube }
+];
+---
+<section class="contact" id="contact" aria-label="Contact Leon">
+  <div class="wrap contact-grid">
+    <div class="contact-side">
+      <span class="eyebrow">Contact</span>
+      <h2>Talk to Leon.</h2>
+      <p>The quickest way is WhatsApp. Leon replies with the timetable, the fees and your first class.</p>
+      <ul class="contact-list">
+        {ways.map(w => (
+          <li>
+            <a href={w.href} data-wa={w.wa} target="_blank" rel="noopener">
+              <i class="contact-ic"><Icon name={w.icon} /></i>
+              <span class="contact-k">{w.k}</span>
+              <span class="contact-v">{w.v}</span>
+              <span class="contact-go" aria-hidden="true"><Icon name="arrow" /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="contact-map">
+      <div class="map-tabs" role="tablist" aria-label="Where Leon teaches in person">
+        {SITE.places.map((p, n) => (
+          <button type="button" role="tab" class="map-tab" aria-selected={n === 0 ? 'true' : 'false'} data-src={src(p.q)} data-open={open(p.q)} data-name={p.name}>{p.name}</button>
+        ))}
+      </div>
+      <div class="map-frame">
+        <iframe id="mapFrame" title={'Map of ' + SITE.places[0].name} src={src(SITE.places[0].q)} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+      <div class="map-foot">
+        <p><b id="mapName">{SITE.places[0].name}</b><span>Ask Leon for the institute and the class times.</span></p>
+        <a class="btn btn-ghost" id="mapOpen" href={open(SITE.places[0].q)} target="_blank" rel="noopener"><Icon name="map" /> Open in Google Maps</a>
+      </div>
+      <p class="map-note">Leon also teaches live online and at his own classroom. That address goes to enrolled families on WhatsApp.</p>
+    </div>
+  </div>
+</section>

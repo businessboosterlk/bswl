@@ -96,3 +96,15 @@ document.querySelectorAll('[data-wa]').forEach(a => {
     { rootMargin: '0px 0px -12% 0px', threshold: .08 });
   els.forEach(el => { el.classList.add('sr'); io.observe(el); });
 })();
+
+/* ── the map at the foot of the page: one frame, three towns ── */
+(function () {
+  const tabs = [...document.querySelectorAll('.map-tab')], frame = document.getElementById('mapFrame');
+  if (!tabs.length || !frame) return;
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(x => x.setAttribute('aria-selected', String(x === tab)));
+    frame.src = tab.dataset.src; frame.title = 'Map of ' + tab.dataset.name;
+    document.getElementById('mapName').textContent = tab.dataset.name;
+    document.getElementById('mapOpen').href = tab.dataset.open;
+  }));
+})();

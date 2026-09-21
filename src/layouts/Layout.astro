@@ -5,6 +5,7 @@ import '../styles/global.css';
 import '../styles/pages.css';
 import { getCollection } from 'astro:content';
 import { SITE, BASE, ROBOTS } from '../scripts/config.js';
+import Contact from '../components/Contact.astro';
 
 const {
   title,
@@ -43,7 +44,7 @@ const org = {
   areaServed: 'Sri Lanka',
   knowsLanguage: 'en',
   contactPoint: { '@type': 'ContactPoint', contactType: 'admissions', telephone: '+' + SITE.whatsapp, url: 'https://wa.me/' + SITE.whatsapp, availableLanguage: 'English' },
-  sameAs: [SITE.instagram]
+  sameAs: [SITE.instagram, SITE.facebook, SITE.youtube]
 };
 const leon = {
   '@type': 'Person',
@@ -128,6 +129,7 @@ const graph = { '@context': 'https://schema.org', '@graph': [org, leon, website,
 </main>
 
 <footer class="footer dark">
+  <Contact />
   <div class="wrap">
     <img class="foot-mark" src={BASE + 'assets/logo-white.png'} alt={SITE.name} loading="lazy" width="1080" height="1350">
     <div class="foot-cols">
@@ -152,11 +154,6 @@ const graph = { '@context': 'https://schema.org', '@graph': [org, leon, website,
         {posts.length > 0 && <a href={BASE + 'blog/'}>Blog</a>}
         <a href={BASE + 'enrol/'}>Enrol</a>
         <a href={BASE + 'app/'}>Student app</a>
-      </div>
-      <div>
-        <h4>Talk to Leon</h4>
-        <a data-wa="joining the class" href={'https://wa.me/' + SITE.whatsapp}>WhatsApp {SITE.whatsappPretty}</a>
-        <a class="ig" href={SITE.instagram} target="_blank" rel="noopener">{SITE.instagramHandle}</a>
       </div>
     </div>
     <div class="foot-bar">

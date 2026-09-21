@@ -25,7 +25,7 @@ body.locked{overflow:hidden}
 .nav-links{margin-left:auto}
 .nav .nav-links + .nav-app{margin-left:var(--s-8)}
 @media(max-width:1020px){.nav-app{display:none}}
-@media(min-width:820px){.foot-cols{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:820px){.foot-cols{grid-template-columns:repeat(3,1fr)}}
 
 /* phone fields at 16px or iOS zooms the whole page when one is tapped (bb-app-foundations) */
 .field input,.field select{font-size:16px}
@@ -364,3 +364,37 @@ body.locked{overflow:hidden}
 .prose p,.prose ul,.prose ol{margin-bottom:var(--s-5)}
 .prose ul,.prose ol{padding-left:1.2em}
 .prose a{border-bottom:1.5px solid #141417;font-weight:500}
+
+/* ═══ CONTACT, at the foot of every page. Quiet rows, one map, nothing decorative. ═══ */
+.footer{padding-top:0}
+.contact{padding:var(--s-24) 0;border-bottom:1px solid var(--hair);margin-bottom:var(--s-20)}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:var(--s-12)}
+.contact-side h2{font-size:var(--fs-5xl);margin:var(--s-4) 0 var(--s-5)}
+.contact-side p{color:var(--muted);font-size:var(--fs-md);max-width:40ch}
+.contact-list{list-style:none;margin-top:var(--s-10);border-top:1px solid var(--hair)}
+.contact-list a{display:grid;grid-template-columns:46px 108px minmax(0,1fr) 24px;align-items:center;gap:var(--s-4);padding:16px 0;min-height:70px;
+  border-bottom:1px solid var(--hair);transition:padding .5s var(--ease),background .4s}
+.contact-list a:hover{padding-left:12px;padding-right:12px;background:rgba(255,255,255,.04)}
+.contact-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff}
+.contact-ic .ic{width:21px;height:21px}
+.contact-k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.contact-v{font:600 var(--fs-md)/1.2 var(--font-display);letter-spacing:-.02em;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contact-go{color:var(--faint);transition:transform .5s var(--ease),color .3s}
+.contact-go .ic{width:18px;height:18px}
+.contact-list a:hover .contact-go{transform:translateX(4px);color:var(--ink)}
+.contact-map{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:14px;align-self:start}
+.map-tabs{display:flex;gap:6px;padding:4px;background:rgba(255,255,255,.06);border-radius:999px;margin-bottom:12px}
+.map-tab{flex:1;min-height:44px;border-radius:999px;font:600 14px/1 var(--font-display);letter-spacing:-.01em;color:var(--muted);transition:background .35s var(--ease),color .3s}
+.map-tab:hover{color:var(--ink)}
+.map-tab[aria-selected="true"]{background:#fff;color:#141417;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.map-frame{position:relative;overflow:hidden;border-radius:16px;aspect-ratio:16/10;background:#1c1d22}
+.map-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(1) contrast(1.06) brightness(.97)}
+.map-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--s-5);flex-wrap:wrap;padding:16px 8px 6px}
+.map-foot p{display:flex;flex-direction:column;gap:3px}
+.map-foot b{font:600 var(--fs-md)/1.2 var(--font-display);letter-spacing:-.02em;color:var(--ink)}
+.map-foot span{font-size:var(--fs-sm);color:var(--muted)}
+.map-foot .btn{min-height:46px;padding:0 22px;font-size:14.5px}
+.map-note{padding:10px 8px 6px;font-size:var(--fs-sm);color:var(--faint);border-top:1px solid var(--hair);margin-top:10px}
+@media(min-width:960px){.contact-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:var(--s-20);align-items:start}}
+@media(max-width:520px){.contact-list a{grid-template-columns:42px minmax(0,1fr) 20px;row-gap:2px}.contact-k{grid-column:2;align-self:end}.contact-v{grid-column:2;align-self:start}
+  .contact-ic{grid-row:1 / span 2;width:42px;height:42px}.contact-go{grid-row:1 / span 2;grid-column:3}.map-frame{aspect-ratio:4/3}.map-foot .btn{width:100%}}

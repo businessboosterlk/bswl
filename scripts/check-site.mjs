@@ -114,6 +114,16 @@ try {
   }));
   await ph.close();
 
+  // CONTACT at the foot of every page: four ways to reach Leon, one map, three towns
+  const ct = await b.newPage({ viewport: { width: 1440, height: 900 } });
+  await ct.goto(ROOT + 'classes/', { waitUntil: 'networkidle' });
+  ok('contact: WhatsApp, Instagram, Facebook and YouTube, each to the right place', await ct.evaluate(wa => { const h = [...document.querySelectorAll('.contact-list a')].map(a => a.href);
+    return h.length === 4 && h[0].includes('wa.me/' + wa) && h[1].includes('instagram.com/bswithleon') && h[2].includes('facebook.com/') && h[3].includes('youtube.com/@BSwithLeon'); }, WA));
+  await ct.evaluate(() => document.getElementById('contact').scrollIntoView()); await ct.click('.map-tab:nth-child(3)'); await ct.waitForTimeout(300);
+  ok('contact: choosing a town moves the map and the Google Maps button', await ct.evaluate(() => document.getElementById('mapFrame').src.includes('Gampaha') && document.getElementById('mapOpen').href.includes('Gampaha') && document.getElementById('mapName').textContent === 'Gampaha'));
+  ok('contact: the map never points at a private address', await ct.evaluate(() => [...document.querySelectorAll('.map-tab')].every(t => /^(Nugegoda|Kiribathgoda|Gampaha)$/.test(t.dataset.name))));
+  await ct.close();
+
   // 8. the form
   const f = await b.newPage({ viewport: { width: 390, height: 844 } });
   await f.addInitScript(() => { window.__opened = []; window.open = u => { window.__opened.push(u); return null; }; });

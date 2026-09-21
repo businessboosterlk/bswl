@@ -12,6 +12,18 @@ export const SITE = {
   whatsappPretty: '077 139 6173',
   instagram: 'https://instagram.com/bswithleon',
   instagramHandle: '@bswithleon',
+  // Both found and opened on 21 Sep 2026. The Facebook page carries his name and Colombo, the YouTube channel is titled Leon Fambeck.
+  facebook: 'https://www.facebook.com/people/Academy-of-Business-Studies-by-Leon-Fambeck/61563007319933/',
+  youtube: 'https://www.youtube.com/@BSwithLeon',
+  // THE MAP. BB holds NO street address and NO Google Maps pin for any class, so each town opens on the TOWN, which is true.
+  // When Leon sends the institute's own Google Maps link, put the place name or the address in `q` (for example
+  // 'Kings Institute, Nugegoda') and the pin lands on the door. His home classroom is a private house where minors are
+  // taught: it is never mapped. The address goes to enrolled families on WhatsApp.
+  places: [
+    { name: 'Nugegoda', q: 'Nugegoda, Sri Lanka' },
+    { name: 'Kiribathgoda', q: 'Kiribathgoda, Sri Lanka' },
+    { name: 'Gampaha', q: 'Gampaha, Sri Lanka' }
+  ],
   // The student app Leon's students sign in to. Hosted by BB's developer on Leon's domain. It answered 522 on
   // 18 Sep 2026 (hosting down), so check it before telling students to use it. NEVER the old GitHub demo app.
   studentApp: 'https://bswl.businessbooster.lk/systemdemo/student/',
