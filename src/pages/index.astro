@@ -61,9 +61,10 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
     </div>
   </section>
 
-  <!-- ══════════ TRUST STRIP on the exercise-book page ══════════ -->
-  <section class="trust" aria-label="At a glance">
+  <!-- ══════════ ONE SHEET of exercise-book paper: the three facts, then Leon standing on it. ══════════ -->
+  <div class="sheet">
     <canvas class="page" aria-hidden="true"></canvas>
+  <section class="trust" aria-label="At a glance">
     <div class="wrap trust-row" data-sr>
       <div class="trust-item"><b>100%</b><span>Pass record. Not one student has ever failed.</span></div>
       <div class="trust-item"><b>Island rank</b><span>Country-top A/L Business Studies results.</span></div>
@@ -90,6 +91,7 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
       </div>
     </div>
   </section>
+  </div>
 
   <!-- ══════════ THE RECORD. The zero in the middle of Leon's bulb is the number of students who have failed. ══════════ -->
   <section class="section dark rec" id="why" data-light="0.8" aria-label="Why Leon">

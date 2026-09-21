@@ -194,7 +194,8 @@ body.locked{overflow:hidden}
 }
 
 /* ═══ WHO IS LEON. No box behind him. Leon, cut out, standing on the page with a soft floor shadow. ═══ */
-.who{background:linear-gradient(180deg,#fff 0%,var(--paper) 100%);overflow:hidden;padding-bottom:0}
+/* transparent: Leon now stands on the same sheet of paper as the three facts above him */
+.who{background:transparent;position:relative;z-index:1;overflow:hidden;padding-bottom:0}
 .who-grid{display:grid;grid-template-columns:1fr;gap:var(--s-10);align-items:end}
 .who-fig{position:relative;justify-self:center;width:min(100%,430px);margin:0}
 .who-fig:before{content:"";position:absolute;left:8%;right:8%;bottom:-2%;height:9%;border-radius:50%;
@@ -425,3 +426,7 @@ body.locked{overflow:hidden}
 @media(min-width:820px){.foot-cols>div:last-child{grid-column:auto}}
 .foot-cols a{display:flex;align-items:center;justify-content:center}
 .foot-bar{flex-direction:column;align-items:center;gap:var(--s-2);text-align:center}
+/* One sheet, so the strip and Leon share the paper's rhythm instead of each keeping its own full section padding. */
+.sheet .trust-row{padding-bottom:var(--s-12)}
+.sheet .who{padding-top:var(--s-12)}
+@media(min-width:760px){.sheet .trust-row{padding-bottom:var(--s-16)}.sheet .who{padding-top:var(--s-16)}}

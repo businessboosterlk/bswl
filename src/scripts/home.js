@@ -154,7 +154,7 @@ function initMotion(){
 /* ══════════════════════════════════════════════════════════════════════════
    THE PAGE — kinetic exercise-book grid behind the trust strip.
 
-   Squared paper with a margin rule, the way an A/L exercise book looks.
+   Squared paper, the way an A/L exercise book looks. The margin rule was removed 21 Sep 2026.
    The sheet presses in toward the pointer and dents where you click.
 
    Three rules it obeys:
@@ -166,12 +166,10 @@ function initMotion(){
      3. NO GLOW. Ink and paper, nothing else.
    ══════════════════════════════════════════════════════════════════════════ */
 (function(){
-  var sec = document.querySelector('.trust');
+  /* ONE sheet, 21 Sep 2026: the paper runs from the three facts down past Leon, not just behind the strip */
+  var sec = document.querySelector('.sheet');
   if (!sec) return;
   var cv = sec.querySelector('canvas.page');
-  /* the first stat, NOT the .wrap: the wrap's gutter is padding, so its own box
-     starts at 0 and measuring it puts the margin rule through the text */
-  var row = sec.querySelector('.trust-item');
   if (!cv || !cv.getContext) return;
   var ctx = cv.getContext('2d');
   if (!ctx) return;
@@ -276,27 +274,7 @@ function initMotion(){
       }
     }
 
-    /* The margin rule, printed on the sheet so it bends with it. It is measured
-       OFF the text column, never a percentage of the width: on a real page the
-       margin sits beside what you write, and a percentage put it straight
-       through the "100%". */
-    var mX  = 24;
-    if (row){
-      var gap = row.getBoundingClientRect().left - sec.getBoundingClientRect().left;
-      mX = Math.max(11, gap - 16);
-    }
-    var mc  = mX / cw;
-    var c0  = Math.max(0, Math.min(cols - 2, Math.floor(mc)));
-    var f   = mc - c0;
-    ctx.beginPath();
-    for (r = 0; r < rows; r++){
-      var a = P[r][c0], b = P[r][c0 + 1];
-      var x = a.x + (b.x - a.x) * f, y = a.y + (b.y - a.y) * f;
-      if (r) ctx.lineTo(x, y); else ctx.moveTo(x, y);
-    }
-    ctx.strokeStyle = 'rgba(20,20,23,.26)';   /* was a red margin rule. The brand is black and white, no colour is ever added */
-    ctx.lineWidth = 1.1;
-    ctx.stroke();
+    /* NO MARGIN RULE. Thulaib, 21 Sep 2026: the vertical line beside the "100%" is gone. Squares only. */
 
     /* the dent ring itself, a thumb pressed into the page */
     for (i = 0; i < dents.length; i++){

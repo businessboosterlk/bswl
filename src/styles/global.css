@@ -297,20 +297,24 @@ html.js .finder-tool{display:block}
   font-size:var(--fs-xs);color:var(--faint)}
 
 /* ═══ TRUST STRIP — the exercise-book page ═══ */
-.trust{position:relative;isolation:isolate;overflow:hidden;background:#fbfaf7;
+/* ONE SHEET: the paper runs from the three facts down past Leon (Thulaib, 21 Sep 2026), so the canvas
+   belongs to the wrapper, not to the strip. Off white, never pure white: pure white is a screen, this is paper. */
+.sheet{position:relative;isolation:isolate;overflow:hidden;background:#fbfaf7;
   border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.trust{position:relative;isolation:isolate}
 /* the squared page. Decoration only: no JS and no canvas still leaves the facts on paper. */
-.trust>canvas.page{position:absolute;inset:0;display:block;width:100%;height:100%;
+.sheet>canvas.page{position:absolute;inset:0;display:block;width:100%;height:100%;
   z-index:0;pointer-events:none}
 /* padding-top/bottom LONGHAND, never the `padding` shorthand: .wrap sets its
    gutter with padding-left/right, and a shorthand here resets all four sides and
    drops the text flush against the screen edge. That was live. */
 .trust-row{position:relative;z-index:1;display:grid;grid-template-columns:1fr;
   gap:var(--s-6);padding-top:var(--s-16);padding-bottom:var(--s-16)}
-.trust-item{display:flex;flex-direction:column;gap:8px}
+/* centred, all three (Thulaib, 21 Sep 2026): left aligned in wide columns they drifted apart and left a hole on the right */
+.trust-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
 .trust-item b{font-family:var(--font-display);font-weight:600;font-size:var(--fs-2xl);
   letter-spacing:-.03em;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
-.trust-item span{font-size:var(--fs-sm);color:var(--muted);max-width:30ch}
+.trust-item span{font-size:var(--fs-sm);color:var(--muted);max-width:28ch}
 @media(min-width:760px){
   /* no divider rules here: the squares of the page already separate the three facts */
   .trust-row{grid-template-columns:repeat(3,1fr);gap:var(--s-12);
