@@ -178,7 +178,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .cls-top{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s-6)}
 .num{position:relative;font-family:var(--font-display);font-weight:600;font-size:var(--fs-num);
   line-height:.92;letter-spacing:-.04em;white-space:nowrap;user-select:none}
-.num .o{-webkit-text-stroke:1.5px var(--ink);color:transparent;display:block}
+/* The fill is painted OVER the inside half of the stroke in the page colour. With a transparent fill the system font
+   showed every place two contours of a glyph cross, as small spikes inside the 2 and the 7. */
+.num .o{-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;color:var(--bg);display:block}
 .num .f{position:absolute;inset:0;color:var(--ink);display:block}
 .cls-arr{width:64px;height:32px;color:var(--ink);margin-bottom:14px}
 .cls-copy{max-width:560px}

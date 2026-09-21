@@ -1,7 +1,7 @@
 /* Home-only discovery sections. Keep the existing black-and-white identity;
    the small warm accent belongs to the lit-bulb idea, not a second brand. */
 .rec {
-  --discovery-light: #efd185;
+  --discovery-light: var(--light);
 }
 
 .rec .rec-grid {
@@ -119,18 +119,6 @@
   background: linear-gradient(110deg, #24242a, #16171b 70%);
 }
 
-.rec .rec-detail::after {
-  content: '';
-  position: absolute;
-  width: 270px;
-  height: 270px;
-  top: -150px;
-  right: -45px;
-  border: 1px solid rgba(239, 209, 133, .14);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
 .rec .rec-panel {
   position: relative;
   z-index: 1;
@@ -161,19 +149,7 @@
   pointer-events: none;
 }
 
-.finder::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  top: -320px;
-  right: -130px;
-  width: 620px;
-  height: 620px;
-  border: 1px solid rgba(20, 20, 23, .075);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
+/* The big hairline circle behind this section was removed on 21 Sep 2026: Thulaib does not want decorative circles. */
 .finder .wrap { position: relative; z-index: 1; }
 .finder .sect-head { margin-bottom: 34px; }
 

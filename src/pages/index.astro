@@ -16,6 +16,14 @@ import { BASE, SITE } from '../scripts/config.js';
 import { faqSchema } from '../scripts/seo.js';
 import '../styles/home-discovery.css';
 
+// Each card stands where one ray of Leon's bulb is. k = which ray, in the order they fire: upper left, top, upper right, right.
+const chips = [
+  { k: 'k-tl', href: '#faq', icon: 'speech', t: 'English medium', s: 'The full A/L syllabus' },
+  { k: 'k-top', href: '#classes', icon: 'calendar', t: '2027 and 2028', s: 'Both batches are open' },
+  { k: 'k-tr', href: '#tutes', icon: 'book', t: 'Free tutes', s: 'From your first day' },
+  { k: 'k-r', href: '#locations', icon: 'pin', t: 'Five places to learn', s: 'Four in person, one online' },
+  { k: 'k-app', href: BASE + 'app/', icon: 'phone', t: 'Student app', s: 'Sign in with your code' }
+];
 const reasons = [
   { icon: 'medal', t: 'Island-rank results', p: 'Leon\'s students have gone on to island-rank, country-top results in A/L Business Studies.' },
   { icon: 'whistle', t: 'A coach, not just a teacher', p: 'A former sportsman, Leon teaches with a coach\'s discipline. He knows how students learn, train and perform under pressure.' },
@@ -41,8 +49,15 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
       <div class="hx-cta"><a class="hx-pill" href="#enquire">Enrol now</a><a class="hx-link" href="#finder">Find your class <b aria-hidden="true">&rsaquo;</b></a></div>
     </div>
     <div class="hx-stage">
-      <div class="bulbwrap" aria-hidden="true"><Bulb uid="hx" glow={false} outline /></div>
+      <div class="bulbwrap" aria-hidden="true"><Bulb uid="hx" /><i class="ring"></i></div>
       <img class="hx-leon" src={BASE + 'assets/leon-front-refined.webp'} alt="Leon Fambeck, A/L Business Studies teacher" width="940" height="1673" fetchpriority="high">
+      <div class="hx-chips">
+        {chips.map((c, n) => (
+          <a class={'hx-chip ' + c.k} style={`--n:${n}`} href={c.href}>
+            <span class="hx-chip-in"><i class="hx-ic"><Icon name={c.icon} /></i><span><b>{c.t}</b><small>{c.s}</small></span></span>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -88,7 +103,7 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
           <p class="rec-stat"><b>0</b><span>students failed, ever</span></p>
         </div>
         <div class="rec-mark" aria-hidden="true">
-          <div class="bulbwrap"><Bulb uid="rc" tone="paper" glow={false} /><i class="rec-zero"></i><i class="ring"></i></div>
+          <div class="bulbwrap"><Bulb uid="rc" tone="paper" glow={false} warm /></div>
         </div>
       </div>
       <div class="rec-grid" role="tablist" aria-label="Reasons to learn with Leon">

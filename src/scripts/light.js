@@ -66,9 +66,9 @@ function initLight(scene) {
       if (!hot) place(14200 + Math.cos(t * .45) * 9500, 27000 + Math.sin(t * .45) * 8500);   // the light walks round the glass
       const swayX = Math.sin(t * .5) * 7 * amp, swayY = Math.cos(t * .37) * 5 * amp, swayR = Math.sin(t * .31) * 1.1 * amp;
       wrap.style.transform =
-        'translate(' + (-cx * 46 * amp + swayX).toFixed(2) + 'px,' + (-cy * 28 * amp + swayY - sy * .1 * amp).toFixed(2) + 'px) ' +
+        'translate(' + (-cx * 46 * amp + swayX).toFixed(2) + 'px,' + (-cy * 28 * amp + swayY + Math.max(-36, Math.min(14, -sy * .1 * amp))).toFixed(2) + 'px) ' +
         'rotate(' + (cx * 2.6 * amp + swayR + sy * .004 * amp).toFixed(3) + 'deg) ' +   // .012 tilted the record bulb 10 degrees and pushed it over its own caption
-        'scale(' + (1 + Math.abs(sy) * .00016 * amp).toFixed(4) + ')';
+        'scale(' + (1 + Math.min(Math.abs(sy), 300) * .00016 * amp).toFixed(4) + ')';   // capped: a mark waiting below the screen used to sit 80px low and 12% big, over the cards under it
     }
     requestAnimationFrame(tick);
   })(t0);

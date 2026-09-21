@@ -9,6 +9,7 @@
   --edge:clamp(20px,5.5vw,80px);              /* the one left edge: brand, headline and hero copy all sit on it */
   --paper:#f5f5f7; --gr:#6e6e73; --gr2:#86868b;
   --hx-display:var(--font-display);
+  --light:#efd185;                             /* THE ONE WARM TONE. It means one thing: switched on. The lit bulb and the chosen reason, nowhere else */
 }
 h1,h2,h3,h4{letter-spacing:-.035em}
 body.locked{overflow:hidden}
@@ -78,11 +79,12 @@ body.locked{overflow:hidden}
 .bulb-ray,.bulb-glint{transform-box:fill-box}
 .bulb-glow{opacity:0;transition:opacity .9s var(--ease);mix-blend-mode:screen}
 .dark .bulb-glow{mix-blend-mode:multiply}
-.is-lit .bulb-glow{opacity:.62}
+.is-lit .bulb-glow{opacity:.4}   /* .62 read as a grey smudge on the disc, most of all on a phone */
 .is-on .bulb-glow{opacity:1;transition-duration:.12s}
-.ring{position:absolute;left:40%;top:45.8%;width:76%;aspect-ratio:1;border-radius:50%;border:2px solid rgba(20,20,23,.5);
-  transform:translate(-50%,-50%) scale(.8);opacity:0;pointer-events:none}
-.dark .ring{border-color:rgba(255,255,255,.55)}
+.ring{position:absolute;left:40%;top:45.8%;width:120%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(20,20,23,.2),rgba(20,20,23,.08) 55%,rgba(20,20,23,0));   /* a soft burst of light, never an outline */
+  transform:translate(-50%,-50%) scale(.7);opacity:0;pointer-events:none}
+.dark .ring{background:radial-gradient(closest-side,rgba(255,255,255,.22),rgba(255,255,255,.07) 55%,rgba(255,255,255,0))}
 .is-on .ring{animation:mkRing 1s var(--ease) both}
 .is-on .bulb-ray,.is-on .bulb-glint{animation:mkFire .95s var(--ease) both}
 @media (prefers-reduced-motion:no-preference){
@@ -92,7 +94,7 @@ body.locked{overflow:hidden}
 @keyframes mkRay{from{opacity:0;transform:translate(calc(var(--dx)*-2.4),calc(var(--dy)*-2.4)) scale(.5)}to{opacity:1;transform:none}}
 @keyframes mkBreathe{from{transform:none}to{transform:translate(calc(var(--dx)*.85),calc(var(--dy)*.85))}}
 @keyframes mkFire{0%{transform:none}38%{transform:translate(calc(var(--dx)*2.1),calc(var(--dy)*2.1)) scale(1.14)}100%{transform:none}}
-@keyframes mkRing{from{opacity:.75;transform:translate(-50%,-50%) scale(.8)}to{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+@keyframes mkRing{from{opacity:1;transform:translate(-50%,-50%) scale(.7)}to{opacity:0;transform:translate(-50%,-50%) scale(1.35)}}
 
 /* ═══ HOME HERO. One complete bulb mark, one portrait, one message. ═══ */
 .hx{--H:clamp(520px,calc(100svh - var(--nav-h) - 56px),900px);
@@ -102,47 +104,93 @@ body.locked{overflow:hidden}
 .hx:after{content:"";position:absolute;z-index:4;left:0;right:0;bottom:0;height:1px;background:#d9d9df;pointer-events:none}
 .ph:after{content:"";position:absolute;z-index:4;left:0;right:0;bottom:0;height:52px;pointer-events:none;
   background:linear-gradient(180deg,rgba(240,240,243,0),rgba(240,240,243,.94))}
-.hx-stage{position:absolute;left:69%;bottom:0;width:var(--H);height:var(--H);transform:translateX(-50%);pointer-events:none}
-.hx-stage .bulbwrap{position:absolute;z-index:1;top:7%;left:52%;width:55%;opacity:.58}
-.hx-stage .bulb-outline g[fill]{fill:none}
-.hx-stage .bulb-outline .bulb-body,.hx-stage .bulb-outline .bulb-ray,.hx-stage .bulb-outline .bulb-glint{stroke:#55555d;stroke-width:95;stroke-linejoin:round;stroke-linecap:round}
-.hx-stage .bulb-outline .bulb-ray,.hx-stage .bulb-outline .bulb-glint{stroke-width:125}
-.hx-leon{position:absolute;z-index:3;bottom:0;left:50%;height:98%;width:auto;max-width:none;transform:translateX(-50%);filter:drop-shadow(0 18px 23px rgba(25,25,29,.11))}
-.hx-head{position:absolute;z-index:2;left:var(--edge);top:50%;transform:translateY(-72%);pointer-events:none}
-.hx-head small{display:block;font:600 clamp(13px,1.1vw,16px)/1.2 var(--hx-display);letter-spacing:.12em;text-transform:uppercase;color:#66666c;margin:0 0 24px 4px}
-.hx-head h1{font:700 clamp(62px,9.2vw,142px)/.9 var(--hx-display);letter-spacing:-.055em;color:#121214;max-width:none}
+.hx-stage{position:absolute;left:65%;bottom:0;width:var(--H);height:var(--H);transform:translateX(-50%);pointer-events:none}
+/* THE MARK: solid, whole, in brand black (Thulaib, 21 Sep 2026: no outline version, ever). 112% of the stage and raised,
+   so the head of the bulb frames his head and shoulders. 40% of 112 = 44.8: the bulb HEAD is centred on Leon. */
+.hx-stage .bulbwrap{position:absolute;z-index:1;top:-7%;left:50%;width:112%;margin-left:-44.8%}
+.hx-leon{position:absolute;z-index:3;bottom:0;left:50%;height:98%;width:auto;max-width:none;transform:translateX(-50%);filter:drop-shadow(0 18px 23px rgba(25,25,29,.11))}   /* static, always */
+/* White type in difference mode: black on the page, white where it crosses the mark. The blend sits on the positioned
+   box itself, because under a transformed parent it blends against nothing. #999993 reads as #66666c on the page. */
+.hx-head{position:absolute;z-index:2;left:var(--edge);top:50%;transform:translateY(-72%);pointer-events:none;mix-blend-mode:difference}
+.hx-head small{display:block;font:600 clamp(13px,1.1vw,16px)/1.2 var(--hx-display);letter-spacing:.12em;text-transform:uppercase;color:#999993;margin:0 0 24px 4px}
+.hx-head h1{font:700 clamp(62px,9.2vw,142px)/.9 var(--hx-display);letter-spacing:-.055em;color:#fff;max-width:none}
 .hx-head h1 span{display:block;overflow:hidden;padding:0 .08em .16em 0;margin-bottom:-.16em}
 .hx-head h1 i{display:block;font-style:normal}
 .hx-copy{position:relative;z-index:5;align-self:end;padding:0 var(--edge) 7svh;max-width:calc(var(--edge) + 470px)}
 .hx-copy p{font-size:17px;line-height:1.55;letter-spacing:-.012em;color:var(--gr);max-width:36ch}
 .hx-cta,.ph-cta{margin-top:26px;display:flex;align-items:center;gap:26px;flex-wrap:wrap}
 
+/* THE RAYS BECOME THE FACTS (Thulaib, 21 Sep 2026). Leon's bulb has four rays. Each ray shoots out of the bulb, then
+   turns into one card that sits exactly where the ray was: above his head, upper left, upper right and right. The fifth
+   card, the student app, comes out from behind him. Positions are the measured centres of the rays in the mark
+   (getBBox), mapped through the bulb's box: x = .052H + rx * 1.12H, y = -.07H + ry * 1.614H. */
+.hx-chips{position:absolute;inset:0;z-index:6}
+.hx-chip{--c:translate(-50%,-50%);position:absolute;display:block;transform:var(--c);pointer-events:auto}
+.hx-chip-in{display:flex;align-items:center;gap:12px;padding:9px 18px 9px 9px;border-radius:20px;white-space:nowrap;
+  background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);
+  border:1px solid rgba(255,255,255,.8);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 14px 34px rgba(20,20,23,.16),0 2px 6px rgba(20,20,23,.08);
+  transition:box-shadow .45s var(--ease),background .3s}
+.hx-chip:hover .hx-chip-in{background:#fff;box-shadow:0 1px 0 #fff inset,0 20px 44px rgba(20,20,23,.22),0 3px 8px rgba(20,20,23,.1)}
+.hx-ic{flex:none;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#3a3a41,#0e0e10);color:#fff}
+.hx-ic .ic{width:21px;height:21px}
+.hx-chip b{display:block;font:600 14.5px/1.15 var(--hx-display);letter-spacing:-.015em;color:#141417}
+.hx-chip small{display:block;margin-top:3px;font:500 12px/1.1 var(--hx-display);color:var(--gr);letter-spacing:-.005em}
+.hx-chip.k-top{left:50.8%;top:1.5%;--a:90deg;--f:6.4s}                                   /* the top ray, above his head */
+.hx-chip.k-tl{left:12.8%;top:16.9%;--a:45deg;--f:7.6s}                                  /* the upper left ray */
+.hx-chip.k-tr{left:min(91.1%,calc(35vw + var(--H)*.5 - 140px));top:17.2%;--a:-45deg;--f:6.6s}   /* the upper right ray */
+.hx-chip.k-r{left:min(107.5%,calc(35vw + var(--H)*.5 - 140px));top:51.3%;--a:0deg;--f:7.2s}     /* the right ray. The min() keeps it on the screen */
+.hx-chip.k-app{left:min(101%,calc(35vw + var(--H)*.5 - 140px));top:80%;--a:-30deg;--f:5.8s}     /* from behind him, lower right */
+
+/* In the hero the rays are only seen on their way to becoming cards, and again when the light is touched. */
+.hx .bulb-ray{opacity:0}
 @media (prefers-reduced-motion:no-preference){
-  .ph-stage .bulbwrap{animation:hxBulb 1.3s var(--ease) both}
+  .ph-stage .bulbwrap,.hx-stage .bulbwrap{animation:hxBulb 1.3s var(--ease) both}
   .hx-leon,.ph-leon{animation:hxLeon 1.25s var(--ease) .2s both}
-  .hx-stage .bulbwrap{animation:hxBulbLine 1.4s var(--ease) .3s both}
   .hx-head h1 i{animation:hxLine 1.05s var(--ease) both}
   .hx-head h1 span:nth-child(1) i{animation-delay:.5s}
   .hx-head h1 span:nth-child(2) i{animation-delay:.6s}
   .hx-head small,.hx-copy,.ph-copy{animation:hxUp 1s var(--ease) .8s both}
+  .hx .bulb-ray{animation:hxRayOut 1.5s var(--ease) both;animation-delay:calc(.9s + var(--k,0)*.26s)}
+  .hx .bulb-ray[style*="--i:1"]{--k:0}.hx .bulb-ray[style*="--i:0"]{--k:1}.hx .bulb-ray[style*="--i:2"]{--k:2}.hx .bulb-ray[style*="--i:4"]{--k:3}
+  .hx-chip{animation:hxBecome .95s cubic-bezier(.34,1.4,.64,1) both;animation-delay:calc(1.75s + var(--n)*.26s)}
+  .hx-chip-in{animation:hxFloat var(--f,6s) ease-in-out infinite alternate;animation-delay:calc(3.2s + var(--n)*.4s)}
+  .hx-chip .ic *{animation:hxDraw 1.2s var(--ease) both;animation-delay:calc(2.15s + var(--n)*.26s)}
+  .hx.is-set .bulb-ray{animation:none}
+  .hx.is-set.is-on .bulb-ray{animation:hxRayFire .95s var(--ease) both}
 }
 @keyframes hxBulb{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
-@keyframes hxBulbLine{from{opacity:0;transform:scale(.94)}to{opacity:.58;transform:scale(1)}}
 @keyframes hxLeon{from{opacity:0;transform:translateX(-50%) translateY(48px)}to{opacity:1;transform:translateX(-50%)}}
 @keyframes hxLine{from{transform:translateY(108%)}to{transform:none}}
 @keyframes hxUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes hxRayOut{0%{opacity:0;transform:translate(calc(var(--dx)*-2.4),calc(var(--dy)*-2.4)) scale(.5)}45%{opacity:1;transform:none}70%{opacity:1;transform:none}100%{opacity:0;transform:scale(1.18)}}
+@keyframes hxRayFire{0%{opacity:0;transform:none}35%{opacity:1;transform:translate(calc(var(--dx)*1.2),calc(var(--dy)*1.2)) scale(1.1)}100%{opacity:0;transform:translate(calc(var(--dx)*2),calc(var(--dy)*2))}}
+@keyframes hxBecome{0%{opacity:0;transform:var(--c) rotate(var(--a)) scale(.2,.32)}55%{opacity:1}100%{opacity:1;transform:var(--c)}}
+@keyframes hxFloat{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+@keyframes hxDraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
 @media (max-width:1100px){
   .hx{grid-template-rows:auto auto 1fr}
   .hx-head{position:relative;top:auto;left:auto;transform:none;padding:36px var(--edge) 0}
   .hx-head small{margin-left:2px}
   .hx-head h1{font-size:clamp(56px,15vw,112px)}
   .hx-copy{align-self:start;padding:22px var(--edge) 0;max-width:none}
-  .hx-stage{position:relative;left:auto;transform:none;justify-self:center;grid-row:3;align-self:end;--H:clamp(420px,62svh,660px);margin-top:26px}
+  .hx-stage{position:relative;left:auto;transform:none;justify-self:center;grid-row:3;align-self:end;--H:clamp(420px,62svh,660px);margin-top:34px;width:min(100vw,var(--H))}
+  /* a narrow screen has no room round the bulb, so the cards line the two edges, below his face */
+  .hx-chip{--c:translate(0,0)}
+  .hx-chip.k-tl{left:calc(50% - 47vw);top:40%}
+  .hx-chip.k-top{left:auto;right:calc(50% - 47vw);top:37%}
+  .hx-chip.k-tr{left:auto;right:calc(50% - 47vw);top:56%}
+  .hx-chip.k-r{left:calc(50% - 47vw);top:62%}
+  .hx-chip.k-app{left:auto;right:calc(50% - 47vw);top:76%}
 }
 @media (max-width:700px){
   .hx-copy p{font-size:16px}
-  .hx-stage{width:min(100vw,var(--H))}
-  .hx-stage .bulbwrap{top:11%;left:52%;width:45%}
+  .hx-chip-in{padding:7px 14px 7px 7px;border-radius:17px;gap:10px}
+  .hx-ic{width:34px;height:34px;border-radius:11px}.hx-ic .ic{width:18px;height:18px}
+  .hx-chip b{font-size:13px}.hx-chip small{font-size:11px}
+  .hx-chip.k-tl,.hx-chip.k-r{display:none}                       /* English medium and the places are in the sentence above */
+  .hx-chip.k-top{right:auto;left:calc(50% - 47vw);top:44%}
+  .hx-chip.k-tr{top:36%}
+  .hx-chip.k-app{top:60%}
 }
 
 /* ═══ WHO IS LEON. No box behind him. Leon, cut out, standing on the page with a soft floor shadow. ═══ */
@@ -169,12 +217,15 @@ body.locked{overflow:hidden}
 .rec-copy h2{font-size:var(--fs-5xl);margin:var(--s-4) 0 var(--s-6)}
 .rec-copy p{color:var(--muted);font-size:var(--fs-md);max-width:44ch}
 .rec-copy .rec-sub{color:var(--ink);font:600 var(--fs-lg)/1.3 var(--font-display);letter-spacing:-.02em;margin-top:var(--s-5)}
-.rec-mark{position:relative;justify-self:center;width:min(74vw,340px);padding:4% 0}
+.rec-mark{position:relative;justify-self:center;width:min(74vw,340px);padding:4% 0;margin-bottom:var(--s-10)}
 .rec-mark .bulbwrap{width:100%}
-.rec-zero{position:absolute;left:41%;top:48.3%;width:31.4%;height:33.4%;border-radius:50%;transform:translate(-50%,-50%);
-  border:2px solid rgba(20,20,23,.0);pointer-events:none}
-@media (prefers-reduced-motion:no-preference){.is-lit .rec-zero{animation:recZero 3.2s ease-out infinite}}
-@keyframes recZero{0%{border-color:rgba(20,20,23,.55);transform:translate(-50%,-50%) scale(1)}70%,100%{border-color:rgba(20,20,23,0);transform:translate(-50%,-50%) scale(1.75)}}
+/* The bulb in this band is off until the band is on screen, then it switches on: warm light fills it and a halo
+   opens behind it. No rings, no pulses (Thulaib, 21 Sep 2026: the circles were ugly). */
+.rec-mark:before{content:"";position:absolute;left:40%;top:44%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%) scale(.6);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(239,209,133,.22),rgba(239,209,133,.07) 55%,rgba(239,209,133,0));opacity:0;transition:opacity 1.8s var(--ease) .5s,transform 1.8s var(--ease) .5s;pointer-events:none}
+.is-lit .rec-mark:before{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.bulb-warm{opacity:0;transition:opacity 1.6s var(--ease) .5s}
+.is-lit .bulb-warm{opacity:1}
 .rec-stat{display:flex;align-items:baseline;gap:16px;margin:var(--s-10) 0 0}
 .rec-stat b{font:700 clamp(64px,9vw,112px)/.9 var(--font-display);letter-spacing:-.05em;color:var(--ink)}
 .rec-stat span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:600;max-width:14ch;line-height:1.5}
@@ -238,7 +289,7 @@ body.locked{overflow:hidden}
 .cards3{display:grid;grid-template-columns:1fr;gap:var(--s-5)}
 @media(min-width:900px){.cards3{grid-template-columns:repeat(3,1fr)}}
 .ccard{position:relative;overflow:hidden;display:flex;flex-direction:column;padding-top:var(--s-10);scroll-margin-top:calc(var(--nav-h) + 20px)}
-.ccard-big{font:700 clamp(54px,6vw,84px)/.85 var(--font-display);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1.4px #141417;margin-bottom:var(--s-8)}
+.ccard-big{font:700 clamp(54px,6vw,84px)/.85 var(--font-display);letter-spacing:-.06em;color:#fff;-webkit-text-stroke:2.8px #141417;paint-order:stroke fill;margin-bottom:var(--s-8);transition:color .4s var(--ease)}
 .ccard:hover .ccard-big{color:#141417}
 .ccard .meta,.place .meta,.post .meta{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:600;display:block;margin-bottom:var(--s-3)}
 .ccard h2,.place h2{font-size:var(--fs-xl);margin-bottom:var(--s-3)}

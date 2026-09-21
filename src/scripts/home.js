@@ -8,6 +8,9 @@
 //   the default reveals     now one IntersectionObserver in site.js, shared with every page
 import './light.js';
 
+// Once the rays have turned into the cards the entrance is over: from here a ray only shows when the light is touched.
+{ const hero = document.getElementById('hero'); if (hero) setTimeout(() => hero.classList.add('is-set'), 4200); }
+
 /* ── SMART FEATURE: Batch & Path Finder (vanilla, works without GSAP) ── */
 document.documentElement.classList.add('js');
 (function(){

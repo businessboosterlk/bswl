@@ -13,9 +13,13 @@
 const { chromium } = await import(process.env.PW || 'playwright');
 import { spawn } from 'node:child_process';
 
-// Always launch a fresh preview of this build. A process already listening on the dev port
-// may be serving an older build, which gives false failures (or false passes).
-const PORT = 4699;
+// THE GATE MUST TEST THIS BUILD AND NOTHING ELSE. On 21 Sep 2026 a preview left running by another checkout of this
+// site was holding port 4699, so the gate loaded THAT site, failed three checks that were true of this one and would
+// have passed faults that were not. Two guards: the port is one the system hands out as free, and before any check
+// runs the served home page must be byte for byte the dist/index.html on disk.
+import net from 'node:net';
+import { readFileSync } from 'node:fs';
+const PORT = await new Promise((res, rej) => { const srv = net.createServer(); srv.once('error', rej); srv.listen(0, () => { const { port } = srv.address(); srv.close(() => res(port)); }); });
 const ROOT = `http://localhost:${PORT}/bswl/`;
 const PAGES = ['', 'classes/', 'about/', 'locations/', 'tutes/', 'enrol/', 'app/', 'blog/'];
 const WIDTHS = [[1440, 900], [1280, 720], [820, 1180], [390, 844], [360, 740]];
@@ -23,11 +27,16 @@ const WA = '94771396173';
 let pass = 0; const fails = [];
 const ok = (name, cond, detail = '') => { if (cond) pass++; else fails.push(name + (detail ? '  <- ' + detail : '')); };
 
+// Astro 7 keeps ONE managed preview per project and refuses a second, so any preview already up is stopped first.
+import { spawnSync } from 'node:child_process';
+spawnSync(process.execPath, ['node_modules/astro/bin/astro.mjs', 'preview', 'stop'], { stdio: 'ignore' });
 const server = spawn(process.execPath, ['node_modules/astro/bin/astro.mjs', 'preview', '--port', String(PORT)], { stdio: 'ignore' });
 const up = async () => { for (let i = 0; i < 60; i++) { try { const r = await fetch(ROOT); if (r.ok) return; } catch {} await new Promise(r => setTimeout(r, 500)); } throw new Error('preview never started'); };
 
 try {
   await up();
+  { const served = await (await fetch(ROOT)).text(); const built = readFileSync('dist/index.html', 'utf8');
+    if (served !== built) throw new Error('the preview on port ' + PORT + ' is not serving this build (dist/index.html differs). Refusing to test another site.'); }
   let b;
   try { b = await chromium.launch(); }
   catch (err) {
@@ -67,7 +76,7 @@ try {
 
   // 7. Leon is static, the light is not
   const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
-  await p.goto(ROOT, { waitUntil: 'networkidle' }); await p.waitForTimeout(3000);
+  await p.goto(ROOT, { waitUntil: 'networkidle' }); await p.waitForTimeout(4800);
   const box = sel => p.evaluate(s => { const r = document.querySelector(s).getBoundingClientRect(); return [r.left, r.top + scrollY]; }, sel);
   const l0 = await box('.hx-leon'), m0 = await box('.hx .bulb-body');
   await p.mouse.move(500, 500); await p.mouse.move(1200, 300, { steps: 10 }); await p.waitForTimeout(1300);
@@ -79,13 +88,26 @@ try {
   await p.mouse.wheel(0, 320); await p.waitForTimeout(900);
   const l2 = await box('.hx-leon');
   ok('home: Leon does not move on scroll', l2[0] === l0[0] && l2[1] === l0[1], JSON.stringify([l0, l2]));
-  ok('home: one clean portrait and the complete bulb mark', await p.evaluate(() =>
-    !!document.querySelector('.hx-leon[src*="leon-front-refined"]') &&
-    !!document.querySelector('.hx .bulb-outline') &&
-    document.querySelectorAll('.hx-chip').length === 0));
+  // THE HERO, Thulaib 21 Sep 2026: the solid mark (never the outline), and each ray becomes one card.
+  await p.evaluate(() => scrollTo(0, 0)); await p.mouse.move(5, 300); await p.waitForTimeout(1600);   // the checks below measure the hero at rest
+  ok('home: the mark is solid, never an outline', await p.evaluate(() => { const cs = getComputedStyle(document.querySelector('.hx .bulb-body'));
+    return !document.querySelector('.hx .bulb-outline') && cs.fill !== 'none' && cs.stroke === 'none'; }));
+  ok('home: five cards, all on the screen, none over his face, none over the headline', await p.evaluate(() => {
+    const L = document.querySelector('.hx-leon').getBoundingClientRect(); const f = { l: L.left + L.width * .3, r: L.left + L.width * .7, t: L.top + L.height * .08, b: L.top + L.height * .34 };
+    const H = document.querySelector('.hx-head h1').getBoundingClientRect(); const hit = (r, q) => !(r.right < q.l || r.left > q.r || r.bottom < q.t || r.top > q.b);
+    const c = [...document.querySelectorAll('.hx-chip')].map(x => x.getBoundingClientRect());
+    return c.length === 5 && c.every(r => r.left >= 8 && r.right <= innerWidth - 8 && r.top >= 72 && !hit(r, f) && !hit(r, { l: H.left, r: H.right, t: H.top, b: H.bottom })); }));
+  ok('home: the rays have become the cards (no ray left showing)', await p.evaluate(() => [...document.querySelectorAll('.hx .bulb-ray')].every(r => parseFloat(getComputedStyle(r).opacity) < .05)));
+  ok('home: no two cards overlap', await p.evaluate(() => { const c = [...document.querySelectorAll('.hx-chip')].map(x => x.getBoundingClientRect());
+    return c.every((a, i) => c.every((b, j) => i >= j || a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom)); }));
   await p.close();
   const ph = await b.newPage({ viewport: { width: 390, height: 844 } });
-  await ph.goto(ROOT, { waitUntil: 'networkidle' }); await ph.waitForTimeout(3200);
+  await ph.goto(ROOT, { waitUntil: 'networkidle' }); await ph.waitForTimeout(5400);   // the last card lands at 3.8s
+  ok('home on a phone: cards on the screen, off his face, not on top of each other', await ph.evaluate(() => {
+    const L = document.querySelector('.hx-leon').getBoundingClientRect(); const f = { l: L.left + L.width * .3, r: L.left + L.width * .7, t: L.top + L.height * .08, b: L.top + L.height * .34 };
+    const c = [...document.querySelectorAll('.hx-chip')].filter(x => getComputedStyle(x).display !== 'none').map(x => x.getBoundingClientRect());
+    return c.length >= 3 && c.every(r => r.left >= 4 && r.right <= innerWidth - 4 && (r.right < f.l || r.left > f.r || r.bottom < f.t || r.top > f.b)) &&
+      c.every((a, i) => c.every((b, j) => i >= j || a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom)); }));
   ok('home on a phone: hero actions remain reachable', await ph.evaluate(() => {
     const links = [...document.querySelectorAll('.hx-cta a')];
     return links.length === 2 && links.every(a => { const r = a.getBoundingClientRect(); return r.width > 0 && r.left >= 0 && r.right <= innerWidth; });
@@ -105,7 +127,7 @@ try {
   ok('enrol: field text is 16px so a phone does not zoom', await f.evaluate(() => parseFloat(getComputedStyle(document.getElementById('inName')).fontSize) >= 16));
   await f.close();
   await b.close();
-} finally { server.kill(); }
+} finally { server.kill(); spawnSync(process.execPath, ['node_modules/astro/bin/astro.mjs', 'preview', 'stop'], { stdio: 'ignore' }); }
 
 console.log(`\n${pass} of ${pass + fails.length} checks pass`);
 if (fails.length) { console.log(fails.map(x => 'FAIL  ' + x).join('\n')); process.exit(1); }
