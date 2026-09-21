@@ -56,17 +56,25 @@ try {
   for (const pth of PAGES) {
     for (const [w, h] of WIDTHS) {
       const p = await b.newPage({ viewport: { width: w, height: h } });
-      const errs = []; p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 120)); }); p.on('pageerror', e => { if (/maps\.gstatic\.com|google\.com\/maps/.test((e.stack || '') + e.message)) return; errs.push(e.message.slice(0, 120)); });   // an error thrown inside Google's own map frame is Google's, and it comes and goes with the network. Ours still fail.
+      const errs = []; p.on('console', m => { if (m.type() === 'error' && !/maps\.gstatic\.com|google\.com\/maps/.test(m.text() + (m.location().url || ''))) errs.push(m.text().slice(0, 120)); }); p.on('pageerror', e => { if (/maps\.gstatic\.com|google\.com\/maps/.test((e.stack || '') + e.message)) return; errs.push(e.message.slice(0, 120)); });   // an error thrown inside Google's own map frame is Google's, and it comes and goes with the network. Ours still fail.
       await p.goto(ROOT + pth, { waitUntil: 'networkidle' }); await p.waitForTimeout(w === 1440 ? 2600 : 900);
       const r = await p.evaluate(() => {
         const h1 = document.querySelector('h1'), brand = document.querySelector('.nav .brand');
         const vis = el => { const c = getComputedStyle(el); return c.display !== 'none' && c.visibility !== 'hidden'; };
         const text = [...document.querySelectorAll('main *, footer *, header *')].filter(e => e.children.length === 0 && vis(e)).map(e => e.textContent).join(' \n ');
         const dash = [...document.querySelectorAll('.eyebrow,.ph-kick,.meta')].some(e => { const c = getComputedStyle(e, '::before'); return c.content === '""' && parseFloat(c.width) > 8; });
-        return { sw: document.documentElement.scrollWidth, vw: innerWidth, h1: h1 ? Math.round(h1.getBoundingClientRect().left) : null, brand: brand ? Math.round(brand.getBoundingClientRect().left) : null,
+        // THE MARK IS NEVER CUT. 21 Sep 2026: the bulb in the closing band was sized by width, stood taller than the band and lost its top ray and its base.
+        const cut = [...document.querySelectorAll('svg[data-bulb]')].filter(vis).filter(s => s.getBoundingClientRect().width > 4 && vis(s.parentElement)).map(s => { let a = s.parentElement; while (a && !/hidden|clip/.test(getComputedStyle(a).overflow)) a = a.parentElement; if (!a || a === document.body || a === document.documentElement) return null;
+          // measured on the ink that shows (the body, and any ray that has not become a card), never on the svg's empty box
+          const ink = [...s.querySelectorAll('.bulb-body,.bulb-ray')].filter(e => parseFloat(getComputedStyle(e).opacity) > .05).map(e => e.getBoundingClientRect()).filter(r => r.width > 1); if (!ink.length) return null;
+          const g = { top: Math.min(...ink.map(r => r.top)), bottom: Math.max(...ink.map(r => r.bottom)), left: Math.min(...ink.map(r => r.left)), right: Math.max(...ink.map(r => r.right)) }, c = a.getBoundingClientRect();
+          const behindLeon = a.matches('.hx,.ph');   // in a hero Leon stands in front of the mark and its base passes behind him: the approved composition
+          const o = [c.top - g.top, behindLeon ? 0 : g.bottom - c.bottom, c.left - g.left, g.right - c.right].map(Math.round); return o.some(v => v > 0) ? (a.className || a.tagName) + ' top/bottom/left/right ' + o.join('/') : null; }).filter(Boolean);
+        return { cut, sw: document.documentElement.scrollWidth, vw: innerWidth, h1: h1 ? Math.round(h1.getBoundingClientRect().left) : null, brand: brand ? Math.round(brand.getBoundingClientRect().left) : null,
           text, dash, hrefs: [...document.querySelectorAll('a[href]')].map(a => a.href), wa: [...document.querySelectorAll('a[data-wa]')].map(a => a.href) };
       });
       const tag = (pth || 'home') + ' @' + w;
+      ok(tag + ': Leon\'s mark is whole, no edge of it cut off', r.cut.length === 0, r.cut.join(' | '));
       ok(tag + ': no sideways scroll', r.sw <= r.vw, r.sw + ' > ' + r.vw);
       ok(tag + ': no console or page error', errs.length === 0, errs.join(' | '));
       if (r.h1 !== null && pth !== '') ok(tag + ': headline on the brand\'s left edge', Math.abs(r.h1 - r.brand) <= 2, 'h1 ' + r.h1 + ' brand ' + r.brand);

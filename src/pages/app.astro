@@ -3,7 +3,6 @@
 // This page tells a student how to get in, so a student who lands here is never left guessing.
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
-import Bulb from '../components/Bulb.astro';
 import { BASE, SITE } from '../scripts/config.js';
 import { breadcrumb, siteOf } from '../scripts/seo.js';
 const steps = [
@@ -17,8 +16,7 @@ const steps = [
   description="The study app for Leon Fambeck's A/L Business Studies students. Sign in with your name and the code Leon gives you."
   path="app/" page="app" schema={[breadcrumb(siteOf(Astro.site), BASE, [{ name: 'Student app', path: 'app/' }])]}>
 
-  <section class="enrol-page app-page" data-light="0.6">
-    <div class="enrol-mark" aria-hidden="true"><div class="bulbwrap"><Bulb uid="ap" /><i class="ring"></i></div></div>
+  <section class="enrol-page app-page">
     <div class="enrol-grid">
       <div class="enrol-side">
         <p class="ph-kick">For Leon's students</p>

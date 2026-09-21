@@ -3,7 +3,6 @@
 // ?batch= and ?loc= and the form is already filled (site.js).
 import Layout from '../layouts/Layout.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
-import Bulb from '../components/Bulb.astro';
 import { BASE, SITE } from '../scripts/config.js';
 import { breadcrumb, siteOf } from '../scripts/seo.js';
 ---
@@ -12,8 +11,7 @@ import { breadcrumb, siteOf } from '../scripts/seo.js';
   description="Enrol for Leon Fambeck's A/L Business Studies class. Send your name and WhatsApp number and Leon replies with the timetable and the fees."
   path="enrol/" page="enrol" schema={[breadcrumb(siteOf(Astro.site), BASE, [{ name: 'Enrol', path: 'enrol/' }])]}>
 
-  <section class="enrol-page" id="enquire" data-light="0.6">
-    <div class="enrol-mark" aria-hidden="true"><div class="bulbwrap"><Bulb uid="en" /><i class="ring"></i></div></div>
+  <section class="enrol-page" id="enquire">
     <div class="enrol-grid">
       <div class="enrol-side">
         <p class="ph-kick">Enrol</p>

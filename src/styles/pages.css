@@ -270,6 +270,8 @@ body.locked{overflow:hidden}
   .ph{display:block;min-height:0}
   .ph-copy{padding:var(--s-12) var(--edge) 0}
   .ph-stage{position:relative;right:auto;margin:var(--s-8) auto 0;--H:clamp(320px,48svh,460px)}
+  /* On a phone the mark at 108% of the stage is wider than the screen and its right ray was cut. 72% keeps every ray on the screen with Leon the same size. */
+  .ph-stage .bulbwrap{width:72%;margin-left:-28.8%;top:-2%}
 }
 
 /* story, ways, cards, places */
@@ -320,7 +322,11 @@ body.locked{overflow:hidden}
 
 /* every page ends in an action */
 .cta-band{position:relative;overflow:hidden;padding:var(--s-24) 0;background:radial-gradient(80% 120% at 85% 50%,#1d1e24 0%,#0c0d10 62%)}
-.cta-band .bulbwrap{position:absolute;right:max(-40px,calc(var(--edge) - 60px));top:50%;width:clamp(220px,26vw,380px);margin-top:calc(clamp(220px,26vw,380px)*-.72);opacity:.16}
+/* The mark is sized by the band's HEIGHT and centred in it. It was sized by width (380px wide is 548px tall) and hung out of a 600px band, top ray and base both cut. */
+.cta-band .bulbwrap{position:absolute;right:max(24px,var(--edge));top:0;bottom:0;margin-block:auto;height:min(74%,460px);aspect-ratio:3552/5120;width:auto;opacity:.16}
+.cta-band .bulbwrap .bulb{width:100%;height:100%;display:block}
+/* On a phone the words take the full width, so the mark could only sit behind them with a button across its base. It is left out there. */
+@media(max-width:819px){.cta-band .bulbwrap{display:none}}
 .cta-band .wrap{position:relative;z-index:2}
 .cta-band h2{font-size:var(--fs-5xl);max-width:14ch}
 .cta-band p{color:var(--muted);font-size:var(--fs-md);max-width:46ch;margin:var(--s-5) 0 var(--s-8)}
@@ -329,7 +335,7 @@ body.locked{overflow:hidden}
 /* enrol, student app, 404, blog head: a headline hard left on paper with the mark behind */
 .enrol-page,.nf,.blog-head{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(70% 90% at 80% 20%,#fff 0%,var(--paper) 62%,#ededf0 100%)}
 .enrol-page{padding:var(--s-16) var(--edge) var(--s-24)}
-.enrol-mark{position:absolute;z-index:0;right:-6vw;top:-4%;width:clamp(300px,44vw,640px);opacity:.07;pointer-events:none}
+/* The oversized watermark that stood here was cut on three sides by the section. The mark is shown whole or not at all (Thulaib, 21 Sep 2026), and behind a form there is no room to show it whole. */
 .enrol-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:var(--s-12);max-width:1320px}
 .enrol-steps{list-style:none;margin:var(--s-10) 0 var(--s-8);display:grid;gap:var(--s-4)}
 .enrol-steps li{display:flex;align-items:center;gap:var(--s-4);font-weight:500}
@@ -408,3 +414,14 @@ body.locked{overflow:hidden}
 .contact-ic .ic-brand{width:20px;height:20px}
 /* With motion switched off nothing pulls the giant word out from behind the tute page, so it showed as a grey block and a blob either side of it. */
 @media (prefers-reduced-motion:reduce){.tutes .big{display:none}}
+
+/* ═══ THE SIGN OFF. Centred on purpose (Thulaib, 21 Sep 2026): the mark, one line, the three lists as one group, the bar. ═══ */
+.footer>.wrap{padding-top:var(--s-20);text-align:center;border-top:1px solid var(--hair)}
+.foot-home{display:block;width:min(340px,70vw);margin:0 auto}
+.foot-mark{width:100%;margin:0}
+.foot-line{max-width:52ch;margin:var(--s-6) auto var(--s-16);color:var(--muted);font-size:var(--fs-sm);line-height:1.65}
+.foot-cols{max-width:860px;margin:0 auto var(--s-16);gap:var(--s-10) var(--s-6)}
+.foot-cols>div:last-child{grid-column:1 / -1}
+@media(min-width:820px){.foot-cols>div:last-child{grid-column:auto}}
+.foot-cols a{display:flex;align-items:center;justify-content:center}
+.foot-bar{flex-direction:column;align-items:center;gap:var(--s-2);text-align:center}
