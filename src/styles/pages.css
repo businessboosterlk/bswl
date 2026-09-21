@@ -430,3 +430,16 @@ body.locked{overflow:hidden}
 .sheet .trust-row{padding-bottom:var(--s-12)}
 .sheet .who{padding-top:var(--s-12)}
 @media(min-width:760px){.sheet .trust-row{padding-bottom:var(--s-16)}.sheet .who{padding-top:var(--s-16)}}
+
+/* THE THREE FACTS AS CARDS on the page (Thulaib, 21 Sep 2026: "shall we add a small background so it is highlighted").
+   Same recipe as the hero chips, so the site keeps one card language: white, one hairline, a soft lift, no tint and no icon.
+   Never a pill round the number on its own, that orphans the line under it and reads as a tag. */
+.sheet .trust-row{gap:var(--s-5)}
+.sheet .trust-item{padding:var(--s-6) var(--s-5);border-radius:var(--r-lg);
+  background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 1px 2px rgba(20,20,23,.05),0 14px 34px rgba(20,20,23,.09);
+  justify-content:center;transition:box-shadow .45s var(--ease),transform .45s var(--ease)}
+.sheet .trust-item:hover{transform:translateY(-3px);box-shadow:0 1px 0 #fff inset,0 2px 4px rgba(20,20,23,.06),0 22px 48px rgba(20,20,23,.13)}
+.sheet .trust-item span{max-width:26ch}
+@media(min-width:760px){.sheet .trust-row{gap:var(--s-6)}.sheet .trust-item{padding:var(--s-10) var(--s-8)}}
