@@ -1,15 +1,23 @@
 ---
-// THE NAMES BEHIND THE RECORD. The record band above says nobody has failed; this band shows the
-// students who prove it. HARD LAW (Thulaib's standing rule, minors): a student renders ONLY with
-// name, photo, result, written parent consent and the result slip on file. The build refuses anything
-// less. With no students yet, the whole section renders nothing and the page reads as designed.
+// THE NAMES BEHIND THE RECORD. HARD LAW (standing rule, minors): a REAL student renders only with
+// name, photo, result, written parent consent and the result slip on file. DEMO mode (Thulaib,
+// 23 Sep 2026: "add it as demo, Leon will give us the real stuff") shows the band with DRAWN
+// silhouettes: in demo a photo or any name but "Student name" throws, so a fake face cannot ship.
 import data from '../data/achievers.json';
 import { BASE } from '../scripts/config.js';
+const demo = data.demo === true;
 const students = data.students || [];
 for (const s of students) {
-  if (!(s.name && s.photo && s.result && s.year && s.consent_on_file === true && s.consent_by && s.result_proof))
+  if (demo) {
+    if (s.photo) throw new Error('Demo mode never carries a photo. A fake face never ships.');
+    if (s.name !== 'Student name') throw new Error('Demo mode never carries a real looking name.');
+  } else if (!(s.name && s.photo && s.result && s.year && s.consent_on_file === true && s.consent_by && s.result_proof)) {
     throw new Error(`Achiever "${s.name || '?'}" is missing consent or proof. Nothing ships without both.`);
+  }
 }
+const lede = demo
+  ? "Five places, held for Leon's students. Each one appears here with their parents' written consent."
+  : "Real students, shown with their parents' written consent.";
 ---
 {students.length > 0 && (
 <section class="section ach" id="results" aria-label="Results">
@@ -17,12 +25,14 @@ for (const s of students) {
     <div class="sect-head" data-sr>
       <span class="eyebrow">The results</span>
       <h2>Taught by Leon. Marked by the examiner.</h2>
-      <p>Real students, shown with their parents' written consent.</p>
+      <p>{lede}</p>
     </div>
     <div class="ach-row" data-sr>
       {students.map((s, n) => (
         <figure class="ach-card" style={`--n:${n}`}>
-          <div class="ach-ph"><img src={BASE + s.photo.replace(/^\//, '')} alt={s.name} loading="lazy" width="400" height="520" /></div>
+          <div class="ach-ph">{s.photo
+            ? <img src={BASE + s.photo.replace(/^\//, '')} alt={s.name} loading="lazy" width="400" height="520" />
+            : <div class="ach-sil" aria-hidden="true"></div>}</div>
           <figcaption>
             <b class="ach-res">{s.result}</b>
             <span class="ach-name">{s.name}</span>

@@ -472,3 +472,8 @@ body.locked{overflow:hidden}
   .ach-card:nth-child(even){transform:translateY(-14px)}
   .ach-row.in .ach-card:nth-child(even){transform:translateY(-14px) scale(1)}
 }
+
+/* the demo silhouette: a drawn figure, CSS only, so demo mode contains no photograph at all */
+.ach-sil{width:100%;height:100%;position:relative;background:#e5e3dc;overflow:hidden}
+.ach-sil:before{content:"";position:absolute;left:50%;top:20%;width:42%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:#c4c2ba}
+.ach-sil:after{content:"";position:absolute;left:50%;top:58%;width:74%;height:60%;transform:translateX(-50%);border-radius:999px 999px 0 0;background:#c4c2ba}

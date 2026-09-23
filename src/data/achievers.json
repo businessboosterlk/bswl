@@ -1,4 +1,31 @@
 {
- "_tag": "THE WALL LAW. Students are minors. A student appears here ONLY with all four on file: name, photo, the result slip and a parent's WRITTEN consent (the student's own consent if 18 or over). The build throws on any entry missing one. An empty list renders nothing, so the section waits dark until Leon sends the pack. NEVER a sample face, NEVER an AI face, NEVER a result we have not seen.",
- "students": []
+ "_tag": "THE WALL LAW. Students are minors. A REAL student appears ONLY with name, photo, result slip and a parent's WRITTEN consent on file (their own if 18 or over). demo:true shows the band with drawn silhouettes so Leon can see it and send the real pack: in demo a photo or a real name is refused by the build, so a fake face can never ship.",
+ "demo": true,
+ "students": [
+  {
+   "name": "Student name",
+   "year": "A/L 2026",
+   "result": "3 A's"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2026",
+   "result": "2 A's, a B"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2025",
+   "result": "3 A's"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2025",
+   "result": "3 A's"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2026",
+   "result": "3 A's"
+  }
+ ]
 }
