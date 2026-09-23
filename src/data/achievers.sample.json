@@ -1,0 +1,6 @@
+{
+  "_tag": "SAMPLE SHAPE ONLY, never rendered. Copy an entry into achievers.json once the four items are on file.",
+  "students": [
+    { "name": "Full name", "year": "A/L 2026", "result": "3 A's", "photo": "/assets/achievers/slug.webp", "consent_on_file": true, "consent_by": "Parent, written, DD Mon YYYY", "result_proof": "Result slip seen by BB on DD Mon YYYY" }
+  ]
+}

@@ -290,7 +290,9 @@ body.locked{overflow:hidden}
 @media(min-width:700px){.ways{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1000px){.ways{grid-template-columns:repeat(4,1fr)}.ways-3{grid-template-columns:repeat(3,1fr)}}
 .cards3{display:grid;grid-template-columns:1fr;gap:var(--s-5)}
-@media(min-width:900px){.cards3{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){.cards3{grid-template-columns:repeat(3,1fr)}
+/* four cards sit two by two, never three and an orphan (Papers joined the classes, 23 Sep 2026) */
+.cards3:has(> :nth-child(4)){grid-template-columns:repeat(2,1fr)}}
 .ccard{position:relative;overflow:hidden;display:flex;flex-direction:column;padding-top:var(--s-10);scroll-margin-top:calc(var(--nav-h) + 20px)}
 .ccard-big{font:700 clamp(54px,6vw,84px)/.85 var(--font-display);letter-spacing:-.06em;color:#fff;-webkit-text-stroke:2.8px #141417;paint-order:stroke fill;margin-bottom:var(--s-8);transition:color .4s var(--ease)}
 .ccard:hover .ccard-big{color:#141417}
@@ -443,3 +445,30 @@ body.locked{overflow:hidden}
 .sheet .trust-item:hover{transform:translateY(-3px);box-shadow:0 1px 0 #fff inset,0 2px 4px rgba(20,20,23,.06),0 22px 48px rgba(20,20,23,.13)}
 .sheet .trust-item span{max-width:26ch}
 @media(min-width:760px){.sheet .trust-row{gap:var(--s-6)}.sheet .trust-item{padding:var(--s-10) var(--s-8)}}
+
+/* ═══ THE RESULTS. Pill portraits on the page, staggered like a class photo, each rising as it is scrolled to.
+   Renders only when a consented student exists (Achievers.astro throws without consent and proof). ═══ */
+.ach{background:#fbfaf7;border-top:1px solid var(--hair);overflow:hidden}
+.ach-row{display:flex;justify-content:center;align-items:flex-end;gap:clamp(14px,2.2vw,30px);flex-wrap:wrap;margin-top:var(--s-12)}
+.ach-card{margin:0;width:clamp(128px,15vw,196px);flex:none}
+.ach-card:nth-child(even){transform:translateY(-26px)}                  /* the stagger of a class photo */
+.ach-ph{border-radius:999px;overflow:hidden;aspect-ratio:400/520;background:#e8e7e2;border:1px solid var(--hair);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 14px 34px rgba(20,20,23,.10)}
+.ach-ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.04)}   /* the brand is black and white */
+.ach-card figcaption{text-align:center;margin-top:14px;display:flex;flex-direction:column;gap:2px}
+.ach-res{font:600 clamp(21px,2vw,26px)/1.1 var(--font-display);letter-spacing:-.02em;color:var(--ink)}
+.ach-name{font-size:var(--fs-sm);color:var(--ink);font-weight:600}
+.ach-year{font-size:var(--fs-xs);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+/* the pop, one card after the next. .sr/.in comes from the shared reveal in site.js */
+@media (prefers-reduced-motion:no-preference){
+  .ach-row.sr .ach-card{opacity:0;transform:translateY(34px) scale(.94)}
+  .ach-row.sr:nth-child(n) .ach-card:nth-child(even){transform:translateY(8px) scale(.94)}
+  .ach-row.in .ach-card{opacity:1;transform:translateY(0) scale(1);transition:opacity .7s var(--ease),transform .8s var(--ease);transition-delay:calc(var(--n)*.09s)}
+  .ach-row.in .ach-card:nth-child(even){transform:translateY(-26px) scale(1)}
+}
+@media (max-width:719px){
+  .ach-row{gap:12px 10px}
+  .ach-card{width:calc(33.33% - 8px)}
+  .ach-card:nth-child(even){transform:translateY(-14px)}
+  .ach-row.in .ach-card:nth-child(even){transform:translateY(-14px) scale(1)}
+}

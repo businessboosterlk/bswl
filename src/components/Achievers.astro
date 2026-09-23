@@ -1,0 +1,36 @@
+---
+// THE NAMES BEHIND THE RECORD. The record band above says nobody has failed; this band shows the
+// students who prove it. HARD LAW (Thulaib's standing rule, minors): a student renders ONLY with
+// name, photo, result, written parent consent and the result slip on file. The build refuses anything
+// less. With no students yet, the whole section renders nothing and the page reads as designed.
+import data from '../data/achievers.json';
+import { BASE } from '../scripts/config.js';
+const students = data.students || [];
+for (const s of students) {
+  if (!(s.name && s.photo && s.result && s.year && s.consent_on_file === true && s.consent_by && s.result_proof))
+    throw new Error(`Achiever "${s.name || '?'}" is missing consent or proof. Nothing ships without both.`);
+}
+---
+{students.length > 0 && (
+<section class="section ach" id="results" aria-label="Results">
+  <div class="wrap">
+    <div class="sect-head" data-sr>
+      <span class="eyebrow">The results</span>
+      <h2>Taught by Leon. Marked by the examiner.</h2>
+      <p>Real students, shown with their parents' written consent.</p>
+    </div>
+    <div class="ach-row" data-sr>
+      {students.map((s, n) => (
+        <figure class="ach-card" style={`--n:${n}`}>
+          <div class="ach-ph"><img src={BASE + s.photo.replace(/^\//, '')} alt={s.name} loading="lazy" width="400" height="520" /></div>
+          <figcaption>
+            <b class="ach-res">{s.result}</b>
+            <span class="ach-name">{s.name}</span>
+            <span class="ach-year">{s.year}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+)}

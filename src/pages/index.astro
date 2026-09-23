@@ -7,6 +7,7 @@ import Layout from '../layouts/Layout.astro';
 import Bulb from '../components/Bulb.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
+import Achievers from '../components/Achievers.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
 import classes from '../data/classes.json';
 import locations from '../data/locations.json';
@@ -129,6 +130,9 @@ const courses = classes.map(c => ({ '@type': 'Course', name: 'A/L Business Studi
       </div>
     </div>
   </section>
+
+  <!-- ══════════ THE RESULTS. Waits dark until Leon sends students WITH written parent consent and result slips. ══════════ -->
+  <Achievers />
 
   <section class="section finder" id="finder" aria-label="Find your class">
     <div class="wrap">

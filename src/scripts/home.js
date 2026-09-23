@@ -28,7 +28,7 @@ document.documentElement.classList.add('js');
     '2028':  {num:'2028',  batch:'2028 batch', enrol:'Enrol for the 2028 batch',
               title:'The 2028 batch',  line:'The head start. Learn without exam-season pressure and walk in ahead.'},
     'revision': {num:'REVISE', batch:'Revision', enrol:'Ask about Revision',
-              title:'Revision', line:'For your exam year: the syllabus once more before the paper.'},
+              title:'Revision', line:'For your exam year: the syllabus once more, then papers under exam time.'},
     'unsure':{num:'?',     batch:null, enrol:'Enquire and get placed',
               title:"Let's place you",  line:'Send your details and Leon will put you in the right batch.'}
   };

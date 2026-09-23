@@ -28,5 +28,15 @@
     "who": "Your exam is next.",
     "cta": "Ask about Revision",
     "batch": "Revision"
+  },
+  {
+    "key": "papers",
+    "big": "PAPERS",
+    "meta": "Exam year · Paper classes",
+    "title": "Paper classes",
+    "line": "Sit a past paper under exam time, then watch it marked the way the examiner marks it. The last marks are found here.",
+    "who": "You want exam practice, marked.",
+    "cta": "Ask about Paper classes",
+    "batch": "Paper classes"
   }
 ]

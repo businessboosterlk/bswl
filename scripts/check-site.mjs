@@ -42,6 +42,18 @@ const up = async () => { for (let i = 0; i < 60; i++) { try { const r = await fe
   const bad = walk('src').filter(f => /\.(astro|js|ts)$/.test(f)).map(f => [f, (readFileSync(f, 'utf8').replace(/^\s*\/\/.*$/gm, '').match(/<svg\b/g) || []).length]).filter(([f, n]) => n > (ALLOWED[f] || 0));
   ok('icons: no SVG typed by hand anywhere in the source', bad.length === 0, bad.map(([f, n]) => f + ' has ' + n).join(', ')); }
 
+// THE WALL. 23 Sep 2026: the results band shows minors, so it exists on the live site only when every
+// entry carries written parental consent and a seen result slip. Empty list = the section is not in the HTML.
+{ const ach = JSON.parse(readFileSync('src/data/achievers.json', 'utf8'));
+  const home = readFileSync('dist/index.html', 'utf8');
+  if (!ach.students.length) ok('results band: no students on file, so the section is absent from the page', !home.includes('id="results"') && !home.includes('ach-card'));
+  else { ok('results band: every student has written consent and a seen result slip', ach.students.every(s => s.consent_on_file === true && s.consent_by && s.result_proof), 'an entry is missing consent or proof');
+         ok('results band: rendered', home.includes('id="results"')); } }
+
+// PAPER CLASSES. Thulaib, 23 Sep 2026: the fourth class, after Revise on every surface, including the form.
+{ const home = readFileSync('dist/index.html', 'utf8'), cls = readFileSync('dist/classes/index.html', 'utf8'), enr = readFileSync('dist/enrol/index.html', 'utf8');
+  ok('paper classes: on the home page, the classes page and in the enrol form', home.includes('c-papers') && cls.includes('c-papers') && enr.includes('Paper classes')); }
+
 try {
   await up();
   { const served = await (await fetch(ROOT)).text(); const built = readFileSync('dist/index.html', 'utf8');
