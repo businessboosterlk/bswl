@@ -5,6 +5,7 @@
 // silhouettes: in demo a photo or any name but "Student name" throws, so a fake face cannot ship.
 import data from '../data/achievers.json';
 import { BASE } from '../scripts/config.js';
+import Icon from './Icon.astro';
 const demo = data.demo === true;
 const students = data.students || [];
 for (const s of students) {
@@ -28,8 +29,6 @@ const lede = demo
       <p>{lede}</p>
     </div>
     <div class="ach-row" data-sr>
-      <i class="ach-wire" aria-hidden="true"></i>
-      <i class="ach-spark" aria-hidden="true"></i>
       {students.map((s, n) => (
         <figure class="ach-card" style={`--n:${n}`}>
           <i class="ach-glow" aria-hidden="true"></i>
@@ -43,6 +42,11 @@ const lede = demo
           </figcaption>
         </figure>
       ))}
+    </div>
+    <div class="ach-nav" hidden>
+      <button class="ach-btn" type="button" data-ach-prev aria-label="Previous students"><Icon name="back" /></button>
+      <span class="ach-count" aria-live="polite"><b data-ach-cur>01</b><span aria-hidden="true">/</span><b data-ach-tot>01</b></span>
+      <button class="ach-btn" type="button" data-ach-next aria-label="Next students"><Icon name="arrow" /></button>
     </div>
   </div>
 </section>

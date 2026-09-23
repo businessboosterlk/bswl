@@ -49,7 +49,8 @@ const up = async () => { for (let i = 0; i < 60; i++) { try { const r = await fe
   const band = (home.match(/<section[^>]*id="results"[\s\S]*?<\/section>/) || [''])[0];
   if (!ach.students.length) ok('results band: no students on file, so the section is absent from the page', !home.includes('id="results"') && !home.includes('ach-card'));
   else if (ach.demo === true) { ok('results band: the check can actually see the band', band.length > 200 && band.includes('ach-card'), 'the matcher found nothing, so nothing below it means anything');
-         ok('results band, DEMO: silhouettes only, not one photograph and not one real name', band.length > 0 && !band.includes('<img') && ach.students.every(s => s.name === 'Student name')); }
+         ok('results band, DEMO: silhouettes only, not one photograph and not one real name', band.length > 0 && !band.includes('<img') && ach.students.every(s => s.name === 'Student name'));
+         ok('results band: the page turn has both arrows and a count', band.includes('data-ach-prev') && band.includes('data-ach-next') && band.includes('data-ach-tot')); }
   else { ok('results band: every student has written consent and a seen result slip', ach.students.every(s => s.consent_on_file === true && s.consent_by && s.result_proof), 'an entry is missing consent or proof');
          ok('results band: rendered', home.includes('id="results"')); } }
 

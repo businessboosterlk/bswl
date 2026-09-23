@@ -357,3 +357,49 @@ function initMotion(){
   })(0);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
 })();
+
+
+/* ── THE RESULTS turn pages. Five lights at a time. Next: the lights go out, the next five come in from the
+   dark and catch one by one. Auto turns every eight seconds while the band is on screen and nobody is on it,
+   and stops for good the first time somebody touches an arrow. ── */
+(function () {
+  const sec = document.getElementById('results'); if (!sec) return;
+  const row = sec.querySelector('.ach-row'), nav = sec.querySelector('.ach-nav');
+  const cards = [...row.querySelectorAll('.ach-card')];
+  const prev = sec.querySelector('[data-ach-prev]'), next = sec.querySelector('[data-ach-next]');
+  const cur = sec.querySelector('[data-ach-cur]'), tot = sec.querySelector('[data-ach-tot]');
+  const SIZE = 5, pages = Math.ceil(cards.length / SIZE);
+  if (pages < 2) return;                                   /* one page: no arrows, nothing to turn */
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const two = n => String(n).padStart(2, '0');
+  let page = 0, busy = false, timer = 0, touched = false;
+
+  function show(p) {
+    cards.forEach((c, i) => { const on = Math.floor(i / SIZE) === p; c.hidden = !on; if (on) c.style.setProperty('--n', i % SIZE); });
+    cur.textContent = two(p + 1);
+  }
+  function go(dir) {
+    if (busy) return; busy = true;
+    const to = (page + dir + pages) % pages;
+    row.style.setProperty('--dx', (dir * 44) + 'px'); row.style.setProperty('--dy', '10px');
+    if (reduce) { show(to); page = to; busy = false; return; }
+    row.classList.add('out');
+    setTimeout(() => {
+      show(to); page = to;
+      row.classList.remove('out', 'in'); row.classList.add('sr');
+      void row.offsetWidth;                                /* one reflow, so the entrance runs again from the start */
+      row.classList.add('in');
+      setTimeout(() => { busy = false; }, 900);
+    }, 440);
+  }
+  const stop = () => { clearInterval(timer); timer = 0; };
+  const start = () => { if (reduce || touched || timer) return;
+    timer = setInterval(() => { if (!sec.matches(':hover') && !sec.matches(':focus-within') && row.classList.contains('in')) go(1); }, 8000); };
+  const touch = dir => { touched = true; stop(); go(dir); };
+
+  tot.textContent = two(pages); show(0); nav.hidden = false;
+  prev.addEventListener('click', () => touch(-1));
+  next.addEventListener('click', () => touch(1));
+  sec.addEventListener('keydown', e => { if (e.key === 'ArrowRight') touch(1); if (e.key === 'ArrowLeft') touch(-1); });
+  new IntersectionObserver(en => { en[0].isIntersecting ? start() : stop(); }, { threshold: .3 }).observe(sec);
+})();

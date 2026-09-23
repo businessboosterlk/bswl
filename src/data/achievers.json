@@ -1,5 +1,5 @@
 {
- "_tag": "THE WALL LAW. Students are minors. A REAL student appears ONLY with name, photo, result slip and a parent's WRITTEN consent on file (their own if 18 or over). demo:true shows the band with drawn silhouettes so Leon can see it and send the real pack: in demo a photo or a real name is refused by the build, so a fake face can never ship.",
+ "_tag": "THE WALL LAW. Students are minors. A REAL student appears ONLY with name, photo, result slip and a parent's WRITTEN consent on file (their own if 18 or over). demo:true shows the band with drawn silhouettes so Leon can see it and send the real pack: in demo a photo or a real name is refused by the build, so a fake face can never ship. The band shows five at a time and turns pages.",
  "demo": true,
  "students": [
   {
@@ -25,6 +25,31 @@
   {
    "name": "Student name",
    "year": "A/L 2026",
+   "result": "3 A's"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2025",
+   "result": "2 A's, a B"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2024",
+   "result": "3 A's"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2026",
+   "result": "3 A's"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2024",
+   "result": "2 A's, a B"
+  },
+  {
+   "name": "Student name",
+   "year": "A/L 2025",
    "result": "3 A's"
   }
  ]
