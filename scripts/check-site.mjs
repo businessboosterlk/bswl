@@ -46,9 +46,10 @@ const up = async () => { for (let i = 0; i < 60; i++) { try { const r = await fe
 // entry carries written parental consent and a seen result slip. Empty list = the section is not in the HTML.
 { const ach = JSON.parse(readFileSync('src/data/achievers.json', 'utf8'));
   const home = readFileSync('dist/index.html', 'utf8');
-  const band = (home.match(/<section class="section ach"[\s\S]*?<\/section>/) || [''])[0];
+  const band = (home.match(/<section[^>]*id="results"[\s\S]*?<\/section>/) || [''])[0];
   if (!ach.students.length) ok('results band: no students on file, so the section is absent from the page', !home.includes('id="results"') && !home.includes('ach-card'));
-  else if (ach.demo === true) { ok('results band, DEMO: silhouettes only, not one photograph and not one real name', band.length > 0 && !band.includes('<img') && ach.students.every(s => s.name === 'Student name')); }
+  else if (ach.demo === true) { ok('results band: the check can actually see the band', band.length > 200 && band.includes('ach-card'), 'the matcher found nothing, so nothing below it means anything');
+         ok('results band, DEMO: silhouettes only, not one photograph and not one real name', band.length > 0 && !band.includes('<img') && ach.students.every(s => s.name === 'Student name')); }
   else { ok('results band: every student has written consent and a seen result slip', ach.students.every(s => s.consent_on_file === true && s.consent_by && s.result_proof), 'an entry is missing consent or proof');
          ok('results band: rendered', home.includes('id="results"')); } }
 

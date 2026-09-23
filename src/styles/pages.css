@@ -446,34 +446,84 @@ body.locked{overflow:hidden}
 .sheet .trust-item span{max-width:26ch}
 @media(min-width:760px){.sheet .trust-row{gap:var(--s-6)}.sheet .trust-item{padding:var(--s-10) var(--s-8)}}
 
-/* ═══ THE RESULTS. Pill portraits on the page, staggered like a class photo, each rising as it is scrolled to.
-   Renders only when a consented student exists (Achievers.astro throws without consent and proof). ═══ */
-.ach{background:#fbfaf7;border-top:1px solid var(--hair);overflow:hidden}
-.ach-row{display:flex;justify-content:center;align-items:flex-end;gap:clamp(14px,2.2vw,30px);flex-wrap:wrap;margin-top:var(--s-12)}
-.ach-card{margin:0;width:clamp(128px,15vw,196px);flex:none}
-.ach-card:nth-child(even){transform:translateY(-26px)}                  /* the stagger of a class photo */
-.ach-ph{border-radius:999px;overflow:hidden;aspect-ratio:400/520;background:#e8e7e2;border:1px solid var(--hair);
-  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 14px 34px rgba(20,20,23,.10)}
-.ach-ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.04)}   /* the brand is black and white */
-.ach-card figcaption{text-align:center;margin-top:14px;display:flex;flex-direction:column;gap:2px}
-.ach-res{font:600 clamp(21px,2vw,26px)/1.1 var(--font-display);letter-spacing:-.02em;color:var(--ink)}
-.ach-name{font-size:var(--fs-sm);color:var(--ink);font-weight:600}
-.ach-year{font-size:var(--fs-xs);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-/* the pop, one card after the next. .sr/.in comes from the shared reveal in site.js */
+/* ═══ THE RESULTS: THE LIGHTS LEON SWITCHED ON. ═══════════════════════════════════════════════
+   The mark is a bulb, so the band is a dark room. Scroll to it and a current runs along the row;
+   as it passes each student their light catches, the way a filament catches, and their face comes
+   up out of the dark. Warm is the ONE tone the brand allows and it means exactly what it means
+   everywhere else on this site: switched on. Touch any one of them and that light surges.
+   Renders only in demo, or with written parental consent and a seen result slip. */
+.ach{position:relative;overflow:hidden;background:
+  radial-gradient(120% 90% at 50% 8%, #16181d 0%, #0c0d10 62%)}
+.ach .sect-head h2{max-width:20ch}
+.ach-row{--lamp:calc(clamp(128px,15vw,188px) * 1.3);position:relative;display:flex;justify-content:center;align-items:flex-start;
+  gap:clamp(14px,2.4vw,34px);flex-wrap:wrap;margin-top:var(--s-14);padding-top:6px}
+/* the wire the current runs along, level with the middle of every portrait */
+.ach-wire,.ach-spark{position:absolute;left:0;right:0;top:calc(var(--lamp,150px) * .5 + 6px);height:1px;pointer-events:none}
+.ach-wire{background:linear-gradient(90deg,rgba(244,245,247,0),rgba(244,245,247,.16) 12%,rgba(244,245,247,.16) 88%,rgba(244,245,247,0));
+  transform:scaleX(0);transform-origin:0 50%}
+.ach-spark{background:linear-gradient(90deg,rgba(239,209,133,0),var(--light) 48%,rgba(239,209,133,0));
+  width:22%;left:0;right:auto;opacity:0;filter:blur(.4px);
+  box-shadow:0 0 14px 2px rgba(239,209,133,.55)}
+.ach-card{position:relative;margin:0;width:clamp(128px,15vw,188px);flex:none}
+.ach-card .ach-glow{position:absolute;left:50%;top:0;width:158%;aspect-ratio:1;transform:translate(-50%,-22%);
+  border-radius:50%;pointer-events:none;opacity:0;z-index:0;
+  background:radial-gradient(closest-side,rgba(239,209,133,.34),rgba(239,209,133,.10) 46%,rgba(239,209,133,0) 68%)}
+.ach-ph{position:relative;z-index:1;border-radius:999px;overflow:hidden;aspect-ratio:400/520;background:#15171c;
+  box-shadow:inset 0 0 0 1px rgba(244,245,247,.10)}
+.ach-ph > *{width:100%;height:100%;display:block;
+  filter:grayscale(1) brightness(.34) contrast(1.06)}          /* dark until the light reaches them */
+.ach-ph img{object-fit:cover}
+.ach-card figcaption{position:relative;z-index:1;text-align:center;margin-top:16px;display:flex;flex-direction:column;gap:3px}
+.ach-res{font:600 clamp(21px,2vw,27px)/1.1 var(--font-display);letter-spacing:-.02em;color:#54565f}
+.ach-name{font-size:var(--fs-sm);color:#54565f;font-weight:600}
+.ach-year{font-size:var(--fs-xs);color:#3e4048;letter-spacing:.08em;text-transform:uppercase}
+
+/* ── the switch on. .sr/.in comes from the shared reveal in site.js, --n is the card's place in the row ── */
 @media (prefers-reduced-motion:no-preference){
-  .ach-row.sr .ach-card{opacity:0;transform:translateY(34px) scale(.94)}
-  .ach-row.sr:nth-child(n) .ach-card:nth-child(even){transform:translateY(8px) scale(.94)}
-  .ach-row.in .ach-card{opacity:1;transform:translateY(0) scale(1);transition:opacity .7s var(--ease),transform .8s var(--ease);transition-delay:calc(var(--n)*.09s)}
-  .ach-row.in .ach-card:nth-child(even){transform:translateY(-26px) scale(1)}
+  .ach-row.sr .ach-card{opacity:0;transform:translateY(26px)}
+  .ach-row.in .ach-card{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .9s var(--ease);
+    transition-delay:calc(.10s + var(--n) * .10s)}
+  .ach-row.in .ach-wire{animation:achWire 1s var(--ease) .15s both}
+  .ach-row.in .ach-spark{animation:achSpark 1.5s cubic-bezier(.38,0,.32,1) .35s both}
+  /* the filament catches, late enough that the current has reached them */
+  .ach-row.in .ach-glow{animation:achFlick 1.25s var(--ease) both;animation-delay:calc(.42s + var(--n) * .34s)}
+  .ach-row.in .ach-ph > *{transition:filter 1.1s var(--ease);transition-delay:calc(.50s + var(--n) * .34s)}
+  .ach-row.in .ach-res,.ach-row.in .ach-name,.ach-row.in .ach-year{transition:color .9s var(--ease);
+    transition-delay:calc(.58s + var(--n) * .34s)}
 }
+.ach-row.in .ach-ph > *{filter:grayscale(1) brightness(1) contrast(1.04)}
+.ach-row.in .ach-ph{box-shadow:inset 0 0 0 1px rgba(239,209,133,.55),0 0 26px -4px rgba(239,209,133,.42),0 0 80px -16px rgba(239,209,133,.55)}
+.ach-row.in .ach-res{color:#fff}
+.ach-row.in .ach-name{color:var(--ink)}
+.ach-row.in .ach-year{color:var(--muted)}
+@keyframes achWire{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes achSpark{0%{transform:translateX(-24%);opacity:0}9%{opacity:1}90%{opacity:1}100%{transform:translateX(380%);opacity:0}}
+@keyframes achFlick{0%{opacity:0}11%{opacity:.6}19%{opacity:.1}33%{opacity:.9}45%{opacity:.34}100%{opacity:1}}
+
+/* touch one and that light surges. This is the bit a past student plays with */
+.ach-card{cursor:default}
+.ach-row.in .ach-card:hover .ach-glow,.ach-row.in .ach-card:active .ach-glow{opacity:1;transform:translate(-50%,-22%) scale(1.18);
+  transition:transform .5s var(--ease);animation:none}
+.ach-row.in .ach-card:hover .ach-ph > *,.ach-row.in .ach-card:active .ach-ph > *{filter:grayscale(1) brightness(1.16) contrast(1.02);transition-delay:0s}
+.ach-row.in .ach-card:hover .ach-ph,.ach-row.in .ach-card:active .ach-ph{
+  box-shadow:inset 0 0 0 1px rgba(239,209,133,.9),0 0 36px -2px rgba(239,209,133,.6),0 0 100px -14px rgba(239,209,133,.7);transition:box-shadow .45s var(--ease)}
+
 @media (max-width:719px){
-  .ach-row{gap:12px 10px}
+  .ach-row{gap:18px 10px;margin-top:var(--s-10)}
   .ach-card{width:calc(33.33% - 8px)}
-  .ach-card:nth-child(even){transform:translateY(-14px)}
-  .ach-row.in .ach-card:nth-child(even){transform:translateY(-14px) scale(1)}
+  .ach-wire,.ach-spark{display:none}            /* the row wraps on a phone, so there is no one wire to run along */
+  .ach-row.in .ach-glow{animation-delay:calc(.35s + var(--n) * .16s)}
+  .ach-row.in .ach-ph{transition-delay:calc(.42s + var(--n) * .16s)}
+}
+/* reduced motion: every light is simply on */
+@media (prefers-reduced-motion:reduce){
+  .ach-glow{opacity:1}
+  .ach-wire{transform:scaleX(1)}
+  .ach-ph > *{filter:grayscale(1) brightness(1) contrast(1.04)}
+  .ach-res{color:#fff}.ach-name{color:var(--ink)}.ach-year{color:var(--muted)}
 }
 
 /* the demo silhouette: a drawn figure, CSS only, so demo mode contains no photograph at all */
-.ach-sil{width:100%;height:100%;position:relative;background:#e5e3dc;overflow:hidden}
-.ach-sil:before{content:"";position:absolute;left:50%;top:20%;width:42%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:#c4c2ba}
-.ach-sil:after{content:"";position:absolute;left:50%;top:58%;width:74%;height:60%;transform:translateX(-50%);border-radius:999px 999px 0 0;background:#c4c2ba}
+.ach-sil{width:100%;height:100%;position:relative;background:#33373f;overflow:hidden}
+.ach-sil:before{content:"";position:absolute;left:50%;top:20%;width:42%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:#626877}
+.ach-sil:after{content:"";position:absolute;left:50%;top:58%;width:74%;height:60%;transform:translateX(-50%);border-radius:999px 999px 0 0;background:#626877}

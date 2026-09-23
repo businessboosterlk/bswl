@@ -20,7 +20,7 @@ const lede = demo
   : "Real students, shown with their parents' written consent.";
 ---
 {students.length > 0 && (
-<section class="section ach" id="results" aria-label="Results">
+<section class="section ach dark" id="results" aria-label="Results">
   <div class="wrap">
     <div class="sect-head" data-sr>
       <span class="eyebrow">The results</span>
@@ -28,8 +28,11 @@ const lede = demo
       <p>{lede}</p>
     </div>
     <div class="ach-row" data-sr>
+      <i class="ach-wire" aria-hidden="true"></i>
+      <i class="ach-spark" aria-hidden="true"></i>
       {students.map((s, n) => (
         <figure class="ach-card" style={`--n:${n}`}>
+          <i class="ach-glow" aria-hidden="true"></i>
           <div class="ach-ph">{s.photo
             ? <img src={BASE + s.photo.replace(/^\//, '')} alt={s.name} loading="lazy" width="400" height="520" />
             : <div class="ach-sil" aria-hidden="true"></div>}</div>
